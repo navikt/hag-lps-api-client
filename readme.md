@@ -18,8 +18,8 @@ Denne applikasjonen er en klient for å hente data fra LPS API. Den genererer et
 1. **Klon prosjektet:**
 
    ```sh
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/navikt/hag-lps-api-client.git
+   cd hag-lps-api-client
    ```
 
 2. **Bygg prosjektet:**
