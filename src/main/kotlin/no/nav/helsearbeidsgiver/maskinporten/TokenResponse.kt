@@ -3,14 +3,7 @@ package no.nav.helsearbeidsgiver.maskinporten
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * {
- *   "access_token" : "IxC0B76vlWl3fiQhAwZUmD0hr_PPwC9hSIXRdoUslPU=",
- *   "token_type" : "Bearer",
- *   "expires_in" : 599,
- *   "scope" : "difitest:test1"
- * }
- */
+
 @Serializable
 data class TokenResponse(
     @SerialName("access_token") val accessToken: String,
