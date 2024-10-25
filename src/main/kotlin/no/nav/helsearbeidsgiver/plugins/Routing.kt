@@ -14,7 +14,7 @@ import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
 
 fun Application.configureRouting() {
     routing {
-        swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
+        swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.json")
 
         post("/inntektsmeldinger") {
             val params = call.receiveParameters()

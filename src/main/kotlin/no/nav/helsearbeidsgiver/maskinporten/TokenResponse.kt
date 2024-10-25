@@ -14,7 +14,7 @@ data class TokenResponse(
     override fun toString(): String =
         "TokenResponse(accessToken='${accessToken.take(3)}', tokenType='$tokenType', expiresInSeconds=$expiresInSeconds, scope='$scope')"
 }
-
+@Serializable
 class TokenResponseWrapper(
     val tokenResponse: TokenResponse,
 ) {

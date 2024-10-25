@@ -1,0 +1,95 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Lps-api klient",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/inntektsmeldinger": {
+      "post": {
+        "summary": "Send variables to MaskinportenClientConfigPkey",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "kid": {
+                    "type": "string",
+                    "description": "kid"
+                  },
+                  "privateKey": {
+                    "type": "string",
+                    "description": "Private nøkkel"
+                  },
+                  "issuer": {
+                    "type": "string",
+                    "description": "Issuer id"
+                  },
+                  "consumerOrgNr": {
+                    "type": "string",
+                    "description": "Consumer organisasjonsnummer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/getToken": {
+      "post": {
+        "summary": "Generate a new access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "kid": {
+                    "type": "string",
+                    "description": "Key ID"
+                  },
+                  "privateKey": {
+                    "type": "string",
+                    "description": "Private key"
+                  },
+                  "issuer": {
+                    "type": "string",
+                    "description": "Issuer ID"
+                  },
+                  "consumerOrgNr": {
+                    "type": "string",
+                    "description": "Consumer organization number"
+                  },
+                  "scope": {
+                    "type": "string",
+                    "description": "Scope"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}
