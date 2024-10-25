@@ -43,6 +43,44 @@
         }
       }
     },
+    "/forespoersler": {
+      "post": {
+        "summary": "Hent forespørsler fra LPS API",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "kid": {
+                    "type": "string",
+                    "description": "kid"
+                  },
+                  "privateKey": {
+                    "type": "string",
+                    "description": "Private nøkkel"
+                  },
+                  "issuer": {
+                    "type": "string",
+                    "description": "Issuer id"
+                  },
+                  "consumerOrgNr": {
+                    "type": "string",
+                    "description": "Consumer organisasjonsnummer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
     "/getToken": {
       "post": {
         "summary": "Generate a new access token",

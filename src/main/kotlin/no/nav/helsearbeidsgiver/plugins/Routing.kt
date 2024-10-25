@@ -32,6 +32,23 @@ fun Application.configureRouting() {
                 call.respond(HttpStatusCode.InternalServerError, "Feilet å hente inntektsmeldinger: ${e.message}")
             }
         }
+        post("/foresepoersler") {
+            val params = call.receiveParameters()
+
+            val kid = params["kid"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'kid' parameter")
+            val privateKey =
+                params["privateKey"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'privateKey' parameter")
+            val issuer = params["issuer"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'issuer' parameter")
+            val consumerOrgNr =
+                params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
+
+            try {
+                val forespoerseler = LpsClient().hentForespoersler(privateKey, kid, issuer, consumerOrgNr)
+                call.respond(HttpStatusCode.OK, forespoerseler)
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.InternalServerError, "Feilet å hente inntektsmeldinger: ${e.message}")
+            }
+        }
         post("/getToken") {
             val params = call.receiveParameters()
 

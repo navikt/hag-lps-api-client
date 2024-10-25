@@ -8,11 +8,6 @@ Denne applikasjonen er en klient for å hente data fra LPS API. Den genererer et
 - Gradle
 - Kotlin
 
-## Prosjektstruktur
-
-- `src/main/kotlin/no/nav/helsearbeidsgiver`: Inneholder hovedkoden for applikasjonen.
-- `src/main/resources/openapi/documentation.yaml`: OpenAPI-dokumentasjonsfil.
-
 ## Oppsett
 
 1. **Klon prosjektet:**
@@ -28,6 +23,7 @@ Denne applikasjonen er en klient for å hente data fra LPS API. Den genererer et
     gradle build
     ```
 3. **Kjør prosjektet:**
+   
    Som en Gradle-applikasjon:
    ```sh
     gradle run
