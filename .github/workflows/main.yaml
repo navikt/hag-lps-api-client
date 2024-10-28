@@ -12,6 +12,10 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+
+      - name: List repository contents
+        run: ls -la
+
       - uses: actions/setup-java@v3
         with:
           java-version: 21
