@@ -32,7 +32,7 @@ fun Application.configureRouting() {
                 call.respond(HttpStatusCode.InternalServerError, "Feilet å hente inntektsmeldinger: ${e.message}")
             }
         }
-        post("/foresepoersler") {
+        post("/forespoersler") {
             val params = call.receiveParameters()
 
             val kid = params["kid"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'kid' parameter")
