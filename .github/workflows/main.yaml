@@ -11,15 +11,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          repository: navikt/hag-lps-api-client
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: List repository contents
-        run: ls -la
-
+      - uses: actions/checkout@v4
       - uses: actions/setup-java@v3
         with:
           java-version: 21
