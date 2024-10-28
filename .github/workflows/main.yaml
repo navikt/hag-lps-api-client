@@ -11,7 +11,11 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: navikt/hag-lps-api-client
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: List repository contents
         run: ls -la
