@@ -30,7 +30,7 @@ publishing {
         }
     }
     repositories {
-        mavenNav("hag-${rootProject.name}")
+        mavenNav(rootProject.name)
     }
 }
 tasks.register("printVersion") {
@@ -61,6 +61,7 @@ tasks.withType<Jar> {
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+
 fun RepositoryHandler.mavenNav(repo: String): MavenArtifactRepository {
     val githubPassword: String by project
 
