@@ -21,7 +21,7 @@ jobs:
       - name: Verify Gradle wrapper checksum
         uses: gradle/wrapper-validation-action@v3
 
-      - name: Build with Gradle
+      - name: Build and publish with Gradle
         run: ./gradlew build publish
         env:
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
