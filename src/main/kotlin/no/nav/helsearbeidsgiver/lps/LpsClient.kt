@@ -21,6 +21,7 @@ data class Inntektsmelding(
     val innsendt: String,
     val mottattEvent: String,
 )
+
 @Serializable
 data class Forespoersel(
     val forespoerselId: String,
