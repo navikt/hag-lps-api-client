@@ -21,7 +21,7 @@ application {
 
 repositories {
     mavenCentral()
-    mavenNav("*")
+
 }
 publishing {
     publications {
@@ -29,9 +29,7 @@ publishing {
             from(components["java"])
         }
     }
-    repositories {
-        mavenNav(rootProject.name)
-    }
+
 }
 tasks.register("printVersion") {
     println(project.version)
@@ -62,14 +60,4 @@ tasks.withType<Jar> {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-fun RepositoryHandler.mavenNav(repo: String): MavenArtifactRepository {
-    val githubPassword: String by project
 
-    return maven {
-        setUrl("https://maven.pkg.github.com/navikt/$repo")
-        credentials {
-            username = "x-access-token"
-            password = githubPassword
-        }
-    }
-}
