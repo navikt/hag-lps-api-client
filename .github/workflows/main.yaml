@@ -22,7 +22,7 @@ jobs:
           distribution: temurin
 
       - name: Set up Gradle
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Build JAR
         run: ./gradlew clean build
@@ -33,7 +33,7 @@ jobs:
       - name: Upload JAR as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: kotlin-executable
+          name: lps-client
           path: build/libs/*.jar
           retention-days: 30
         env:
