@@ -9,6 +9,7 @@ plugins {
     id("io.ktor.plugin") version "2.3.12"
     id("org.jmailen.kotlinter")
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("maven-publish")
 }
 
 group = "no.nav.helsearbeidsgiver"
@@ -20,8 +21,21 @@ application {
 
 repositories {
     mavenCentral()
+    mavenNav("*")
 }
-
+publishing {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+        }
+    }
+    repositories {
+        mavenNav("hag-${rootProject.name}")
+    }
+}
+tasks.register("printVersion") {
+    println(project.version)
+}
 dependencies {
     implementation("io.ktor:ktor-server-core-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
@@ -46,4 +60,15 @@ tasks.withType<Jar> {
     }
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+fun RepositoryHandler.mavenNav(repo: String): MavenArtifactRepository {
+    val githubPassword: String by project
+
+    return maven {
+        setUrl("https://maven.pkg.github.com/navikt/$repo")
+        credentials {
+            username = "x-access-token"
+            password = githubPassword
+        }
+    }
 }
