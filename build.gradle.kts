@@ -20,16 +20,23 @@ application {
 }
 
 repositories {
+    val githubPassword: String by project
     mavenCentral()
-
+    maven {
+        setUrl("https://maven.pkg.github.com/navikt/*")
+        credentials {
+            username = "x-access-token"
+            password = githubPassword
+        }
+    }
 }
+
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
         }
     }
-
 }
 tasks.register("printVersion") {
     println(project.version)
@@ -48,6 +55,7 @@ dependencies {
     implementation("com.nimbusds:nimbus-jose-jwt:9.40")
 
     implementation("org.bouncycastle:bcprov-jdk15on:1.70")
+    implementation("io.ktor:ktor-server-cors-jvm:2.3.12")
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
@@ -59,5 +67,4 @@ tasks.withType<Jar> {
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-
 

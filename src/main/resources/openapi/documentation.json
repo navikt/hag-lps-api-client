@@ -128,6 +128,71 @@
           }
         }
       }
+    },
+    "/filterInntektsmeldinger": {
+      "post": {
+        "summary": "Filter inntektsmeldinger based on provided parameters",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "kid": {
+                    "type": "string",
+                    "description": "Key ID"
+                  },
+                  "privateKey": {
+                    "type": "string",
+                    "description": "Private key"
+                  },
+                  "issuer": {
+                    "type": "string",
+                    "description": "Issuer ID"
+                  },
+                  "consumerOrgNr": {
+                    "type": "string",
+                    "description": "Consumer organization number",
+                  },
+                  "fnr": {
+                    "type": "string",
+                    "description": "Fødselsnummer",
+                    "default": ""
+                  },
+                  "forespoerselId": {
+                    "type": "string",
+                    "description": "Forespørsel ID",
+                    "default": ""
+                  },
+                  "datoFra": {
+                    "type": "string",
+                    "description": "Start date in ISO-8601 format",
+                    "default": "",
+                    "example": "2024-01-01T00:00:00"
+                  },
+                  "datoTil": {
+                    "type": "string",
+                    "description": "End date in ISO-8601 format",
+                    "example": "2024-12-31T00:00:00"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
     }
   }
 }

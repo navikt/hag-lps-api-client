@@ -24,9 +24,12 @@ class MaskinportenClientConfigPkey(
     val privateKey: String,
     val issuer: String,
     val consumerOrgNr: String,
-    val scope: String = "nav:inntektsmelding/lps.write",
+    val scope: String = LPS_API_SCOPE,
     override val endpoint: String = "https://test.maskinporten.no/token",
 ) : MaskinportenClientConfig {
+    companion object {
+        const val LPS_API_SCOPE = "nav:inntektsmelding/lps.write"
+    }
     private fun loadPrivateKey(key: String): PrivateKey {
         val keyText =
             key
