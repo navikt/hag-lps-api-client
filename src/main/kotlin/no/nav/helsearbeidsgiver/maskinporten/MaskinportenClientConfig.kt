@@ -30,6 +30,7 @@ class MaskinportenClientConfigPkey(
     companion object {
         const val LPS_API_SCOPE = "nav:inntektsmelding/lps.write"
     }
+
     private fun loadPrivateKey(key: String): PrivateKey {
         val keyText =
             key
