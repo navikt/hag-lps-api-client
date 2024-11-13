@@ -20,15 +20,7 @@ application {
 }
 
 repositories {
-    val githubPassword: String by project
     mavenCentral()
-    maven {
-        setUrl("https://maven.pkg.github.com/navikt/*")
-        credentials {
-            username = "x-access-token"
-            password = githubPassword
-        }
-    }
 }
 
 publishing {
@@ -67,4 +59,3 @@ tasks.withType<Jar> {
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-
