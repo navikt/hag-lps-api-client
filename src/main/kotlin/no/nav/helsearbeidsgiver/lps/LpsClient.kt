@@ -64,12 +64,12 @@ class LpsClient {
         val fetchNewAccessToken =
             MaskinportenClient(
                 maskinportenClientConfig =
-                    MaskinportenClientConfigPkey(
-                        kid = kid,
-                        privateKey = privateKey,
-                        issuer = iss,
-                        consumerOrgNr = consumerOrgNr,
-                    ),
+                MaskinportenClientConfigPkey(
+                    kid = kid,
+                    privateKey = privateKey,
+                    issuer = iss,
+                    consumerOrgNr = consumerOrgNr,
+                ),
             ).fetchNewAccessToken()
         val response =
             createHttpClient().get {
@@ -87,39 +87,48 @@ class LpsClient {
         consumerOrgNr: String,
         request: InntektsmeldingRequest,
     ): InntektsmeldingResponse {
-        val accessToken =
-            MaskinportenClient(
-                maskinportenClientConfig =
+        try {
+            val accessToken =
+                MaskinportenClient(
+                    maskinportenClientConfig =
                     MaskinportenClientConfigPkey(
                         kid = kid,
                         privateKey = privateKey,
                         issuer = iss,
                         consumerOrgNr = consumerOrgNr,
                     ),
-            ).fetchNewAccessToken().tokenResponse.accessToken
+                ).fetchNewAccessToken().tokenResponse.accessToken
 
-        val response =
-            createHttpClient().post {
-                url("https://sykepenger-im-lps-api.ekstern.dev.nav.no/inntektsmeldinger")
-                setBody(request)
-                bearerAuth(accessToken)
-                contentType(ContentType.Application.Json)
-            }
-        return response.body<InntektsmeldingResponse>()
+            val response =
+                createHttpClient().post {
+                    url("https://sykepenger-im-lps-api.ekstern.dev.nav.no/inntektsmeldinger")
+                    setBody(request)
+                    bearerAuth(accessToken)
+                    contentType(ContentType.Application.Json)
+                }
+            return response.body<InntektsmeldingResponse>()
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
     suspend fun filtrerInntektsmeldingerWithToken(
         request: InntektsmeldingRequest,
         accessToken: String,
     ): InntektsmeldingResponse {
-        val response =
-            createHttpClient().post {
-                url("https://sykepenger-im-lps-api.ekstern.dev.nav.no/inntektsmeldinger")
-                setBody(request)
-                bearerAuth(accessToken)
-                contentType(ContentType.Application.Json)
-            }
-        return response.body<InntektsmeldingResponse>()
+        try {
+
+            val response =
+                createHttpClient().post {
+                    url("https://sykepenger-im-lps-api.ekstern.dev.nav.no/inntektsmeldinger")
+                    setBody(request)
+                    bearerAuth(accessToken)
+                    contentType(ContentType.Application.Json)
+                }
+            return response.body<InntektsmeldingResponse>()
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
     suspend fun hentForespoersler(
@@ -131,12 +140,12 @@ class LpsClient {
         val fetchNewAccessToken =
             MaskinportenClient(
                 maskinportenClientConfig =
-                    MaskinportenClientConfigPkey(
-                        kid = kid,
-                        privateKey = privateKey,
-                        issuer = iss,
-                        consumerOrgNr = consumerOrgNr,
-                    ),
+                MaskinportenClientConfigPkey(
+                    kid = kid,
+                    privateKey = privateKey,
+                    issuer = iss,
+                    consumerOrgNr = consumerOrgNr,
+                ),
             ).fetchNewAccessToken()
         val response =
             createHttpClient().get {
@@ -145,5 +154,8 @@ class LpsClient {
                 contentType(ContentType.Application.Json)
             }
         return response.body<List<Forespoersel>>()
+
     }
 }
+
+

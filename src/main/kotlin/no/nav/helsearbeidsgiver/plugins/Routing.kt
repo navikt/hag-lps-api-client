@@ -109,7 +109,7 @@ private fun Routing.filtererInntektsmeldinger() {
         val forespoerselId = params["forespoerselId"]?.takeIf { it.isNotBlank() }
         val datoFra = params["datoFra"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
         val datoTil = params["datoTil"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
-
+        logger().info("filterInntektsmeldinger: $params")
         try {
             val hentInntektsmeldinger =
                 LpsClient().filtrerInntektsmeldinger(
@@ -121,6 +121,7 @@ private fun Routing.filtererInntektsmeldinger() {
                 )
             call.respond(HttpStatusCode.OK, hentInntektsmeldinger)
         } catch (e: Exception) {
+            logger().error("Feilet å hente inntektsmeldinger", e)
             call.respond(HttpStatusCode.InternalServerError, "Feilet å hente inntektsmeldinger: ${e.message}")
         }
     }
