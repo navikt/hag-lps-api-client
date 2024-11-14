@@ -3,18 +3,14 @@ package no.nav.helsearbeidsgiver
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.serialization.kotlinx.json.json
-import io.ktor.server.application.*
-import io.ktor.server.plugins.callloging.*
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
 import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
-import io.ktor.server.request.*
 import io.ktor.server.request.path
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
 import kotlinx.serialization.json.Json
 import no.nav.helsearbeidsgiver.plugins.configureRouting
-import org.slf4j.event.*
 import org.slf4j.event.Level
 
 fun main(args: Array<String>) {
