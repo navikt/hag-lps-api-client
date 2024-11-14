@@ -1,0 +1,21 @@
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  labels:
+    team: helsearbeidsgiver
+  name: hag-lps-api-client
+  namespace: helsearbeidsgiver
+spec:
+  ingresses:
+    - https://hag-lps-api-client.dev-gcp.nav.cloud.nais.io
+    - https://hag-lps-api-client.ekstern.dev.nav.no
+  image: {{image}}
+  port: 8080
+  ttl: 3h
+  replicas:
+    max: 1
+    min: 1
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "32Mi"
