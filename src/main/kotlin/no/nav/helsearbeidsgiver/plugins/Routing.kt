@@ -7,8 +7,10 @@ import io.ktor.server.plugins.swagger.swaggerUI
 import io.ktor.server.request.receiveParameters
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
+import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
+import no.nav.helsearbeidsgiver.logger
 import no.nav.helsearbeidsgiver.lps.InntektsmeldingRequest
 import no.nav.helsearbeidsgiver.lps.LpsClient
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
@@ -18,6 +20,10 @@ import java.time.LocalDateTime
 fun Application.configureRouting() {
     routing {
         swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.json")
+        get("/") {
+            logger().info("Hello, world!")
+            call.respond(HttpStatusCode.OK, "Hello, world!")
+        }
         inntektsmeldinger()
         filtererInntektsmeldinger()
         filtererInntektsmeldingerWithToken()
