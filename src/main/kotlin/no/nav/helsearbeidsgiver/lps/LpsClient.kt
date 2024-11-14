@@ -87,7 +87,7 @@ class LpsClient {
         consumerOrgNr: String,
         request: InntektsmeldingRequest,
     ): InntektsmeldingResponse {
-        val fetchNewAccessToken =
+        val accessToken =
             MaskinportenClient(
                 maskinportenClientConfig =
                     MaskinportenClientConfigPkey(
@@ -96,12 +96,27 @@ class LpsClient {
                         issuer = iss,
                         consumerOrgNr = consumerOrgNr,
                     ),
-            ).fetchNewAccessToken()
+            ).fetchNewAccessToken().tokenResponse.accessToken
+
         val response =
             createHttpClient().post {
                 url("https://sykepenger-im-lps-api.ekstern.dev.nav.no/inntektsmeldinger")
                 setBody(request)
-                bearerAuth(fetchNewAccessToken.tokenResponse.accessToken)
+                bearerAuth(accessToken)
+                contentType(ContentType.Application.Json)
+            }
+        return response.body<InntektsmeldingResponse>()
+    }
+
+    suspend fun filtrerInntektsmeldingerWithToken(
+        request: InntektsmeldingRequest,
+        accessToken: String,
+    ): InntektsmeldingResponse {
+        val response =
+            createHttpClient().post {
+                url("https://sykepenger-im-lps-api.ekstern.dev.nav.no/inntektsmeldinger")
+                setBody(request)
+                bearerAuth(accessToken)
                 contentType(ContentType.Application.Json)
             }
         return response.body<InntektsmeldingResponse>()
