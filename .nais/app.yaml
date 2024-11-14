@@ -17,5 +17,7 @@ spec:
     min: 1
   resources:
     requests:
-      cpu: "50m"
-      memory: "32Mi"
+      cpu: "250m"
+      memory: "768Mi"
+    limits:
+      memory: "1024Mi"
