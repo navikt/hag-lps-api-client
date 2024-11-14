@@ -129,7 +129,7 @@ private fun Routing.filtererInntektsmeldinger() {
 private fun Routing.filtererInntektsmeldingerWithToken() {
     post("/filterInntektsmeldingerToken") {
         val params = call.receiveParameters()
-
+        logger().info("filterInntektsmeldingerToken: $params")
         val fnr = params["fnr"]?.takeIf { it.isNotBlank() }
         val forespoerselId = params["forespoerselId"]?.takeIf { it.isNotBlank() }
         val datoFra = params["datoFra"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
@@ -145,6 +145,7 @@ private fun Routing.filtererInntektsmeldingerWithToken() {
                 )
             call.respond(HttpStatusCode.OK, hentInntektsmeldinger)
         } catch (e: Exception) {
+            logger().error("Feilet å hente inntektsmeldinger: ${e.printStackTrace()}")
             call.respond(HttpStatusCode.InternalServerError, "Feilet å hente inntektsmeldinger: ${e.message}")
         }
     }
