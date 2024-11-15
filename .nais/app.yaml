@@ -23,3 +23,15 @@ spec:
       memory: "1024Mi"
   secureLogs:
     enabled: true
+  maskinporten:
+    enabled: true
+    scopes:
+      exposes:
+        - accessibleForAll: true
+          delegationSource: altinn
+          enabled: true
+          product: inntektsmelding
+          separator: "/"
+          name: lps.write
+      consumes:
+        - name: "nav:inntektsmelding/lps.write"

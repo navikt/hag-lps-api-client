@@ -34,7 +34,7 @@ fun Application.module() {
         )
     }
 
-    //  configureCORS()
+    configureCORS()
     configureRouting()
 }
 
@@ -46,7 +46,5 @@ fun Application.configureCORS() {
         allowMethod(HttpMethod.Options)
         allowMethod(HttpMethod.Get)
         allowMethod(HttpMethod.Post)
-        allowMethod(HttpMethod.Put)
-        allowMethod(HttpMethod.Delete)
     }
 }
