@@ -35,3 +35,7 @@ spec:
           name: lps.write
       consumes:
         - name: "nav:inntektsmelding/lps.write"
+  accessPolicy:
+    outbound:
+      rules:
+        - application: "sykepenger-im-lps-api"
