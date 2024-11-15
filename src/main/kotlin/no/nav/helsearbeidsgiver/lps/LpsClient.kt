@@ -52,6 +52,8 @@ data class InntektsmeldingResponse(
     val inntektsmeldinger: List<Inntektsmelding>,
 )
 
+private const val LPS_API_ENDPOINT = "https://sykepenger-im-lps-api.dev-gcp.nav.cloud.nais.io/"
+
 class LpsClient {
     suspend fun hentInntektsmeldinger(
         privateKey: String,
@@ -71,7 +73,7 @@ class LpsClient {
             ).fetchNewAccessToken()
         val response =
             createHttpClient().get {
-                url("https://sykepenger-im-lps-api.ekstern.dev.nav.no/inntektsmeldinger")
+                url("${LPS_API_ENDPOINT}inntektsmeldinger")
                 bearerAuth(fetchNewAccessToken.tokenResponse.accessToken)
                 contentType(ContentType.Application.Json)
             }
@@ -99,7 +101,7 @@ class LpsClient {
 
             val response =
                 createHttpClient().post {
-                    url("https://sykepenger-im-lps-api.ekstern.dev.nav.no/inntektsmeldinger")
+                    url("${LPS_API_ENDPOINT}inntektsmeldinger")
                     setBody(request)
                     bearerAuth(accessToken)
                     contentType(ContentType.Application.Json)
@@ -117,7 +119,7 @@ class LpsClient {
         try {
             val response =
                 createHttpClient().post {
-                    url("https://sykepenger-im-lps-api.ekstern.dev.nav.no/inntektsmeldinger")
+                    url("${LPS_API_ENDPOINT}inntektsmeldinger")
                     setBody(request)
                     bearerAuth(accessToken)
                     contentType(ContentType.Application.Json)
@@ -146,7 +148,7 @@ class LpsClient {
             ).fetchNewAccessToken()
         val response =
             createHttpClient().get {
-                url("https://sykepenger-im-lps-api.ekstern.dev.nav.no/forespoersler")
+                url("${LPS_API_ENDPOINT}forespoersler")
                 bearerAuth(fetchNewAccessToken.tokenResponse.accessToken)
                 contentType(ContentType.Application.Json)
             }
