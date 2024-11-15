@@ -11,7 +11,6 @@ spec:
     - https://hag-lps-api-client.ekstern.dev.nav.no
   image: {{image}}
   port: 8080
-  ttl: 3h
   replicas:
     max: 1
     min: 1
@@ -25,17 +24,7 @@ spec:
     enabled: true
   maskinporten:
     enabled: true
-    scopes:
-      exposes:
-        - accessibleForAll: true
-          delegationSource: altinn
-          enabled: true
-          product: inntektsmelding
-          separator: "/"
-          name: lps.write
-      consumes:
-        - name: "nav:inntektsmelding/lps.write"
   accessPolicy:
     outbound:
       rules:
-        - application: "sykepenger-im-lps-api"
+        - host: "sykepenger-im-lps-api.ekstern.dev.nav.no"
