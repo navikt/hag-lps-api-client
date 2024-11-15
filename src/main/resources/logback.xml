@@ -10,4 +10,5 @@
     <logger name="org.eclipse.jetty" level="INFO"/>
     <logger name="io.netty" level="DEBUG"/>
     <logger name="no.nav" level="DEBUG"/>
+    <logger name="org.apache.hc.core5" level="debug" />
 </configuration>
