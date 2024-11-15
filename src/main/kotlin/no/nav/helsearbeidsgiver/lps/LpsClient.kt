@@ -52,7 +52,7 @@ data class InntektsmeldingResponse(
     val inntektsmeldinger: List<Inntektsmelding>,
 )
 
-private const val LPS_API_ENDPOINT = "https://sykepenger-im-lps-api.dev-gcp.nav.cloud.nais.io/"
+private const val LPS_API_ENDPOINT = "https://sykepenger-im-lps-api.ekstern.dev.nav.no/"
 
 class LpsClient {
     suspend fun hentInntektsmeldinger(
