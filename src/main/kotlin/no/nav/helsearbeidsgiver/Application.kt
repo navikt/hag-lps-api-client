@@ -34,7 +34,7 @@ fun Application.module() {
         )
     }
 
-  //  configureCORS()
+    //  configureCORS()
     configureRouting()
 }
 
