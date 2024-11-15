@@ -26,5 +26,5 @@ spec:
     enabled: true
   accessPolicy:
     outbound:
-      rules:
+      external:
         - host: "sykepenger-im-lps-api.ekstern.dev.nav.no"
