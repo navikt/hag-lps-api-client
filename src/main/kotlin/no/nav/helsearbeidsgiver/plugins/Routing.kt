@@ -22,6 +22,7 @@ fun Application.configureRouting() {
         swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.json")
         post("/") {
             logger().info("Hello, world!")
+            LpsClient().hentInntektsmeldinger("", "", "", "")
             call.respond(HttpStatusCode.OK, "Hello, world!")
         }
         inntektsmeldinger()

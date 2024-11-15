@@ -40,7 +40,7 @@ fun Application.module() {
 
 fun Application.configureCORS() {
     install(CORS) {
-        allowHost("localhost:3000", schemes = listOf("http"))
+        anyHost()
         allowHeader(HttpHeaders.ContentType)
         allowHeader(HttpHeaders.Authorization)
         allowMethod(HttpMethod.Options)
