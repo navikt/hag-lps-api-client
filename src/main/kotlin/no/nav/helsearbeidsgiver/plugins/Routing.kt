@@ -20,7 +20,7 @@ import java.time.LocalDateTime
 fun Application.configureRouting() {
     routing {
         swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.json")
-        get("/") {
+        post("/") {
             logger().info("Hello, world!")
             call.respond(HttpStatusCode.OK, "Hello, world!")
         }
