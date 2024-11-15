@@ -93,7 +93,7 @@ private fun Routing.forespoersler() {
             val forespoerseler = LpsClient().hentForespoersler(privateKey, kid, issuer, consumerOrgNr)
             call.respond(HttpStatusCode.OK, forespoerseler)
         } catch (e: Exception) {
-            call.respond(HttpStatusCode.InternalServerError, "Feilet å hente inntektsmeldinger: ${e.message}")
+            call.respond(HttpStatusCode.InternalServerError, "Feilet å hente Forespørseler: ${e.message}")
         }
     }
 }
