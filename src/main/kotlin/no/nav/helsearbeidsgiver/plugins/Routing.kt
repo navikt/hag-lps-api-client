@@ -3,6 +3,8 @@ package no.nav.helsearbeidsgiver.plugins
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
+import io.ktor.server.http.content.react
+import io.ktor.server.http.content.singlePageApplication
 import io.ktor.server.plugins.swagger.swaggerUI
 import io.ktor.server.request.receiveParameters
 import io.ktor.server.response.respond
@@ -30,6 +32,9 @@ fun Application.configureRouting() {
         filtererInntektsmeldingerWithToken()
         forespoersler()
         getToken()
+        singlePageApplication {
+            react("react-app")
+        }
     }
 }
 
