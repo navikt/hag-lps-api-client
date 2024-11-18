@@ -29,6 +29,8 @@ fun Application.configureRouting() {
         getToken()
         singlePageApplication {
             react("react-app")
+            applicationRoute = "/lps"
+
         }
     }
 }
