@@ -2,8 +2,8 @@
 
 Denne applikasjonen er en klient for å hente data fra LPS API. Den genererer et token fra Maskinporten og kaller på LPS API-endepunkter for å hente data.
 Api-et kan brukes til å hente data om inntektsmeldinger og forespørsler.
-Url til dev er https://hag-lps-api-client.ekstern.dev.nav.no/
-Url til swagger er https://hag-lps-api-client.ekstern.dev.nav.no/swagger
+- Url til dev er https://hag-lps-api-client.ekstern.dev.nav.no/
+- Url til swagger er https://hag-lps-api-client.ekstern.dev.nav.no/swagger
 
 ## Forutsetninger
 
