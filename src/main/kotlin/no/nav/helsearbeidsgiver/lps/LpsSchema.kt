@@ -8,7 +8,6 @@ import kotlinx.serialization.json.JsonObject
 import no.nav.helsearbeidsgiver.utils.LocalDateSerializer
 import no.nav.helsearbeidsgiver.utils.LocalDateTimeSerializer
 import java.time.LocalDateTime
-import java.util.UUID
 
 @Serializable
 data class ForespoerselRequest(
@@ -47,7 +46,6 @@ data class InntektsmeldingResponse(
     val inntektsmeldinger: List<Inntektsmelding>,
 )
 
-
 @Serializable
 data class Forespoersel(
     val forespoerselId: String,
@@ -63,7 +61,6 @@ enum class Status {
     MOTTATT,
     FORKASTET,
 }
-
 
 enum class Type {
     KOMPLETT,

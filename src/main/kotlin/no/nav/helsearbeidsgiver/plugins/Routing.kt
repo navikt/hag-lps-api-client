@@ -151,7 +151,7 @@ private fun Routing.filtererForespoersler() {
                     kid,
                     issuer,
                     consumerOrgNr,
-                    request = ForespoerselRequest(fnr, forespoerselId, status?.let { Status.valueOf(it) })
+                    request = ForespoerselRequest(fnr, forespoerselId, status?.let { Status.valueOf(it) }),
                 )
             call.respond(HttpStatusCode.OK, hentForespoersler)
         } catch (e: Exception) {
