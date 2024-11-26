@@ -8,15 +8,9 @@ import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.UseSerializers
-import kotlinx.serialization.json.JsonObject
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
-import no.nav.helsearbeidsgiver.utils.LocalDateSerializer
-import no.nav.helsearbeidsgiver.utils.LocalDateTimeSerializer
-import java.time.LocalDateTime
 
 private const val LPS_API_ENDPOINT = "https://sykepenger-im-lps-api.ekstern.dev.nav.no/"
 
@@ -78,7 +72,7 @@ class LpsClient {
         }
     }
 
-suspend fun filtrerForespoersler(
+    suspend fun filtrerForespoersler(
         privateKey: String,
         kid: String,
         iss: String,
