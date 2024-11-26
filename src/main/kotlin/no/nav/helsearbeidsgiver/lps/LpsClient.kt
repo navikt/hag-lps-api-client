@@ -1,5 +1,3 @@
-@file:UseSerializers(LocalDateSerializer::class, LocalDateTimeSerializer::class)
-
 package no.nav.helsearbeidsgiver.lps
 
 import io.ktor.client.call.body
@@ -19,38 +17,6 @@ import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
 import no.nav.helsearbeidsgiver.utils.LocalDateSerializer
 import no.nav.helsearbeidsgiver.utils.LocalDateTimeSerializer
 import java.time.LocalDateTime
-
-@Serializable
-data class Inntektsmelding(
-    val dokument: JsonObject,
-    val orgnr: String,
-    val fnr: String,
-    val foresporselid: String?,
-    val innsendt: String,
-    val mottattEvent: String,
-)
-
-@Serializable
-data class Forespoersel(
-    val forespoerselId: String,
-    val orgnr: String,
-    val fnr: String,
-    val status: String,
-)
-
-@Serializable
-data class InntektsmeldingRequest(
-    val fnr: String? = null,
-    val foresporselid: String? = null,
-    val datoFra: LocalDateTime? = null,
-    val datoTil: LocalDateTime? = null,
-)
-
-@Serializable
-data class InntektsmeldingResponse(
-    val antallInntektsmeldinger: Int = 0,
-    val inntektsmeldinger: List<Inntektsmelding>,
-)
 
 private const val LPS_API_ENDPOINT = "https://sykepenger-im-lps-api.ekstern.dev.nav.no/"
 
@@ -107,6 +73,38 @@ class LpsClient {
                     contentType(ContentType.Application.Json)
                 }
             return response.body<InntektsmeldingResponse>()
+        } catch (e: Exception) {
+            throw e
+        }
+    }
+
+suspend fun filtrerForespoersler(
+        privateKey: String,
+        kid: String,
+        iss: String,
+        consumerOrgNr: String,
+        request: ForespoerselRequest,
+    ): ForespoerselResponse {
+        try {
+            val accessToken =
+                MaskinportenClient(
+                    maskinportenClientConfig =
+                        MaskinportenClientConfigPkey(
+                            kid = kid,
+                            privateKey = privateKey,
+                            issuer = iss,
+                            consumerOrgNr = consumerOrgNr,
+                        ),
+                ).fetchNewAccessToken().tokenResponse.accessToken
+
+            val response =
+                createHttpClient().post {
+                    url("${LPS_API_ENDPOINT}forespoersler")
+                    setBody(request)
+                    bearerAuth(accessToken)
+                    contentType(ContentType.Application.Json)
+                }
+            return response.body<ForespoerselResponse>()
         } catch (e: Exception) {
             throw e
         }

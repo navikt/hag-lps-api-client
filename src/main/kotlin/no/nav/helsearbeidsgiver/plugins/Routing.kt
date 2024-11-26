@@ -12,8 +12,10 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import no.nav.helsearbeidsgiver.logger
+import no.nav.helsearbeidsgiver.lps.ForespoerselRequest
 import no.nav.helsearbeidsgiver.lps.InntektsmeldingRequest
 import no.nav.helsearbeidsgiver.lps.LpsClient
+import no.nav.helsearbeidsgiver.lps.Status
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
 import java.time.LocalDateTime
@@ -25,6 +27,7 @@ fun Application.configureRouting() {
         filtererInntektsmeldinger()
         filtererInntektsmeldingerWithToken()
         forespoersler()
+        filtererForespoersler()
         getToken()
         singlePageApplication {
             useResources = true
@@ -125,6 +128,35 @@ private fun Routing.filtererInntektsmeldinger() {
         } catch (e: Exception) {
             logger().error("Feilet å hente inntektsmeldinger", e)
             call.respond(HttpStatusCode.InternalServerError, "Feilet å hente inntektsmeldinger: ${e.message}")
+        }
+    }
+}
+
+private fun Routing.filtererForespoersler() {
+    post("/filterForespoersler") {
+        val params = call.receiveParameters()
+        val kid = params["kid"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'kid' parameter")
+        val privateKey = params["privateKey"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'privateKey' parameter")
+        val issuer = params["issuer"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'issuer' parameter")
+        val consumerOrgNr =
+            params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
+        val fnr = params["fnr"]?.takeIf { it.isNotBlank() }
+        val forespoerselId = params["forespoerselId"]?.takeIf { it.isNotBlank() }
+        val status = params["status"]?.takeIf { it.isNotBlank() }
+        logger().info("filterForespoersler: $params")
+        try {
+            val hentForespoersler =
+                LpsClient().filtrerForespoersler(
+                    privateKey,
+                    kid,
+                    issuer,
+                    consumerOrgNr,
+                    request = ForespoerselRequest(fnr, forespoerselId, status?.let { Status.valueOf(it) })
+                )
+            call.respond(HttpStatusCode.OK, hentForespoersler)
+        } catch (e: Exception) {
+            logger().error("Feilet å hente forespørsler", e)
+            call.respond(HttpStatusCode.InternalServerError, "Feilet å hente forespørsler: ${e.message}")
         }
     }
 }
