@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "BUILD_PATH=../hag-lps-client/src/main/resources/lps-client-front react-scripts build",
+    "build": "BUILD_PATH=../lps-client-backend/src/main/resources/lps-client-front react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
