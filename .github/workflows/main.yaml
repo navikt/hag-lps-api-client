@@ -39,6 +39,19 @@ jobs:
         run: npm run build
         working-directory: ./lps-client-frontend
 
+      - name: Print working directory
+        run: pwd
+
+      - name: List files in root directory
+        run: ls -la
+
+      - name: List files in backend directory
+        run: ls -la
+        working-directory: ./lps-client-backend
+
+      - name: Print DOCKERFILE environment variable
+        run: echo "DOCKERFILE=$DOCKERFILE"
+
       - name: Push docker image to GAR
         uses: nais/docker-build-push@v0
         id: docker-build-push
