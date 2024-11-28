@@ -23,7 +23,7 @@ jobs:
           distribution: temurin
 
       - name: Test and build backend
-        run: ./lps-client-backend/gradlew clean build
+        run: ./gradlew clean build
         working-directory: ./lps-client-backend
 
       - name: Set up Node.js
