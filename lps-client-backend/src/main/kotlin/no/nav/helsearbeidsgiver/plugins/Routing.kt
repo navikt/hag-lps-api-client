@@ -8,7 +8,6 @@ import io.ktor.server.plugins.swagger.swaggerUI
 import io.ktor.server.request.receiveParameters
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
-import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import no.nav.helsearbeidsgiver.logger

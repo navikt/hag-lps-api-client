@@ -1,4 +1,4 @@
-rootProject.name = "hag-lps-api-client"
+rootProject.name = "lps-client-backend"
 pluginManagement {
     plugins {
         val kotlinterVersion: String by settings
