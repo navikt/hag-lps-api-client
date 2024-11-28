@@ -24,6 +24,7 @@ jobs:
 
       - name: Test and build backend
         run: ./lps-client-backend/gradlew clean build
+        working-directory: ./lps-client-backend
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
