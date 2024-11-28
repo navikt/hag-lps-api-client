@@ -49,8 +49,10 @@ jobs:
         run: ls -la
         working-directory: ./lps-client-backend
 
-      - name: Print DOCKERFILE environment variable
-        run: echo "DOCKERFILE=$DOCKERFILE"
+      - name: Set and print DOCKERFILE environment variable
+        run: |
+          export DOCKERFILE=./lps-client-backend/Dockerfile
+          echo "DOCKERFILE=$DOCKERFILE"
 
       - name: Push docker image to GAR
         uses: nais/docker-build-push@v0
