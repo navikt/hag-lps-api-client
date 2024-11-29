@@ -18,12 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Print working directory
-        run: pwd
-
-      - name: List files in root directory
-        run: ls -la
-
       - name: Install frontend dependencies
         run: npm install
         working-directory: ./lps-client-frontend
@@ -40,15 +34,6 @@ jobs:
       - name: Test and build backend
         run: ./gradlew clean build
         working-directory: ./lps-client-backend
-
-      - name: List files in backend directory
-        run: ls -la
-        working-directory: ./lps-client-backend/src/main/resources/lps-client-front
-
-      - name: Set and print DOCKERFILE environment variable
-        run: |
-          export DOCKERFILE=./lps-client-backend/Dockerfile
-          echo "DOCKERFILE=$DOCKERFILE"
 
       - name: Push docker image to GAR
         uses: nais/docker-build-push@v0
