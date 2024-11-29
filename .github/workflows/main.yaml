@@ -16,7 +16,7 @@ jobs:
       contents: read
       id-token: write
     steps:
-      - - name: Print working directory
+      - name: Print working directory
       - run: pwd
 
       - name: List files in root directory
