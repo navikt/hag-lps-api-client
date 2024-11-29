@@ -17,13 +17,38 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+
+      - name: Print working directory
+        run: pwd
+
+      - name: List files in root directory
+        run: ls -la
+
+      - name: Install frontend dependencies
+        run: npm install
+        working-directory: ./lps-client-frontend
+
+      - name: Build frontend
+        run: npm run build
+        working-directory: ./lps-client-frontend
+
       - uses: actions/setup-java@v4
         with:
           java-version: 21
           distribution: temurin
 
-      - name: Test and build
-        run: ./gradlew build
+      - name: Test and build backend
+        run: ./gradlew clean build
+        working-directory: ./lps-client-backend
+
+      - name: List files in backend directory
+        run: ls -la
+        working-directory: ./lps-client-backend/src/main/resources/lps-client-front
+
+      - name: Set and print DOCKERFILE environment variable
+        run: |
+          export DOCKERFILE=./lps-client-backend/Dockerfile
+          echo "DOCKERFILE=$DOCKERFILE"
 
       - name: Push docker image to GAR
         uses: nais/docker-build-push@v0
@@ -32,6 +57,9 @@ jobs:
           team: helsearbeidsgiver
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          dockerfile: ./lps-client-backend/Dockerfile
+          docker_context: ./lps-client-backend
+
       - name: Deploy to NAIS
         uses: nais/deploy/actions/deploy@v2
         env:
