@@ -16,6 +16,14 @@ jobs:
       contents: read
       id-token: write
     steps:
+      - name: Install frontend dependencies
+        run: npm install
+        working-directory: ./lps-client-frontend
+
+      - name: Build frontend
+        run: npm run build
+        working-directory: ./lps-client-frontend
+
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
@@ -30,29 +38,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '16'
-
-      - name: Install frontend dependencies
-        run: npm install
-        working-directory: ./lps-client-frontend
-
-      - name: Build frontend
-        run: npm run build
-        working-directory: ./lps-client-frontend
-
-      - name: Print working directory
-        run: pwd
-
-      - name: List files in root directory
-        run: ls -la
-
-      - name: List files in backend directory
-        run: ls -la
-        working-directory: ./lps-client-backend
-
-      - name: Set and print DOCKERFILE environment variable
-        run: |
-          export DOCKERFILE=./lps-client-backend/Dockerfile
-          echo "DOCKERFILE=$DOCKERFILE"
 
       - name: Push docker image to GAR
         uses: nais/docker-build-push@v0
