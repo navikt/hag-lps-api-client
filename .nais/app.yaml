@@ -7,7 +7,7 @@ metadata:
   namespace: helsearbeidsgiver
 spec:
   ingresses:
-    - https://hag-lps-api-client.dev-gcp.nav.cloud.nais.io
+    - https://hag-lps-api-client.ekstern.dev.nav.no
   image: {{image}}
   port: 8080
   replicas:
