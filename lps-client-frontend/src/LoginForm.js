@@ -57,7 +57,7 @@ function LoginForm() {
                     margin="normal"
                 />
                 <TextField
-                    label="Issuer"
+                    label="IntegrasjonsId"
                     name="issuer"
                     value={formData.issuer}
                     onChange={handleInputChange}
