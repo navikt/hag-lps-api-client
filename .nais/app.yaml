@@ -27,6 +27,8 @@ spec:
       consumes:
         - name: "altinn:authentication/systemregister.write"
         - name: "altinn:authentication/systemuser.request.write"
+        - name: "nav:helse/im.read
+
   accessPolicy:
     outbound:
       external:
