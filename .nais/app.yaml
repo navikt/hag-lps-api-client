@@ -23,6 +23,9 @@ spec:
     enabled: true
   maskinporten:
     enabled: true
+    scopes:
+      consumes:
+        - name: "altinn:authentication/systemregister.write"
   accessPolicy:
     outbound:
       external:
