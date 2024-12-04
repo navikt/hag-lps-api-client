@@ -20,7 +20,17 @@ application {
 }
 
 repositories {
+    val githubPassword: String by project
+
     mavenCentral()
+
+    maven {
+        setUrl("https://maven.pkg.github.com/navikt/*")
+        credentials {
+            username = "x-access-token"
+            password = githubPassword
+        }
+    }
 }
 
 publishing {
@@ -49,6 +59,8 @@ dependencies {
 
     implementation("org.bouncycastle:bcprov-jdk15on:1.70")
     implementation("io.ktor:ktor-server-cors-jvm:2.3.12")
+
+    implementation("no.nav.helsearbeidsgiver:maskinporten-client:0.1.9")
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
