@@ -9,6 +9,7 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
+
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
 
@@ -22,15 +23,7 @@ class LpsClient {
         consumerOrgNr: String,
     ): List<Inntektsmelding> {
         val fetchNewAccessToken =
-            MaskinportenClient(
-                maskinportenClientConfig =
-                    MaskinportenClientConfigPkey(
-                        kid = kid,
-                        privateKey = privateKey,
-                        issuer = iss,
-                        consumerOrgNr = consumerOrgNr,
-                    ),
-            ).fetchNewAccessToken()
+            getMaskinportenClient(kid, privateKey, iss, consumerOrgNr).fetchNewAccessToken()
         val response =
             createHttpClient().get {
                 url("${LPS_API_ENDPOINT}inntektsmeldinger")
@@ -39,6 +32,24 @@ class LpsClient {
             }
         return response.body<List<Inntektsmelding>>()
     }
+
+     fun getMaskinportenClient(
+        kid: String,
+        privateKey: String,
+        iss: String,
+        consumerOrgNr: String
+    ) = MaskinportenClient(
+        maskinportenClientConfig =
+        MaskinportenClientConfigPkey(
+            kid = kid,
+            privateKey = privateKey,
+            issuer = iss,
+            consumerOrgNr = consumerOrgNr,
+            scope = "nav:inntektsmelding/lps.write",
+            aud = "https://test.maskinporten.no/",
+            endpoint = "https://test.maskinporten.no/token",
+        ),
+    )
 
     suspend fun filtrerInntektsmeldinger(
         privateKey: String,
@@ -49,15 +60,7 @@ class LpsClient {
     ): InntektsmeldingResponse {
         try {
             val accessToken =
-                MaskinportenClient(
-                    maskinportenClientConfig =
-                        MaskinportenClientConfigPkey(
-                            kid = kid,
-                            privateKey = privateKey,
-                            issuer = iss,
-                            consumerOrgNr = consumerOrgNr,
-                        ),
-                ).fetchNewAccessToken().tokenResponse.accessToken
+                getMaskinportenClient(kid, privateKey, iss, consumerOrgNr).fetchNewAccessToken().tokenResponse.accessToken
 
             val response =
                 createHttpClient().post {
@@ -81,15 +84,7 @@ class LpsClient {
     ): ForespoerselResponse {
         try {
             val accessToken =
-                MaskinportenClient(
-                    maskinportenClientConfig =
-                        MaskinportenClientConfigPkey(
-                            kid = kid,
-                            privateKey = privateKey,
-                            issuer = iss,
-                            consumerOrgNr = consumerOrgNr,
-                        ),
-                ).fetchNewAccessToken().tokenResponse.accessToken
+                getMaskinportenClient(kid, privateKey, iss, consumerOrgNr).fetchNewAccessToken().tokenResponse.accessToken
 
             val response =
                 createHttpClient().post {
@@ -129,15 +124,7 @@ class LpsClient {
         consumerOrgNr: String,
     ): List<Forespoersel> {
         val fetchNewAccessToken =
-            MaskinportenClient(
-                maskinportenClientConfig =
-                    MaskinportenClientConfigPkey(
-                        kid = kid,
-                        privateKey = privateKey,
-                        issuer = iss,
-                        consumerOrgNr = consumerOrgNr,
-                    ),
-            ).fetchNewAccessToken()
+            getMaskinportenClient(kid, privateKey, iss, consumerOrgNr).fetchNewAccessToken()
         val response =
             createHttpClient().get {
                 url("${LPS_API_ENDPOINT}forespoersler")

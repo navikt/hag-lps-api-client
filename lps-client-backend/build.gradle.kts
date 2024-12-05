@@ -60,7 +60,7 @@ dependencies {
     implementation("org.bouncycastle:bcprov-jdk15on:1.70")
     implementation("io.ktor:ktor-server-cors-jvm:2.3.12")
 
-    implementation("no.nav.helsearbeidsgiver:maskinporten-client:0.1.9")
+    implementation("no.nav.helsearbeidsgiver:maskinporten-client:0.2.0.3-SNAPSHOT")
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

@@ -55,29 +55,27 @@ private fun Routing.inntektsmeldinger() {
 }
 
 private fun Routing.getToken() {
+
     post("/getToken") {
-        val params = call.receiveParameters()
+        try {
+            val params = call.receiveParameters()
 
-        val kid = params["kid"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'kid' parameter")
-        val privateKey = params["privateKey"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'privateKey' parameter")
-        val issuer = params["issuer"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'issuer' parameter")
-        val consumerOrgNr =
-            params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
-        val scope = params["scope"] ?: MaskinportenClientConfigPkey.LPS_API_SCOPE
+            val kid = params["kid"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'kid' parameter")
+            val privateKey = params["privateKey"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'privateKey' parameter")
+            val issuer = params["issuer"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'issuer' parameter")
+            val consumerOrgNr =
+                params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
+            val scope = params["scope"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'scope' parameter")
 
-        call.respond(
-            HttpStatusCode.OK,
-            MaskinportenClient(
-                maskinportenClientConfig =
-                    MaskinportenClientConfigPkey(
-                        kid = kid,
-                        privateKey = privateKey,
-                        issuer = issuer,
-                        consumerOrgNr = consumerOrgNr,
-                        scope = scope,
-                    ),
-            ).fetchNewAccessToken(),
-        )
+            val message = LpsClient().getMaskinportenClient(kid, privateKey, issuer, consumerOrgNr).fetchNewAccessToken()
+            call.respond(
+                HttpStatusCode.OK,
+                message,
+            )
+        } catch (e: Exception) {
+            logger().info("Feilet å hente token: $e")
+            call.respond(HttpStatusCode.InternalServerError, "Feilet å hente token: ${e.message}")
+        }
     }
 }
 
