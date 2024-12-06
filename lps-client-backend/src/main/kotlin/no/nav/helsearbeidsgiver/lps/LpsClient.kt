@@ -9,7 +9,6 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
-
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
 
@@ -33,22 +32,22 @@ class LpsClient {
         return response.body<List<Inntektsmelding>>()
     }
 
-     fun getMaskinportenClient(
+    fun getMaskinportenClient(
         kid: String,
         privateKey: String,
         iss: String,
-        consumerOrgNr: String
+        consumerOrgNr: String,
     ) = MaskinportenClient(
         maskinportenClientConfig =
-        MaskinportenClientConfigPkey(
-            kid = kid,
-            privateKey = privateKey,
-            issuer = iss,
-            consumerOrgNr = consumerOrgNr,
-            scope = "nav:inntektsmelding/lps.write",
-            aud = "https://test.maskinporten.no/",
-            endpoint = "https://test.maskinporten.no/token",
-        ),
+            MaskinportenClientConfigPkey(
+                kid = kid,
+                privateKey = privateKey,
+                issuer = iss,
+                consumerOrgNr = consumerOrgNr,
+                scope = "nav:inntektsmelding/lps.write",
+                aud = "https://test.maskinporten.no/",
+                endpoint = "https://test.maskinporten.no/token",
+            ),
     )
 
     suspend fun filtrerInntektsmeldinger(

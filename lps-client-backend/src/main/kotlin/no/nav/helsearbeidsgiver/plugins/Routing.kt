@@ -16,8 +16,6 @@ import no.nav.helsearbeidsgiver.lps.ForespoerselRequest
 import no.nav.helsearbeidsgiver.lps.InntektsmeldingRequest
 import no.nav.helsearbeidsgiver.lps.LpsClient
 import no.nav.helsearbeidsgiver.lps.Status
-import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
-import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
 import java.time.LocalDateTime
 
 fun Application.configureRouting() {
@@ -52,7 +50,6 @@ fun Routing.getTokenNais() {
             logger().error("Feilet å hente token: $e")
             call.respond(HttpStatusCode.InternalServerError, "Feilet å hente token: ${e.message}")
         }
-
     }
 }
 
@@ -75,7 +72,6 @@ private fun Routing.inntektsmeldinger() {
 }
 
 private fun Routing.getToken() {
-
     post("/getToken") {
         try {
             val params = call.receiveParameters()
