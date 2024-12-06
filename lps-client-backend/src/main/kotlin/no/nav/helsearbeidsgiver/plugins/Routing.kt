@@ -8,6 +8,7 @@ import io.ktor.server.plugins.swagger.swaggerUI
 import io.ktor.server.request.receiveParameters
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
+import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import no.nav.helsearbeidsgiver.logger
@@ -28,11 +29,30 @@ fun Application.configureRouting() {
         forespoersler()
         filtererForespoersler()
         getToken()
+        getTokenNais()
         singlePageApplication {
             useResources = true
             filesPath = "lps-client-front"
             defaultPage = "index.html"
         }
+    }
+}
+
+fun Routing.getTokenNais() {
+    get("/naisenv") {
+        try {
+            val clientId = System.getenv("MASKINPORTEN_CLIENT_ID")
+
+            val iss = System.getenv("MASKINPORTEN_ISSUER")
+
+            val scopes = System.getenv("MASKINPORTEN_SCOPES")
+            logger().info("clientId: $clientId, iss: $iss, scopes: $scopes")
+            call.respond(HttpStatusCode.OK, "Hello, world! $clientId $iss $scopes")
+        } catch (e: Exception) {
+            logger().error("Feilet å hente token: $e")
+            call.respond(HttpStatusCode.InternalServerError, "Feilet å hente token: ${e.message}")
+        }
+
     }
 }
 
