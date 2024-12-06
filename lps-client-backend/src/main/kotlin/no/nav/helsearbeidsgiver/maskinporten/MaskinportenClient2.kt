@@ -13,8 +13,8 @@ import no.nav.helsearbeidsgiver.sikkerLogger
 
 private const val GRANT_TYPE = "urn:ietf:params:oauth:grant-type:jwt-bearer"
 
-class MaskinportenClient(
-    private val maskinportenClientConfig: MaskinportenClientConfig,
+class MaskinportenClient2(
+    private val maskinportenClientConfig: MaskinportenClientConfig2,
 ) {
     private val httpClient = createHttpClient()
 

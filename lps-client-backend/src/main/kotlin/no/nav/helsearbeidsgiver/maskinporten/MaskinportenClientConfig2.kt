@@ -13,7 +13,7 @@ import java.util.Base64
 import java.util.Date
 import java.util.UUID
 
-interface MaskinportenClientConfig {
+interface MaskinportenClientConfig2 {
     val endpoint: String
 
     fun getJwtAssertion(): String
@@ -26,7 +26,7 @@ class MaskinportenClientConfigPkey(
     val consumerOrgNr: String,
     val scope: String = LPS_API_SCOPE,
     override val endpoint: String = "https://test.maskinporten.no/token",
-) : MaskinportenClientConfig {
+) : MaskinportenClientConfig2 {
     companion object {
         const val LPS_API_SCOPE = "nav:inntektsmelding/lps.write"
     }

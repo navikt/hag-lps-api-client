@@ -8,7 +8,7 @@ import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
+import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient2
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
 
@@ -22,7 +22,7 @@ class LpsClient {
         consumerOrgNr: String,
     ): List<Inntektsmelding> {
         val fetchNewAccessToken =
-            MaskinportenClient(
+            MaskinportenClient2(
                 maskinportenClientConfig =
                     MaskinportenClientConfigPkey(
                         kid = kid,
@@ -49,7 +49,7 @@ class LpsClient {
     ): InntektsmeldingResponse {
         try {
             val accessToken =
-                MaskinportenClient(
+                MaskinportenClient2(
                     maskinportenClientConfig =
                         MaskinportenClientConfigPkey(
                             kid = kid,
@@ -81,7 +81,7 @@ class LpsClient {
     ): ForespoerselResponse {
         try {
             val accessToken =
-                MaskinportenClient(
+                MaskinportenClient2(
                     maskinportenClientConfig =
                         MaskinportenClientConfigPkey(
                             kid = kid,
@@ -129,7 +129,7 @@ class LpsClient {
         consumerOrgNr: String,
     ): List<Forespoersel> {
         val fetchNewAccessToken =
-            MaskinportenClient(
+            MaskinportenClient2(
                 maskinportenClientConfig =
                     MaskinportenClientConfigPkey(
                         kid = kid,

@@ -10,18 +10,23 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
+import no.nav.helsearbeidsgiver.altinn.RegistrerRespons
+import no.nav.helsearbeidsgiver.altinn.lagSystembrukerForespoersel
 import no.nav.helsearbeidsgiver.logger
 import no.nav.helsearbeidsgiver.lps.ForespoerselRequest
 import no.nav.helsearbeidsgiver.lps.InntektsmeldingRequest
 import no.nav.helsearbeidsgiver.lps.LpsClient
 import no.nav.helsearbeidsgiver.lps.Status
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
+import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient2
+import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfig
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
 import java.time.LocalDateTime
 
 fun Application.configureRouting() {
     routing {
         swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.json")
+        registrerNyBedrift()
         inntektsmeldinger()
         filtererInntektsmeldinger()
         filtererInntektsmeldingerWithToken()
@@ -32,6 +37,44 @@ fun Application.configureRouting() {
             useResources = true
             filesPath = "lps-client-front"
             defaultPage = "index.html"
+        }
+    }
+}
+
+private fun Routing.registrerNyBedrift() {
+    post("/registrer-ny-bedrift") {
+        val parametre = call.receiveParameters()
+        val kundeOrgnr =
+            parametre["kundeOrgnr"] ?: return@post call.respond(
+                HttpStatusCode.BadRequest,
+                "Mangler 'kundeOrgnr' parameter",
+            )
+
+        logger().info("Prøver å registrere bedriften med orgnr: $kundeOrgnr som ny kunde.")
+        try {
+            val maskinportenClientConfig =
+                MaskinportenClientConfig(
+                    scope = "altinn:authentication/systemuser.request.write",
+                    clientId = System.getenv("MASKINPORTEN_CLIENT_ID"),
+                    clientJwk = System.getenv("MASKINPORTEN_CLIENT_JWK"),
+                    issuer = "https://test.maskinporten.no/",
+                    endpoint = "https://test.maskinporten.no/token",
+                )
+
+            val maskinportenToken =
+                MaskinportenClient(maskinportenClientConfig)
+                    .fetchNewAccessToken()
+                    .tokenResponse.accessToken
+
+            val systemBrukerForespoerselRespons = lagSystembrukerForespoersel(kundeOrgnr, maskinportenToken)
+
+            logger().info("Registrerte bedriften med orgnr: $kundeOrgnr som ny kunde.")
+            call.respond(HttpStatusCode.OK, RegistrerRespons(systemBrukerForespoerselRespons.confirmUrl))
+        } catch (e: Exception) {
+            call.respond(
+                HttpStatusCode.InternalServerError,
+                "Noe gikk galt under registrering av bedriften med orgnr: $kundeOrgnr som ny kunde: ${e.message}",
+            )
         }
     }
 }
@@ -67,7 +110,7 @@ private fun Routing.getToken() {
 
         call.respond(
             HttpStatusCode.OK,
-            MaskinportenClient(
+            MaskinportenClient2(
                 maskinportenClientConfig =
                     MaskinportenClientConfigPkey(
                         kid = kid,
