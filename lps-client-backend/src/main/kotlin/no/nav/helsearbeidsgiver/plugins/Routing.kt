@@ -18,9 +18,7 @@ import no.nav.helsearbeidsgiver.lps.InntektsmeldingRequest
 import no.nav.helsearbeidsgiver.lps.LpsClient
 import no.nav.helsearbeidsgiver.lps.Status
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
-import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient2
-import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfig
-import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
+import no.nav.helsearbeidsgiver.maskinporten.MaskinportenSimpleAssertion
 import java.time.LocalDateTime
 
 fun Application.configureRouting() {
@@ -53,11 +51,11 @@ private fun Routing.registrerNyBedrift() {
         logger().info("Prøver å registrere bedriften med orgnr: $kundeOrgnr som ny kunde.")
         try {
             val maskinportenClientConfig =
-                MaskinportenClientConfig(
+                MaskinportenSimpleAssertion(
                     scope = "altinn:authentication/systemuser.request.write",
-                    clientId = System.getenv("MASKINPORTEN_CLIENT_ID"),
+                    issuer = System.getenv("MASKINPORTEN_CLIENT_ID"),
                     clientJwk = System.getenv("MASKINPORTEN_CLIENT_JWK"),
-                    issuer = "https://test.maskinporten.no/",
+                    aud = "https://test.maskinporten.no/",
                     endpoint = "https://test.maskinporten.no/token",
                 )
 
@@ -98,29 +96,27 @@ private fun Routing.inntektsmeldinger() {
 }
 
 private fun Routing.getToken() {
+
     post("/getToken") {
-        val params = call.receiveParameters()
+        try {
+            val params = call.receiveParameters()
 
-        val kid = params["kid"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'kid' parameter")
-        val privateKey = params["privateKey"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'privateKey' parameter")
-        val issuer = params["issuer"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'issuer' parameter")
-        val consumerOrgNr =
-            params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
-        val scope = params["scope"] ?: MaskinportenClientConfigPkey.LPS_API_SCOPE
+            val kid = params["kid"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'kid' parameter")
+            val privateKey = params["privateKey"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'privateKey' parameter")
+            val issuer = params["issuer"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'issuer' parameter")
+            val consumerOrgNr =
+                params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
 
-        call.respond(
-            HttpStatusCode.OK,
-            MaskinportenClient2(
-                maskinportenClientConfig =
-                    MaskinportenClientConfigPkey(
-                        kid = kid,
-                        privateKey = privateKey,
-                        issuer = issuer,
-                        consumerOrgNr = consumerOrgNr,
-                        scope = scope,
-                    ),
-            ).fetchNewAccessToken(),
-        )
+            val message = LpsClient().getMaskinportenClient(kid, privateKey, issuer, consumerOrgNr).fetchNewAccessToken()
+            call.respond(
+                HttpStatusCode.OK,
+                message,
+            )
+        } catch (e: Exception) {
+            logger().info("Feilet å hente token: $e")
+            call.respond(HttpStatusCode.InternalServerError, "Feilet å hente token: ${e.message}")
+        }
+
     }
 }
 
