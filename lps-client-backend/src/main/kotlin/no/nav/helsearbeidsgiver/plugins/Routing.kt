@@ -70,6 +70,7 @@ private fun Routing.registrerNyBedrift() {
             logger().info("Registrerte bedriften med orgnr: $kundeOrgnr som ny kunde.")
             call.respond(HttpStatusCode.OK, RegistrerRespons(systemBrukerForespoerselRespons.confirmUrl))
         } catch (e: Exception) {
+            logger().error("Noe gikk galt under registrering av bedriften med orgnr: $kundeOrgnr som ny kunde", e)
             call.respond(
                 HttpStatusCode.InternalServerError,
                 "Noe gikk galt under registrering av bedriften med orgnr: $kundeOrgnr som ny kunde: ${e.message}",
