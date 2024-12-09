@@ -18,7 +18,7 @@ import no.nav.helsearbeidsgiver.lps.InntektsmeldingRequest
 import no.nav.helsearbeidsgiver.lps.LpsClient
 import no.nav.helsearbeidsgiver.lps.Status
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
-import no.nav.helsearbeidsgiver.maskinporten.MaskinportenSimpleAssertion
+import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
 import java.time.LocalDateTime
 
 fun Application.configureRouting() {
@@ -51,11 +51,13 @@ private fun Routing.registrerNyBedrift() {
         logger().info("Prøver å registrere bedriften med orgnr: $kundeOrgnr som ny kunde.")
         try {
             val maskinportenClientConfig =
-                MaskinportenSimpleAssertion(
+                MaskinportenClientConfigPkey(
+                    consumerOrgNr = kundeOrgnr,
                     scope = "altinn:authentication/systemuser.request.write",
-                    issuer = System.getenv("MASKINPORTEN_CLIENT_ID"),
-                    clientJwk = System.getenv("MASKINPORTEN_CLIENT_JWK"),
-                    aud = "https://test.maskinporten.no/",
+                    kid = System.getenv("MASKINPORTEN_KID"),
+                    clientId = System.getenv("MASKINPORTEN_INTEGRATION_ID"),
+                    privateKey = System.getenv("MASKINPORTEN_PKEY"),
+                    issuer = "https://test.maskinporten.no/",
                     endpoint = "https://test.maskinporten.no/token",
                 )
 

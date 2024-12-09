@@ -42,10 +42,10 @@ class LpsClient {
         MaskinportenClientConfigPkey(
             kid = kid,
             privateKey = privateKey,
-            issuer = iss,
+            clientId = iss,
             consumerOrgNr = consumerOrgNr,
             scope = "nav:inntektsmelding/lps.write",
-            aud = "https://test.maskinporten.no/",
+            issuer = "https://test.maskinporten.no/",
             endpoint = "https://test.maskinporten.no/token",
         ),
     )
