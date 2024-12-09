@@ -98,7 +98,6 @@ private fun Routing.inntektsmeldinger() {
 }
 
 private fun Routing.getToken() {
-
     post("/getToken") {
         try {
             val params = call.receiveParameters()
@@ -118,7 +117,6 @@ private fun Routing.getToken() {
             logger().info("Feilet å hente token: $e")
             call.respond(HttpStatusCode.InternalServerError, "Feilet å hente token: ${e.message}")
         }
-
     }
 }
 
