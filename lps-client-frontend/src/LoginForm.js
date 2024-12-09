@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Box, Alert } from '@mui/material';
+import { Alert, Box, Button, TextField } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -31,6 +31,25 @@ function LoginForm() {
             navigate('/search');
         } catch (error) {
             setError('Error submitting form');
+        }
+    };
+
+    const handleRegistrerNyBedrift = async () => {
+        try {
+            const response = await axios.post('https://hag-lps-api-client.ekstern.dev.nav.no/registrer-ny-bedrift', {
+                kundeOrgnr: formData.consumerOrgNr,
+            }, {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            });
+            if (!!response.data.confirmUrl) {
+                window.location.href = response.data.confirmUrl;
+            } else {
+                throw Error("Klarte ikke hente bekreftelses-url fra registreringsrespons.")
+            }
+        } catch (error) {
+            setError('Noe gikk galt da vi skulle registrere din bedrift som ny kunde. Det kan skyldes at den allerede er registrert.');
         }
     };
 
@@ -74,6 +93,11 @@ function LoginForm() {
                 />
                 <Button variant="contained" color="primary" onClick={handleSubmit} fullWidth>
                     Login
+                </Button>
+            </Box>
+            <Box mt={2}>
+                <Button variant="contained" color="secondary" onClick={handleRegistrerNyBedrift} fullWidth>
+                    Registrer ny bedrift
                 </Button>
             </Box>
         </Box>

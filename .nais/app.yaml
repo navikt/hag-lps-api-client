@@ -33,3 +33,6 @@ spec:
     outbound:
       external:
         - host: "sykepenger-im-lps-api.ekstern.dev.nav.no"
+
+  envFrom:
+    - secret: tigersys-maskinporten

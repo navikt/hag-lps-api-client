@@ -9,7 +9,6 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
-
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
 
@@ -43,10 +42,10 @@ class LpsClient {
         MaskinportenClientConfigPkey(
             kid = kid,
             privateKey = privateKey,
-            issuer = iss,
+            clientId = iss,
             consumerOrgNr = consumerOrgNr,
             scope = "nav:inntektsmelding/lps.write",
-            aud = "https://test.maskinporten.no/",
+            issuer = "https://test.maskinporten.no/",
             endpoint = "https://test.maskinporten.no/token",
         ),
     )
@@ -125,6 +124,7 @@ class LpsClient {
     ): List<Forespoersel> {
         val fetchNewAccessToken =
             getMaskinportenClient(kid, privateKey, iss, consumerOrgNr).fetchNewAccessToken()
+
         val response =
             createHttpClient().get {
                 url("${LPS_API_ENDPOINT}forespoersler")
