@@ -131,10 +131,10 @@ private fun Routing.filtererInntektsmeldinger() {
         try {
             val hentInntektsmeldinger =
                 LpsClient().filtrerInntektsmeldinger(
-                    privateKey,
-                    kid,
-                    issuer,
-                    consumerOrgNr,
+                    privateKey = privateKey,
+                    kid = kid,
+                    iss = issuer,
+                    consumerOrgNr = consumerOrgNr,
                     request = InntektsmeldingRequest(fnr, forespoerselId, datoFra, datoTil),
                 )
             call.respond(HttpStatusCode.OK, hentInntektsmeldinger)

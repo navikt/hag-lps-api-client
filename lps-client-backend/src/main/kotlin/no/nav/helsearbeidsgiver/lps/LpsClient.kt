@@ -9,8 +9,11 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
+import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfig
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
+import no.nav.helsearbeidsgiver.maskinporten.getConsumerOrgClaim
+import no.nav.helsearbeidsgiver.maskinporten.getSystemBrukerClaim
 
 private const val LPS_API_ENDPOINT = "https://sykepenger-im-lps-api.ekstern.dev.nav.no/"
 
@@ -39,15 +42,14 @@ class LpsClient {
         consumerOrgNr: String,
     ) = MaskinportenClient(
         maskinportenClientConfig =
-            MaskinportenClientConfigPkey(
-                kid = kid,
-                privateKey = privateKey,
-                issuer = iss,
-                consumerOrgNr = consumerOrgNr,
-                scope = "nav:inntektsmelding/lps.write",
-                aud = "https://test.maskinporten.no/",
-                endpoint = "https://test.maskinporten.no/token",
-            ),
+        MaskinportenClientConfigPkey(
+            kid = kid,
+            privateKey = privateKey,
+            issuer = "https://test.maskinporten.no/",
+            scope = "nav:inntektsmelding/lps.write",
+            clientId = iss,
+            endpoint = "https://test.maskinporten.no/token",
+        )
     )
 
     suspend fun filtrerInntektsmeldinger(
