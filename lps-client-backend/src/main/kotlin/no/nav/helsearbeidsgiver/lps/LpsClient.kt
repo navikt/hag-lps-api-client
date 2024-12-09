@@ -49,6 +49,7 @@ class LpsClient {
             scope = "nav:inntektsmelding/lps.write",
             clientId = iss,
             endpoint = "https://test.maskinporten.no/token",
+            additionalClaims = getSystemBrukerClaim(consumerOrgNr)
         )
     )
 
