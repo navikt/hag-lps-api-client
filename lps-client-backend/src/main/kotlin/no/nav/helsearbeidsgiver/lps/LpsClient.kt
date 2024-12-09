@@ -43,7 +43,6 @@ class LpsClient {
                 kid = kid,
                 privateKey = privateKey,
                 clientId = iss,
-                consumerOrgNr = consumerOrgNr,
                 scope = "nav:inntektsmelding/lps.write",
                 issuer = "https://test.maskinporten.no/",
                 endpoint = "https://test.maskinporten.no/token",

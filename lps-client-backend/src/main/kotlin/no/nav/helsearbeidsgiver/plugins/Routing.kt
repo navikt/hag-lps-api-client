@@ -52,7 +52,6 @@ private fun Routing.registrerNyBedrift() {
         try {
             val maskinportenClientConfig =
                 MaskinportenClientConfigPkey(
-                    consumerOrgNr = kundeOrgnr,
                     scope = "altinn:authentication/systemuser.request.write",
                     kid = System.getenv("MASKINPORTEN_KID"),
                     clientId = System.getenv("MASKINPORTEN_INTEGRATION_ID"),
