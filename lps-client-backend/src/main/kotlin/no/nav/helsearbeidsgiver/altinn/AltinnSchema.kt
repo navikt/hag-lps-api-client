@@ -2,6 +2,8 @@ package no.nav.helsearbeidsgiver.altinn
 
 import kotlinx.serialization.Serializable
 
+// Se Altinn sin dokumentasjon for request og responsobjekter https://docs.altinn.studio/nb/api/authentication/spec/#/RequestSystemUser/post_systemuser_request_vendor
+
 @Serializable
 data class CreateRequestSystemUser(
     val externalRef: String? = null,
