@@ -35,7 +35,7 @@ function LoginForm() {
 
     const handleRegistrerNyBedrift = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/registrer-ny-bedrift', {
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/registrer-ny-bedrift`, {
                 kundeOrgnr: formData.orgnr,
             }, {
                 headers: {
