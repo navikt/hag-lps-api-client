@@ -2,10 +2,11 @@ package no.nav.helsearbeidsgiver
 
 import io.github.cdimascio.dotenv.dotenv
 
-private val dotenv = dotenv {
-    ignoreIfMalformed = true
-    ignoreIfMissing = true
-}
+private val dotenv =
+    dotenv {
+        ignoreIfMalformed = true
+        ignoreIfMissing = true
+    }
 
 val maskinportenClientId: String = System.getenv("MASKINPORTEN_CLIENT_ID") ?: dotenv["MASKINPORTEN_CLIENT_ID"]
 val maskinportenClientJwk: String = System.getenv("MASKINPORTEN_CLIENT_JWK") ?: dotenv["MASKINPORTEN_CLIENT_JWK"]
