@@ -12,7 +12,6 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import no.nav.helsearbeidsgiver.altinn.RegistrerRespons
 import no.nav.helsearbeidsgiver.altinn.RequestSystemUserClient
-import no.nav.helsearbeidsgiver.altinn.lagSystembrukerForespoersel
 import no.nav.helsearbeidsgiver.logger
 import no.nav.helsearbeidsgiver.lps.ForespoerselRequest
 import no.nav.helsearbeidsgiver.lps.InntektsmeldingRequest
