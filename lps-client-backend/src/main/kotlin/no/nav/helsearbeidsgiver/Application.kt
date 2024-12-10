@@ -10,6 +10,8 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.request.path
 import kotlinx.serialization.json.Json
+import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
+import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
 import no.nav.helsearbeidsgiver.plugins.configureRouting
 import org.slf4j.event.Level
 
@@ -34,8 +36,21 @@ fun Application.module() {
         )
     }
 
+    val maskinportenClient =
+        MaskinportenClient(
+            maskinportenClientConfig =
+                MaskinportenClientConfigPkey(
+                    scope = "altinn:authentication/systemuser.request.write",
+                    kid = System.getenv("MASKINPORTEN_KID"),
+                    clientId = System.getenv("MASKINPORTEN_INTEGRATION_ID"),
+                    privateKey = System.getenv("MASKINPORTEN_PKEY"),
+                    issuer = "https://test.maskinporten.no/",
+                    endpoint = "https://test.maskinporten.no/token",
+                ),
+        )
+
+    configureRouting(maskinportenClient)
     configureCORS()
-    configureRouting()
 }
 
 fun Application.configureCORS() {
