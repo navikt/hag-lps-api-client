@@ -36,7 +36,7 @@ function LoginForm() {
 
     const handleRegistrerNyBedrift = async () => {
         try {
-            const response = await axios.post('https://hag-lps-api-client.ekstern.dev.nav.no/registrer-ny-bedrift', {
+            const response = await axios.post('http://localhost:8080/registrer-ny-bedrift', {
                 kundeOrgnr: formData.consumerOrgNr,
             }, {
                 headers: {
@@ -57,32 +57,6 @@ function LoginForm() {
         <Box sx={{ maxWidth: 400, mx: 'auto', mt: 4 }}>
             {error && <Alert severity="error">{error}</Alert>}
             <Box component="form" noValidate autoComplete="true">
-                <TextField
-                    label="Kid"
-                    name="kid"
-                    value={formData.kid}
-                    onChange={handleInputChange}
-                    fullWidth
-                    margin="normal"
-                />
-                <TextField
-                    label="Private key"
-                    name="privateKey"
-                    value={formData.privateKey}
-                    onChange={handleInputChange}
-                    multiline
-                    rows={4}
-                    fullWidth
-                    margin="normal"
-                />
-                <TextField
-                    label="IntegrasjonsId"
-                    name="issuer"
-                    value={formData.issuer}
-                    onChange={handleInputChange}
-                    fullWidth
-                    margin="normal"
-                />
                 <TextField
                     label="Consumer orgnr"
                     name="consumerOrgNr"
