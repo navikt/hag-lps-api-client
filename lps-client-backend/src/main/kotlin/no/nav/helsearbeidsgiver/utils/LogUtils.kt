@@ -1,4 +1,4 @@
-package no.nav.helsearbeidsgiver
+package no.nav.helsearbeidsgiver.utils
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

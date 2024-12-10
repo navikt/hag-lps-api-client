@@ -56,11 +56,11 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation")
     implementation("io.ktor:ktor-client-core")
     implementation("com.nimbusds:nimbus-jose-jwt:9.40")
-
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.2")
     implementation("org.bouncycastle:bcprov-jdk15on:1.70")
     implementation("io.ktor:ktor-server-cors-jvm:2.3.12")
 
-    implementation("no.nav.helsearbeidsgiver:maskinporten-client:0.2.1.0-SNAPSHOT")
+    implementation("no.nav.helsearbeidsgiver:maskinporten-client:0.2.1.1-SNAPSHOT")
 
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

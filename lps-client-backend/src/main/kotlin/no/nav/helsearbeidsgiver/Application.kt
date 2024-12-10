@@ -11,6 +11,7 @@ import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.request.path
 import kotlinx.serialization.json.Json
 import no.nav.helsearbeidsgiver.plugins.configureRouting
+import no.nav.helsearbeidsgiver.utils.logger
 import org.slf4j.event.Level
 
 fun main(args: Array<String>) {
@@ -33,7 +34,7 @@ fun Application.module() {
             },
         )
     }
-
+    logger().info("****"+ maskinportenKid)
     configureCORS()
     configureRouting()
 }
