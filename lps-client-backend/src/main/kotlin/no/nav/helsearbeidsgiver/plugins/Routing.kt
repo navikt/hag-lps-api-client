@@ -11,23 +11,27 @@ import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
+import no.nav.helsearbeidsgiver.altinn.RegistrerRespons
+import no.nav.helsearbeidsgiver.altinn.RequestSystemUserClient
+import no.nav.helsearbeidsgiver.logger
 import no.nav.helsearbeidsgiver.lps.ForespoerselRequest
 import no.nav.helsearbeidsgiver.lps.InntektsmeldingRequest
 import no.nav.helsearbeidsgiver.lps.LpsClient
 import no.nav.helsearbeidsgiver.lps.Status
 import no.nav.helsearbeidsgiver.utils.logger
+import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
 import java.time.LocalDateTime
 
-fun Application.configureRouting() {
+fun Application.configureRouting(maskinportenClient: MaskinportenClient) {
     routing {
         swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.json")
+        registrerNyBedrift(maskinportenClient)
         inntektsmeldinger()
         filtererInntektsmeldinger()
         filtererInntektsmeldingerWithToken()
         forespoersler()
         filtererForespoersler()
         getToken()
-        getTokenNais()
         singlePageApplication {
             useResources = true
             filesPath = "lps-client-front"
@@ -36,19 +40,32 @@ fun Application.configureRouting() {
     }
 }
 
-fun Routing.getTokenNais() {
-    get("/naisenv") {
+private fun Routing.registrerNyBedrift(maskinportenClient: MaskinportenClient) {
+    post("/registrer-ny-bedrift") {
+        val parametre = call.receiveParameters()
+        val kundeOrgnr =
+            parametre["kundeOrgnr"] ?: return@post call.respond(
+                HttpStatusCode.BadRequest,
+                "Mangler 'kundeOrgnr' parameter",
+            )
+
+        logger().info("Prøver å registrere bedriften med orgnr: $kundeOrgnr som ny kunde.")
         try {
-            val clientId = System.getenv("MASKINPORTEN_CLIENT_ID")
+            val maskinportenToken =
+                maskinportenClient
+                    .fetchNewAccessToken()
+                    .tokenResponse.accessToken
 
-            val iss = System.getenv("MASKINPORTEN_ISSUER")
+            val systemBrukerForespoerselRespons = RequestSystemUserClient().lagSystembrukerForespoersel(kundeOrgnr, maskinportenToken)
 
-            val scopes = System.getenv("MASKINPORTEN_SCOPES")
-            logger().info("clientId: $clientId, iss: $iss, scopes: $scopes")
-            call.respond(HttpStatusCode.OK, "Hello, world! $clientId $iss $scopes")
+            logger().info("Registrerte bedriften med orgnr: $kundeOrgnr som ny kunde.")
+            call.respond(HttpStatusCode.OK, RegistrerRespons(systemBrukerForespoerselRespons.confirmUrl))
         } catch (e: Exception) {
-            logger().error("Feilet å hente token: $e")
-            call.respond(HttpStatusCode.InternalServerError, "Feilet å hente token: ${e.message}")
+            logger().error("Noe gikk galt under registrering av bedriften med orgnr: $kundeOrgnr som ny kunde", e)
+            call.respond(
+                HttpStatusCode.InternalServerError,
+                "Noe gikk galt under registrering av bedriften med orgnr: $kundeOrgnr som ny kunde: ${e.message}",
+            )
         }
     }
 }
@@ -81,7 +98,6 @@ private fun Routing.getToken() {
             val issuer = params["issuer"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'issuer' parameter")
             val consumerOrgNr =
                 params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
-            val scope = params["scope"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'scope' parameter")
 
             val message = LpsClient().getMaskinportenClient(kid, privateKey, issuer, consumerOrgNr).fetchNewAccessToken()
             call.respond(

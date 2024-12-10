@@ -4,6 +4,7 @@ import { CssBaseline, Container, Typography } from '@mui/material';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import FiltererInntektsmeldinger from './FiltererInntektsmeldinger';
+import Velkommen from './Velkommen';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginForm />} />
           <Route path="/search" element={<FiltererInntektsmeldinger />} />
+          <Route path="/velkommen" element={<Velkommen />} />
         </Routes>
       </Container>
     </Router>
