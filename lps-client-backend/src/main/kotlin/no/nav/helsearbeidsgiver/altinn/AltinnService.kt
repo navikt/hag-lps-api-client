@@ -7,9 +7,9 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import no.nav.helsearbeidsgiver.altinnSystemUserRequestUrl
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
 import no.nav.helsearbeidsgiver.systemId
-import no.nav.helsearbeidsgiver.altinnSystemUserRequestUrl
 
 class AltinnService {
     suspend fun lagSystembrukerForespoersel(

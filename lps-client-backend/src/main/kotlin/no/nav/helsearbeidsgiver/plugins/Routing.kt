@@ -10,17 +10,15 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
-import no.nav.helsearbeidsgiver.altinn.RegistrerRespons
 import no.nav.helsearbeidsgiver.altinn.AltinnService
+import no.nav.helsearbeidsgiver.altinn.RegistrerRespons
 import no.nav.helsearbeidsgiver.lps.ForespoerselRequest
 import no.nav.helsearbeidsgiver.lps.InntektsmeldingRequest
 import no.nav.helsearbeidsgiver.lps.LpsClient
 import no.nav.helsearbeidsgiver.lps.Status
-import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
 import no.nav.helsearbeidsgiver.utils.logger
 import java.time.LocalDateTime
-import kotlin.math.log
 
 fun Application.configureRouting(maskinportenService: MaskinportenService) {
     val lpsClient = LpsClient(maskinportenService)
@@ -41,13 +39,20 @@ fun Application.configureRouting(maskinportenService: MaskinportenService) {
         }
     }
 }
+
 private fun Routing.hentSystembruker(maskinportenService: MaskinportenService) {
     post("/systembruker") {
         val params = call.receiveParameters()
         val orgnr = params["orgnr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'orgnr' parameter")
 
         try {
-            val systemBrukerClaim = maskinportenService.getMaskinportenTokenForSystembruker(orgnr,"nav:helse/im.read").fetchNewAccessToken().tokenResponse.accessToken
+            val systemBrukerClaim =
+                maskinportenService
+                    .getMaskinportenTokenForSystembruker(
+                        orgnr,
+                        "nav:helse/im.read",
+                    ).fetchNewAccessToken()
+                    .tokenResponse.accessToken
             logger().info("token: $systemBrukerClaim")
             call.respond(HttpStatusCode.OK, systemBrukerClaim)
         } catch (e: Exception) {
@@ -55,6 +60,7 @@ private fun Routing.hentSystembruker(maskinportenService: MaskinportenService) {
         }
     }
 }
+
 private fun Routing.registrerNyBedrift(maskinportenService: MaskinportenService) {
     post("/registrer-ny-bedrift") {
         val parametre = call.receiveParameters()
@@ -67,12 +73,15 @@ private fun Routing.registrerNyBedrift(maskinportenService: MaskinportenService)
         logger().info("Prøver å registrere bedriften med orgnr: $kundeOrgnr som ny kunde.")
         try {
             val maskinportenToken =
-                maskinportenService.getSimpleMaskinportenTokenForScope("altinn:authentication/systemuser.request.write")
+                maskinportenService
+                    .getSimpleMaskinportenTokenForScope("altinn:authentication/systemuser.request.write")
                     .fetchNewAccessToken()
                     .tokenResponse.accessToken
 
             val systemBrukerForespoerselRespons = AltinnService().lagSystembrukerForespoersel(kundeOrgnr, maskinportenToken)
-logger().info("Registrerte bedriften med orgnr: ${systemBrukerForespoerselRespons.redirectUrl} and ${systemBrukerForespoerselRespons.status} and ${systemBrukerForespoerselRespons.confirmUrl}")
+            logger().info(
+                "Registrerte bedriften med orgnr: ${systemBrukerForespoerselRespons.redirectUrl} and ${systemBrukerForespoerselRespons.status} and ${systemBrukerForespoerselRespons.confirmUrl}",
+            )
             logger().info("Registrerte bedriften med orgnr: $kundeOrgnr som ny kunde.")
             call.respond(HttpStatusCode.OK, RegistrerRespons(systemBrukerForespoerselRespons.confirmUrl))
         } catch (e: Exception) {
@@ -102,8 +111,6 @@ private fun Routing.inntektsmeldinger(lpsClient: LpsClient) {
 }
 
 private fun Routing.getToken(maskinportenService: MaskinportenService) {
-
-
     post("/getToken") {
         try {
             val params = call.receiveParameters()
@@ -112,7 +119,13 @@ private fun Routing.getToken(maskinportenService: MaskinportenService) {
             val consumerOrgNr =
                 params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
 
-            val message = maskinportenService.getMaskinportenTokenForOrgNr(consumerOrgNr, scope).fetchNewAccessToken().tokenResponse.accessToken
+            val message =
+                maskinportenService
+                    .getMaskinportenTokenForOrgNr(
+                        consumerOrgNr,
+                        scope,
+                    ).fetchNewAccessToken()
+                    .tokenResponse.accessToken
             call.respond(
                 HttpStatusCode.OK,
                 message,

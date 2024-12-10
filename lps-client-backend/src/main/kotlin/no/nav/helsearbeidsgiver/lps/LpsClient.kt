@@ -8,20 +8,15 @@ import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
-import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
-import no.nav.helsearbeidsgiver.maskinporten.getSystemBrukerClaim
 
 private const val LPS_API_ENDPOINT = "https://sykepenger-im-lps-api.ekstern.dev.nav.no/"
 
-class LpsClient(var maskinportenService: MaskinportenService) {
-
-
-    suspend fun hentInntektsmeldinger(
-        consumerOrgNr: String,
-    ): List<Inntektsmelding> {
+class LpsClient(
+    var maskinportenService: MaskinportenService,
+) {
+    suspend fun hentInntektsmeldinger(consumerOrgNr: String): List<Inntektsmelding> {
         val fetchNewAccessToken =
             maskinportenService.getMaskinportenTokenForOrgNr(consumerOrgNr).fetchNewAccessToken()
         val response =
@@ -33,15 +28,16 @@ class LpsClient(var maskinportenService: MaskinportenService) {
         return response.body<List<Inntektsmelding>>()
     }
 
-
     suspend fun filtrerInntektsmeldinger(
-
         consumerOrgNr: String,
         request: InntektsmeldingRequest,
     ): InntektsmeldingResponse {
         try {
             val accessToken =
-                maskinportenService.getMaskinportenTokenForOrgNr(consumerOrgNr).fetchNewAccessToken().tokenResponse.accessToken
+                maskinportenService
+                    .getMaskinportenTokenForOrgNr(consumerOrgNr)
+                    .fetchNewAccessToken()
+                    .tokenResponse.accessToken
 
             val response =
                 createHttpClient().post {
@@ -57,13 +53,15 @@ class LpsClient(var maskinportenService: MaskinportenService) {
     }
 
     suspend fun filtrerForespoersler(
-
         consumerOrgNr: String,
         request: ForespoerselRequest,
     ): ForespoerselResponse {
         try {
             val accessToken =
-                maskinportenService.getMaskinportenTokenForOrgNr(consumerOrgNr).fetchNewAccessToken().tokenResponse.accessToken
+                maskinportenService
+                    .getMaskinportenTokenForOrgNr(consumerOrgNr)
+                    .fetchNewAccessToken()
+                    .tokenResponse.accessToken
 
             val response =
                 createHttpClient().post {
@@ -96,11 +94,12 @@ class LpsClient(var maskinportenService: MaskinportenService) {
         }
     }
 
-    suspend fun hentForespoersler(
-        consumerOrgNr: String,
-    ): List<Forespoersel> {
+    suspend fun hentForespoersler(consumerOrgNr: String): List<Forespoersel> {
         val accessToken =
-            maskinportenService.getMaskinportenTokenForOrgNr(consumerOrgNr).fetchNewAccessToken().tokenResponse.accessToken
+            maskinportenService
+                .getMaskinportenTokenForOrgNr(consumerOrgNr)
+                .fetchNewAccessToken()
+                .tokenResponse.accessToken
         val response =
             createHttpClient().get {
                 url("${LPS_API_ENDPOINT}forespoersler")
