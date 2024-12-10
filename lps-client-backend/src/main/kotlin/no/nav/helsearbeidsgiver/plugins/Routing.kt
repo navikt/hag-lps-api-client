@@ -11,6 +11,7 @@ import io.ktor.server.routing.Routing
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import no.nav.helsearbeidsgiver.altinn.RegistrerRespons
+import no.nav.helsearbeidsgiver.altinn.RequestSystemUserClient
 import no.nav.helsearbeidsgiver.altinn.lagSystembrukerForespoersel
 import no.nav.helsearbeidsgiver.logger
 import no.nav.helsearbeidsgiver.lps.ForespoerselRequest
@@ -65,7 +66,7 @@ private fun Routing.registrerNyBedrift() {
                     .fetchNewAccessToken()
                     .tokenResponse.accessToken
 
-            val systemBrukerForespoerselRespons = lagSystembrukerForespoersel(kundeOrgnr, maskinportenToken)
+            val systemBrukerForespoerselRespons = RequestSystemUserClient().lagSystembrukerForespoersel(kundeOrgnr, maskinportenToken)
 
             logger().info("Registrerte bedriften med orgnr: $kundeOrgnr som ny kunde.")
             call.respond(HttpStatusCode.OK, RegistrerRespons(systemBrukerForespoerselRespons.confirmUrl))

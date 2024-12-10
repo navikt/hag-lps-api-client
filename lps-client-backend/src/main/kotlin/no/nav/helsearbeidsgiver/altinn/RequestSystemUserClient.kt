@@ -9,7 +9,8 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
 
-suspend fun lagSystembrukerForespoersel(
+class RequestSystemUserClient {
+    suspend fun lagSystembrukerForespoersel(
     kundeOrgnr: String,
     maskinportenToken: String,
 ): RequestSystemResponse {
@@ -40,4 +41,5 @@ suspend fun lagSystembrukerForespoersel(
             contentType(ContentType.Application.Json)
             accept(ContentType.Application.Json)
         }.body<RequestSystemResponse>()
+    }
 }
