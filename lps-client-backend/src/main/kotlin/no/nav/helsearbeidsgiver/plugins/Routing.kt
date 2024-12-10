@@ -8,30 +8,32 @@ import io.ktor.server.plugins.swagger.swaggerUI
 import io.ktor.server.request.receiveParameters
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
-import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import no.nav.helsearbeidsgiver.altinn.RegistrerRespons
-import no.nav.helsearbeidsgiver.altinn.RequestSystemUserClient
-import no.nav.helsearbeidsgiver.logger
+import no.nav.helsearbeidsgiver.altinn.AltinnService
 import no.nav.helsearbeidsgiver.lps.ForespoerselRequest
 import no.nav.helsearbeidsgiver.lps.InntektsmeldingRequest
 import no.nav.helsearbeidsgiver.lps.LpsClient
 import no.nav.helsearbeidsgiver.lps.Status
-import no.nav.helsearbeidsgiver.utils.logger
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
+import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
+import no.nav.helsearbeidsgiver.utils.logger
 import java.time.LocalDateTime
+import kotlin.math.log
 
-fun Application.configureRouting(maskinportenClient: MaskinportenClient) {
+fun Application.configureRouting(maskinportenService: MaskinportenService) {
+    val lpsClient = LpsClient(maskinportenService)
     routing {
         swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.json")
-        registrerNyBedrift(maskinportenClient)
-        inntektsmeldinger()
-        filtererInntektsmeldinger()
-        filtererInntektsmeldingerWithToken()
-        forespoersler()
-        filtererForespoersler()
-        getToken()
+        registrerNyBedrift(maskinportenService)
+        inntektsmeldinger(lpsClient)
+        filtererInntektsmeldinger(lpsClient)
+        filtererInntektsmeldingerWithToken(lpsClient)
+        forespoersler(maskinportenService)
+        filtererForespoersler(lpsClient)
+        getToken(maskinportenService)
+        hentSystembruker(maskinportenService)
         singlePageApplication {
             useResources = true
             filesPath = "lps-client-front"
@@ -39,8 +41,21 @@ fun Application.configureRouting(maskinportenClient: MaskinportenClient) {
         }
     }
 }
+private fun Routing.hentSystembruker(maskinportenService: MaskinportenService) {
+    post("/systembruker") {
+        val params = call.receiveParameters()
+        val orgnr = params["orgnr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'orgnr' parameter")
 
-private fun Routing.registrerNyBedrift(maskinportenClient: MaskinportenClient) {
+        try {
+            val systemBrukerClaim = maskinportenService.getMaskinportenTokenForSystembruker(orgnr,"nav:helse/im.read").fetchNewAccessToken().tokenResponse.accessToken
+            logger().info("token: $systemBrukerClaim")
+            call.respond(HttpStatusCode.OK, systemBrukerClaim)
+        } catch (e: Exception) {
+            call.respond(HttpStatusCode.InternalServerError, "Feilet å hente systembruker: ${e.message}")
+        }
+    }
+}
+private fun Routing.registrerNyBedrift(maskinportenService: MaskinportenService) {
     post("/registrer-ny-bedrift") {
         val parametre = call.receiveParameters()
         val kundeOrgnr =
@@ -52,12 +67,12 @@ private fun Routing.registrerNyBedrift(maskinportenClient: MaskinportenClient) {
         logger().info("Prøver å registrere bedriften med orgnr: $kundeOrgnr som ny kunde.")
         try {
             val maskinportenToken =
-                maskinportenClient
+                maskinportenService.getSimpleMaskinportenTokenForScope("altinn:authentication/systemuser.request.write")
                     .fetchNewAccessToken()
                     .tokenResponse.accessToken
 
-            val systemBrukerForespoerselRespons = RequestSystemUserClient().lagSystembrukerForespoersel(kundeOrgnr, maskinportenToken)
-
+            val systemBrukerForespoerselRespons = AltinnService().lagSystembrukerForespoersel(kundeOrgnr, maskinportenToken)
+logger().info("Registrerte bedriften med orgnr: ${systemBrukerForespoerselRespons.redirectUrl} and ${systemBrukerForespoerselRespons.status} and ${systemBrukerForespoerselRespons.confirmUrl}")
             logger().info("Registrerte bedriften med orgnr: $kundeOrgnr som ny kunde.")
             call.respond(HttpStatusCode.OK, RegistrerRespons(systemBrukerForespoerselRespons.confirmUrl))
         } catch (e: Exception) {
@@ -70,17 +85,15 @@ private fun Routing.registrerNyBedrift(maskinportenClient: MaskinportenClient) {
     }
 }
 
-private fun Routing.inntektsmeldinger() {
+private fun Routing.inntektsmeldinger(lpsClient: LpsClient) {
     post("/inntektsmeldinger") {
         val params = call.receiveParameters()
-        val kid = params["kid"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'kid' parameter")
-        val privateKey = params["privateKey"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'privateKey' parameter")
-        val issuer = params["issuer"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'issuer' parameter")
+
         val consumerOrgNr =
             params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
 
         try {
-            val hentInntektsmeldinger = LpsClient().hentInntektsmeldinger(privateKey, kid, issuer, consumerOrgNr)
+            val hentInntektsmeldinger = lpsClient.hentInntektsmeldinger(consumerOrgNr)
             call.respond(HttpStatusCode.OK, hentInntektsmeldinger)
         } catch (e: Exception) {
             call.respond(HttpStatusCode.InternalServerError, "Feilet å hente inntektsmeldinger: ${e.message}")
@@ -88,18 +101,18 @@ private fun Routing.inntektsmeldinger() {
     }
 }
 
-private fun Routing.getToken() {
+private fun Routing.getToken(maskinportenService: MaskinportenService) {
+
+
     post("/getToken") {
         try {
             val params = call.receiveParameters()
 
-            val kid = params["kid"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'kid' parameter")
-            val privateKey = params["privateKey"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'privateKey' parameter")
-            val issuer = params["issuer"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'issuer' parameter")
+            val scope = params["scope"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'scope' parameter")
             val consumerOrgNr =
                 params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
 
-            val message = LpsClient().getMaskinportenClient(kid, privateKey, issuer, consumerOrgNr).fetchNewAccessToken()
+            val message = maskinportenService.getMaskinportenTokenForOrgNr(consumerOrgNr, scope).fetchNewAccessToken().tokenResponse.accessToken
             call.respond(
                 HttpStatusCode.OK,
                 message,
@@ -111,19 +124,15 @@ private fun Routing.getToken() {
     }
 }
 
-private fun Routing.forespoersler() {
+private fun Routing.forespoersler(maskinportenService: MaskinportenService) {
     post("/forespoersler") {
         val params = call.receiveParameters()
 
-        val kid = params["kid"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'kid' parameter")
-        val privateKey =
-            params["privateKey"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'privateKey' parameter")
-        val issuer = params["issuer"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'issuer' parameter")
         val consumerOrgNr =
             params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
 
         try {
-            val forespoerseler = LpsClient().hentForespoersler(privateKey, kid, issuer, consumerOrgNr)
+            val forespoerseler = maskinportenService.getMaskinportenTokenForOrgNr(consumerOrgNr)
             call.respond(HttpStatusCode.OK, forespoerseler)
         } catch (e: Exception) {
             call.respond(HttpStatusCode.InternalServerError, "Feilet å hente Forespørseler: ${e.message}")
@@ -131,12 +140,10 @@ private fun Routing.forespoersler() {
     }
 }
 
-private fun Routing.filtererInntektsmeldinger() {
+private fun Routing.filtererInntektsmeldinger(lpsClient: LpsClient) {
     post("/filterInntektsmeldinger") {
         val params = call.receiveParameters()
-        val kid = params["kid"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'kid' parameter")
-        val privateKey = params["privateKey"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'privateKey' parameter")
-        val issuer = params["issuer"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'issuer' parameter")
+
         val consumerOrgNr =
             params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
         val fnr = params["fnr"]?.takeIf { it.isNotBlank() }
@@ -146,10 +153,7 @@ private fun Routing.filtererInntektsmeldinger() {
         logger().info("filterInntektsmeldinger: $params")
         try {
             val hentInntektsmeldinger =
-                LpsClient().filtrerInntektsmeldinger(
-                    privateKey = privateKey,
-                    kid = kid,
-                    iss = issuer,
+                lpsClient.filtrerInntektsmeldinger(
                     consumerOrgNr = consumerOrgNr,
                     request = InntektsmeldingRequest(fnr, forespoerselId, datoFra, datoTil),
                 )
@@ -161,12 +165,9 @@ private fun Routing.filtererInntektsmeldinger() {
     }
 }
 
-private fun Routing.filtererForespoersler() {
+private fun Routing.filtererForespoersler(lpsClient: LpsClient) {
     post("/filterForespoersler") {
         val params = call.receiveParameters()
-        val kid = params["kid"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'kid' parameter")
-        val privateKey = params["privateKey"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'privateKey' parameter")
-        val issuer = params["issuer"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'issuer' parameter")
         val consumerOrgNr =
             params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
         val fnr = params["fnr"]?.takeIf { it.isNotBlank() }
@@ -175,10 +176,7 @@ private fun Routing.filtererForespoersler() {
         logger().info("filterForespoersler: $params")
         try {
             val hentForespoersler =
-                LpsClient().filtrerForespoersler(
-                    privateKey,
-                    kid,
-                    issuer,
+                lpsClient.filtrerForespoersler(
                     consumerOrgNr,
                     request = ForespoerselRequest(fnr, forespoerselId, status?.let { Status.valueOf(it) }),
                 )
@@ -190,7 +188,7 @@ private fun Routing.filtererForespoersler() {
     }
 }
 
-private fun Routing.filtererInntektsmeldingerWithToken() {
+private fun Routing.filtererInntektsmeldingerWithToken(lpsClient: LpsClient) {
     post("/filterInntektsmeldingerToken") {
         val params = call.receiveParameters()
         logger().info("filterInntektsmeldingerToken: $params")
@@ -203,7 +201,7 @@ private fun Routing.filtererInntektsmeldingerWithToken() {
 
         try {
             val hentInntektsmeldinger =
-                LpsClient().filtrerInntektsmeldingerWithToken(
+                lpsClient.filtrerInntektsmeldingerWithToken(
                     request = InntektsmeldingRequest(fnr, forespoerselId, datoFra, datoTil),
                     accessToken = authorizationHeader,
                 )

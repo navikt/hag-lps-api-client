@@ -16,8 +16,8 @@ import no.nav.helsearbeidsgiver.maskinporten.getSystemBrukerClaim
 
 private const val LPS_API_ENDPOINT = "https://sykepenger-im-lps-api.ekstern.dev.nav.no/"
 
-class LpsClient {
-    var maskinportenService: MaskinportenService = MaskinportenService()
+class LpsClient(var maskinportenService: MaskinportenService) {
+
 
     suspend fun hentInntektsmeldinger(
         consumerOrgNr: String,

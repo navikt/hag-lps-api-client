@@ -6,15 +6,36 @@ import no.nav.helsearbeidsgiver.maskinportenIntegrasjonsId
 import no.nav.helsearbeidsgiver.maskinportenKid
 import no.nav.helsearbeidsgiver.maskinportenPrivateKey
 import no.nav.helsearbeidsgiver.maskinportenTokenEndpoint
+import no.nav.helsearbeidsgiver.systemId
 
 class MaskinportenService {
     private val httpClient = createHttpClient()
 
-    fun getMaskinportenToken(): String = "maskinporten-token"
 
-    fun getMaskinportenTokenForOrgNr(): String = "maskinporten-token2"
+    fun getMaskinportenTokenForSystembruker(orgNr:String,scope: String) = MaskinportenClient(
+        maskinportenClientConfig =
+        MaskinportenClientConfigPkey(
+            kid = maskinportenKid,
+            privateKey = maskinportenPrivateKey,
+            issuer = maskinportenClientIssuer,
+            scope = scope,
+            clientId = maskinportenIntegrasjonsId,
+            endpoint = maskinportenTokenEndpoint,
+            additionalClaims = getSystemBrukerClaim(orgNr),
+        )
+    )
 
-    fun getMaskinportenTokenForSystembruker(): String = "maskinporten-token3"
+    fun getSimpleMaskinportenTokenForScope(scope: String) = MaskinportenClient(
+        maskinportenClientConfig =
+        MaskinportenClientConfigPkey(
+            kid = maskinportenKid,
+            privateKey = maskinportenPrivateKey,
+            issuer = maskinportenClientIssuer,
+            scope = scope,
+            clientId = maskinportenIntegrasjonsId,
+            endpoint = maskinportenTokenEndpoint,
+        )
+    )
 
     fun getMaskinportenTokenForOrgNr(
         consumerOrgNr: String,
@@ -24,9 +45,9 @@ class MaskinportenService {
         MaskinportenClientConfigPkey(
             kid = maskinportenKid,
             privateKey = maskinportenPrivateKey,
-            issuer = maskinportenIntegrasjonsId,
+            issuer = maskinportenClientIssuer,
             scope = scope,
-            clientId = maskinportenClientId,
+            clientId = maskinportenIntegrasjonsId,
             endpoint = maskinportenTokenEndpoint,
             additionalClaims = getSystemBrukerClaim(consumerOrgNr),
         ),
