@@ -18,13 +18,12 @@ import no.nav.helsearbeidsgiver.lps.InntektsmeldingRequest
 import no.nav.helsearbeidsgiver.lps.LpsClient
 import no.nav.helsearbeidsgiver.lps.Status
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClient
-import no.nav.helsearbeidsgiver.maskinporten.MaskinportenClientConfigPkey
 import java.time.LocalDateTime
 
-fun Application.configureRouting() {
+fun Application.configureRouting(maskinportenClient: MaskinportenClient) {
     routing {
         swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.json")
-        registrerNyBedrift()
+        registrerNyBedrift(maskinportenClient)
         inntektsmeldinger()
         filtererInntektsmeldinger()
         filtererInntektsmeldingerWithToken()
@@ -39,7 +38,7 @@ fun Application.configureRouting() {
     }
 }
 
-private fun Routing.registrerNyBedrift() {
+private fun Routing.registrerNyBedrift(maskinportenClient: MaskinportenClient) {
     post("/registrer-ny-bedrift") {
         val parametre = call.receiveParameters()
         val kundeOrgnr =
@@ -50,18 +49,8 @@ private fun Routing.registrerNyBedrift() {
 
         logger().info("Prøver å registrere bedriften med orgnr: $kundeOrgnr som ny kunde.")
         try {
-            val maskinportenClientConfig =
-                MaskinportenClientConfigPkey(
-                    scope = "altinn:authentication/systemuser.request.write",
-                    kid = System.getenv("MASKINPORTEN_KID"),
-                    clientId = System.getenv("MASKINPORTEN_INTEGRATION_ID"),
-                    privateKey = System.getenv("MASKINPORTEN_PKEY"),
-                    issuer = "https://test.maskinporten.no/",
-                    endpoint = "https://test.maskinporten.no/token",
-                )
-
             val maskinportenToken =
-                MaskinportenClient(maskinportenClientConfig)
+                maskinportenClient
                     .fetchNewAccessToken()
                     .tokenResponse.accessToken
 
