@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {
-    const [formData, setFormData] = useState({ kid: '', privateKey: '', issuer: '', consumerOrgNr: '' });
+    const [formData, setFormData] = useState({ kid: '', privateKey: '', issuer: '', orgnr: '' });
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
@@ -17,17 +17,16 @@ function LoginForm() {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post('https://hag-lps-api-client.ekstern.dev.nav.no/getToken', new URLSearchParams(formData), {
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/systembruker`, new URLSearchParams(formData), {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
             });
-            localStorage.setItem('token', response.data.tokenResponse.access_token);
-            localStorage.setItem('exp', Date.now() + response.data.tokenResponse.expires_in * 1000);
-            localStorage.setItem('kid', formData.kid);
-            localStorage.setItem('privateKey', formData.privateKey);
-            localStorage.setItem('issuer', formData.issuer);
-            localStorage.setItem('consumerOrgNr', formData.consumerOrgNr);
+            console.log(response.data);
+            localStorage.setItem('token', response.data);
+           // localStorage.setItem('exp', Date.now() + response.data.tokenResponse.expires_in * 1000);
+            localStorage.setItem('consumerOrgNr', formData.orgnr);
+            console.log('Token:', response.data);
             navigate('/search');
         } catch (error) {
             setError('Error submitting form');
@@ -37,7 +36,7 @@ function LoginForm() {
     const handleRegistrerNyBedrift = async () => {
         try {
             const response = await axios.post('http://localhost:8080/registrer-ny-bedrift', {
-                kundeOrgnr: formData.consumerOrgNr,
+                kundeOrgnr: formData.orgnr,
             }, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -59,8 +58,8 @@ function LoginForm() {
             <Box component="form" noValidate autoComplete="true">
                 <TextField
                     label="Consumer orgnr"
-                    name="consumerOrgNr"
-                    value={formData.consumerOrgNr}
+                    name="orgnr"
+                    value={formData.orgnr}
                     onChange={handleInputChange}
                     fullWidth
                     margin="normal"
