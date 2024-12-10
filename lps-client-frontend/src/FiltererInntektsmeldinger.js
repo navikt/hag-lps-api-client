@@ -5,7 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { checkAndRefreshToken } from './utils';
+//import { checkAndRefreshToken } from './utils';
 
 function FiltererInntektsmeldinger() {
     const [secondFormData, setSecondFormData] = useState({ forespoerselid: '', fnr: '', datoFra: null, datoTil: null });
