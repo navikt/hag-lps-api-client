@@ -10,6 +10,7 @@ import io.ktor.http.contentType
 import no.nav.helsearbeidsgiver.altinnSystemUserRequestUrl
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
 import no.nav.helsearbeidsgiver.systemId
+import no.nav.helsearbeidsgiver.utils.logger
 
 class AltinnService {
     suspend fun lagSystembrukerForespoersel(
@@ -35,7 +36,7 @@ class AltinnService {
                     ),
                 redirectUrl = "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen",
             )
-
+    logger().info("Lager systembrukerforespørsel for systemId ${request.systemId}")
         return createHttpClient()
             .post(altinnSystemUserRequestUrl) {
                 setBody(request)
