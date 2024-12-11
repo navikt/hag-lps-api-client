@@ -19,7 +19,7 @@ class AltinnService {
     ): RequestSystemResponse {
         val request =
             CreateRequestSystemUser(
-                systemId = systemId,
+                systemId = "315339138_tigersys",
                 partyOrgNo = kundeOrgnr,
                 rights =
                     listOf(
@@ -37,8 +37,9 @@ class AltinnService {
                 redirectUrl = "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen",
             )
         logger().info("Lager systembrukerforespørsel for systemId ${request.systemId}")
+        logger().info("Lager systembrukerforespørsel for rights ${request.rights}")
         return createHttpClient()
-            .post(altinnSystemUserRequestUrl) {
+            .post("https://platform.tt02.altinn.no/authentication/api/v1/systemuser/request/vendor") {
                 setBody(request)
                 bearerAuth(maskinportenToken)
                 contentType(ContentType.Application.Json)
