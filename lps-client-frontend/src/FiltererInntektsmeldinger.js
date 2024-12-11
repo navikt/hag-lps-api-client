@@ -5,7 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-//import { checkAndRefreshToken } from './utils';
+import { checkAndRefreshToken } from './utils';
 
 function FiltererInntektsmeldinger() {
     const [secondFormData, setSecondFormData] = useState({ forespoerselid: '', fnr: '', datoFra: null, datoTil: null });
@@ -30,7 +30,7 @@ function FiltererInntektsmeldinger() {
     const handleSecondFormSubmit = async () => {
         try {
             setError(null);
-          //  await checkAndRefreshToken();
+            await checkAndRefreshToken();
             const token = localStorage.getItem('token');
             const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/filterInntektsmeldingerToken`, secondFormData, {
                 headers: {

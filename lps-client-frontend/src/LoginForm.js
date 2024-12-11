@@ -23,13 +23,14 @@ function LoginForm() {
                 },
             });
             console.log(response.data);
-            localStorage.setItem('token', response.data);
-           // localStorage.setItem('exp', Date.now() + response.data.tokenResponse.expires_in * 1000);
-            localStorage.setItem('consumerOrgNr', formData.orgnr);
+            localStorage.setItem('token', response.data.tokenResponse.access_token);
+            localStorage.setItem('exp', Date.now() + response.data.tokenResponse.expires_in * 1000);
+            localStorage.setItem('orgnr', formData.orgnr);
             console.log('Token:', response.data);
             navigate('/search');
         } catch (error) {
-            setError('Error submitting form');
+            console.log('Error:', error);
+            setError(error.response.data);
         }
     };
 

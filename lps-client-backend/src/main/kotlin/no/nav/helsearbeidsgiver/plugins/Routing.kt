@@ -52,11 +52,16 @@ private fun Routing.hentSystembruker(maskinportenService: MaskinportenService) {
                         orgnr,
                         "nav:helse/im.read",
                     ).fetchNewAccessToken()
-                    .tokenResponse.accessToken
+
             logger().info("token: $systemBrukerClaim")
             call.respond(HttpStatusCode.OK, systemBrukerClaim)
         } catch (e: Exception) {
-            call.respond(HttpStatusCode.InternalServerError, "Feilet å hente systembruker: ${e.message}")
+            if(e.message?.contains("System user not found") == true) {
+                call.respond(HttpStatusCode.NotFound, "Fant ikke systembruker for orgnr: $orgnr eller orgamisasjonen ikke har tilgang til tjenesten")
+            } else {
+                call.respond(HttpStatusCode.InternalServerError, "Feilet å hente systembruker: ${e.message}")
+            }
+
         }
     }
 }
