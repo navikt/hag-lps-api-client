@@ -36,7 +36,7 @@ class AltinnService {
                     ),
                 redirectUrl = "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen",
             )
-    logger().info("Lager systembrukerforespørsel for systemId ${request.systemId}")
+        logger().info("Lager systembrukerforespørsel for systemId ${request.systemId}")
         return createHttpClient()
             .post(altinnSystemUserRequestUrl) {
                 setBody(request)
