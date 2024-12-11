@@ -56,12 +56,14 @@ private fun Routing.hentSystembruker(maskinportenService: MaskinportenService) {
             logger().info("token: $systemBrukerClaim")
             call.respond(HttpStatusCode.OK, systemBrukerClaim)
         } catch (e: Exception) {
-            if(e.message?.contains("System user not found") == true) {
-                call.respond(HttpStatusCode.NotFound, "Fant ikke systembruker for orgnr: $orgnr eller orgamisasjonen ikke har tilgang til tjenesten")
+            if (e.message?.contains("System user not found") == true) {
+                call.respond(
+                    HttpStatusCode.NotFound,
+                    "Fant ikke systembruker for orgnr: $orgnr eller orgamisasjonen ikke har tilgang til tjenesten",
+                )
             } else {
                 call.respond(HttpStatusCode.InternalServerError, "Feilet å hente systembruker: ${e.message}")
             }
-
         }
     }
 }
