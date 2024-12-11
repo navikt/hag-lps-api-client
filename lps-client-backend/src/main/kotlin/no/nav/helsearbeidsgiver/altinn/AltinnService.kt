@@ -7,16 +7,19 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import no.nav.helsearbeidsgiver.altinnSystemUserRequestUrl
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
+import no.nav.helsearbeidsgiver.systemId
+import no.nav.helsearbeidsgiver.utils.logger
 
-class RequestSystemUserClient {
+class AltinnService {
     suspend fun lagSystembrukerForespoersel(
         kundeOrgnr: String,
         maskinportenToken: String,
     ): RequestSystemResponse {
         val request =
             CreateRequestSystemUser(
-                systemId = "315339138_tigersys",
+                systemId = systemId,
                 partyOrgNo = kundeOrgnr,
                 rights =
                     listOf(
@@ -33,9 +36,9 @@ class RequestSystemUserClient {
                     ),
                 redirectUrl = "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen",
             )
-
+        logger().info("Lager systembrukerforespørsel for systemId ${request.systemId}")
         return createHttpClient()
-            .post("https://platform.tt02.altinn.no/authentication/api/v1/systemuser/request/vendor") {
+            .post(altinnSystemUserRequestUrl) {
                 setBody(request)
                 bearerAuth(maskinportenToken)
                 contentType(ContentType.Application.Json)

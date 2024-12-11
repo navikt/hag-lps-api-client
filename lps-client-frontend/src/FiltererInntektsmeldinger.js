@@ -32,7 +32,7 @@ function FiltererInntektsmeldinger() {
             setError(null);
             await checkAndRefreshToken();
             const token = localStorage.getItem('token');
-            const response = await axios.post('https://hag-lps-api-client.ekstern.dev.nav.no/filterInntektsmeldingerToken', secondFormData, {
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/filterInntektsmeldingerToken`, secondFormData, {
                 headers: {
                     "authorization": `${token}`,
                     'Content-Type': 'application/x-www-form-urlencoded'

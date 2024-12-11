@@ -3,16 +3,13 @@ import axios from 'axios';
 export const checkAndRefreshToken = async () => {
     const token = localStorage.getItem('token');
     const exp = localStorage.getItem('exp');
-
+    console.log("sjekker for refresh token");
     if (!token || !exp || Date.now() >= exp) {
         const formData = {
-            kid: localStorage.getItem('kid'),
-            privateKey: localStorage.getItem('privateKey'),
-            issuer: localStorage.getItem('issuer'),
-            consumerOrgNr: localStorage.getItem('consumerOrgNr')
+            orgnr: localStorage.getItem('orgnr')
         };
-
-        const response = await axios.post('https://hag-lps-api-client.ekstern.dev.nav.no/getToken', new URLSearchParams(formData), {
+        console.log("henter nytt token");
+        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/systembruker`, new URLSearchParams(formData), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },

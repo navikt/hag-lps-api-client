@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {
-    const [formData, setFormData] = useState({ kid: '', privateKey: '', issuer: '', consumerOrgNr: '' });
+    const [formData, setFormData] = useState({ kid: '', privateKey: '', issuer: '', orgnr: '' });
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
@@ -17,27 +17,27 @@ function LoginForm() {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post('https://hag-lps-api-client.ekstern.dev.nav.no/getToken', new URLSearchParams(formData), {
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/systembruker`, new URLSearchParams(formData), {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
             });
+            console.log(response.data);
             localStorage.setItem('token', response.data.tokenResponse.access_token);
             localStorage.setItem('exp', Date.now() + response.data.tokenResponse.expires_in * 1000);
-            localStorage.setItem('kid', formData.kid);
-            localStorage.setItem('privateKey', formData.privateKey);
-            localStorage.setItem('issuer', formData.issuer);
-            localStorage.setItem('consumerOrgNr', formData.consumerOrgNr);
+            localStorage.setItem('orgnr', formData.orgnr);
+            console.log('Token:', response.data);
             navigate('/search');
         } catch (error) {
-            setError('Error submitting form');
+            console.log('Error:', error);
+            setError(error.response.data);
         }
     };
 
     const handleRegistrerNyBedrift = async () => {
         try {
-            const response = await axios.post('https://hag-lps-api-client.ekstern.dev.nav.no/registrer-ny-bedrift', {
-                kundeOrgnr: formData.consumerOrgNr,
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/registrer-ny-bedrift`, {
+                kundeOrgnr: formData.orgnr,
             }, {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -58,35 +58,9 @@ function LoginForm() {
             {error && <Alert severity="error">{error}</Alert>}
             <Box component="form" noValidate autoComplete="true">
                 <TextField
-                    label="Kid"
-                    name="kid"
-                    value={formData.kid}
-                    onChange={handleInputChange}
-                    fullWidth
-                    margin="normal"
-                />
-                <TextField
-                    label="Private key"
-                    name="privateKey"
-                    value={formData.privateKey}
-                    onChange={handleInputChange}
-                    multiline
-                    rows={4}
-                    fullWidth
-                    margin="normal"
-                />
-                <TextField
-                    label="IntegrasjonsId"
-                    name="issuer"
-                    value={formData.issuer}
-                    onChange={handleInputChange}
-                    fullWidth
-                    margin="normal"
-                />
-                <TextField
                     label="Consumer orgnr"
-                    name="consumerOrgNr"
-                    value={formData.consumerOrgNr}
+                    name="orgnr"
+                    value={formData.orgnr}
                     onChange={handleInputChange}
                     fullWidth
                     margin="normal"

@@ -12,7 +12,10 @@ function App() {
       <Container>
         <CssBaseline />
         <Typography variant="h4" align="center" gutterBottom>
-          LPS API klient
+          TigerSys
+        </Typography>
+        <Typography variant="subtitle1" align="center" gutterBottom>
+          Din lønns- og personalsystem
         </Typography>
         <Routes>
           <Route path="/" element={<LoginForm />} />
