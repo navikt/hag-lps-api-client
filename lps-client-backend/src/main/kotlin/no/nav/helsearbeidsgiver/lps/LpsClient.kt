@@ -10,6 +10,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
+import no.nav.helsearbeidsgiver.utils.logger
 
 private const val LPS_API_ENDPOINT = "https://sykepenger-im-lps-api.ekstern.dev.nav.no/"
 
@@ -90,6 +91,7 @@ class LpsClient(
                 }
             return response.body<InntektsmeldingResponse>()
         } catch (e: Exception) {
+            logger().error("Error in filtrerInntektsmeldingerWithToken {}", e.message)
             throw e
         }
     }

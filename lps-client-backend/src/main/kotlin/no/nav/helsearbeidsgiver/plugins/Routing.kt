@@ -227,6 +227,9 @@ private fun Routing.filtererInntektsmeldingerWithToken(lpsClient: LpsClient) {
                 )
             call.respond(HttpStatusCode.OK, hentInntektsmeldinger)
         } catch (e: Exception) {
+            if (e.message?.contains("Ingen inntektsmeldinger funnet") == true) {
+                call.respond(HttpStatusCode.NotFound, "Ingen inntektsmeldinger funnet")
+            }
             logger().error("Feilet å hente inntektsmeldinger: ${e.printStackTrace()}")
             call.respond(HttpStatusCode.InternalServerError, "Feilet å hente inntektsmeldinger: ${e.message}")
         }
