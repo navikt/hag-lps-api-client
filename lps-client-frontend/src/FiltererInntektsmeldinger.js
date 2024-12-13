@@ -97,7 +97,7 @@ function FiltererInntektsmeldinger() {
                         </Box>
                         <Box flex={1} minWidth={200}>
                             <Button variant="contained" color="secondary" onClick={handleLogout} fullWidth>
-                                Log ut
+                                Logg ut
                             </Button>
                         </Box>
                     </Box>
