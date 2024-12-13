@@ -36,8 +36,9 @@ fun Application.module() {
         )
     }
 
-    configureRouting(MaskinportenService())
-    configureTokenRouting()
+    val maskinportenService = MaskinportenService()
+    configureRouting(maskinportenService)
+    configureTokenRouting(maskinportenService)
     configureCORS()
 }
 

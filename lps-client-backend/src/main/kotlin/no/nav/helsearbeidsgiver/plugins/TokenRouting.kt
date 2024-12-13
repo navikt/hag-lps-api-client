@@ -18,8 +18,7 @@ import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
 import no.nav.helsearbeidsgiver.utils.logger
 
-fun Application.configureTokenRouting() {
-    val maskinportenService = MaskinportenService()
+fun Application.configureTokenRouting(maskinportenService: MaskinportenService) {
     routing {
         tokenMedOrgnrOgScope(maskinportenService)
         tokenForScope(maskinportenService)
