@@ -24,7 +24,6 @@ fun Application.configureTokenRouting(maskinportenService: MaskinportenService) 
         tokenForScope(maskinportenService)
         tokenForAltinn(maskinportenService)
     }
-
 }
 
 private fun Routing.tokenForScope(maskinportenService: MaskinportenService) {
@@ -50,11 +49,13 @@ private fun Routing.tokenForAltinn(maskinportenService: MaskinportenService) {
                     "Mangler 'scope' parameter",
                 )
             val token = maskinportenService.getSimpleMaskinportenTokenForScope(scope).fetchNewAccessToken()
-            val altinnToken = createHttpClient().get("https://platform.tt02.altinn.no/authentication/api/v1/exchange/maskinporten") {
-                bearerAuth(token.tokenResponse.accessToken)
-                contentType(ContentType.Application.Json)
-                accept(ContentType.Application.Json)
-            }.body<String>()
+            val altinnToken =
+                createHttpClient()
+                    .get("https://platform.tt02.altinn.no/authentication/api/v1/exchange/maskinporten") {
+                        bearerAuth(token.tokenResponse.accessToken)
+                        contentType(ContentType.Application.Json)
+                        accept(ContentType.Application.Json)
+                    }.body<String>()
 
             call.respond(HttpStatusCode.OK, altinnToken)
         } catch (e: Exception) {

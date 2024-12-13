@@ -116,8 +116,6 @@ private fun Routing.inntektsmeldinger(lpsClient: LpsClient) {
     }
 }
 
-
-
 private fun Routing.forespoersler(maskinportenService: MaskinportenService) {
     post("/forespoersler") {
         val params = call.receiveParameters()
