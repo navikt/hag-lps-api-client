@@ -30,7 +30,6 @@ fun Application.configureRouting(maskinportenService: MaskinportenService) {
         filtererInntektsmeldingerWithToken(lpsClient)
         forespoersler(maskinportenService)
         filtererForespoersler(lpsClient)
-        getToken(maskinportenService)
         hentSystembruker(maskinportenService)
         singlePageApplication {
             useResources = true
@@ -117,32 +116,7 @@ private fun Routing.inntektsmeldinger(lpsClient: LpsClient) {
     }
 }
 
-private fun Routing.getToken(maskinportenService: MaskinportenService) {
-    post("/getToken") {
-        try {
-            val params = call.receiveParameters()
 
-            val scope = params["scope"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'scope' parameter")
-            val consumerOrgNr =
-                params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
-
-            val message =
-                maskinportenService
-                    .getMaskinportenTokenForOrgNr(
-                        consumerOrgNr,
-                        scope,
-                    ).fetchNewAccessToken()
-                    .tokenResponse.accessToken
-            call.respond(
-                HttpStatusCode.OK,
-                message,
-            )
-        } catch (e: Exception) {
-            logger().info("Feilet å hente token: $e")
-            call.respond(HttpStatusCode.InternalServerError, "Feilet å hente token: ${e.message}")
-        }
-    }
-}
 
 private fun Routing.forespoersler(maskinportenService: MaskinportenService) {
     post("/forespoersler") {

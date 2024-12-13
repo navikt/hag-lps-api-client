@@ -12,6 +12,7 @@ import io.ktor.server.request.path
 import kotlinx.serialization.json.Json
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
 import no.nav.helsearbeidsgiver.plugins.configureRouting
+import no.nav.helsearbeidsgiver.plugins.configureTokenRouting
 import org.slf4j.event.Level
 
 fun main(args: Array<String>) {
@@ -20,10 +21,10 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    install(CallLogging) {
-        level = Level.INFO
-        filter { call -> call.request.path().startsWith("/") }
-    }
+    /*    install(CallLogging) {
+            level = Level.INFO
+            filter { call -> call.request.path().startsWith("/") }
+        }*/
 
     install(ContentNegotiation) {
         json(
@@ -36,6 +37,7 @@ fun Application.module() {
     }
 
     configureRouting(MaskinportenService())
+    configureTokenRouting()
     configureCORS()
 }
 
