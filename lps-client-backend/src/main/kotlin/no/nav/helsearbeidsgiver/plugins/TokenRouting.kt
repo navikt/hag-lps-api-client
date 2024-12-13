@@ -1,12 +1,7 @@
 package no.nav.helsearbeidsgiver.plugins
 
-import io.ktor.client.call.body
-import io.ktor.client.request.accept
-import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
-import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
-import io.ktor.http.contentType
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.server.request.receiveParameters
@@ -16,7 +11,6 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 import no.nav.helsearbeidsgiver.altinn.AltinnService
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
-import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
 import no.nav.helsearbeidsgiver.utils.logger
 
 fun Application.configureTokenRouting(maskinportenService: MaskinportenService) {

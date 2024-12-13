@@ -46,6 +46,7 @@ class AltinnService {
                 accept(ContentType.Application.Json)
             }.body<RequestSystemResponse>()
     }
+
     suspend fun altinnExchangeToken(token: String) {
         createHttpClient()
             .get("https://platform.tt02.altinn.no/authentication/api/v1/exchange/maskinporten") {
