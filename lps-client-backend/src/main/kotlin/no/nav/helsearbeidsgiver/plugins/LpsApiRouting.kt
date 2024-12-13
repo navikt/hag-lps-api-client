@@ -16,7 +16,7 @@ import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
 import no.nav.helsearbeidsgiver.utils.logger
 import java.time.LocalDateTime
 
-fun Application.lpsApiRouting(maskinportenService: MaskinportenService) {
+fun Application.configureLpsApiRouting(maskinportenService: MaskinportenService) {
     val lpsClient = LpsClient(maskinportenService)
     routing {
         inntektsmeldinger(lpsClient)

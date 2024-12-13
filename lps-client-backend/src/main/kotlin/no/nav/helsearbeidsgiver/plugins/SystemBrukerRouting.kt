@@ -15,7 +15,7 @@ import no.nav.helsearbeidsgiver.altinn.RegistrerRespons
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
 import no.nav.helsearbeidsgiver.utils.logger
 
-fun Application.configureRouting(maskinportenService: MaskinportenService) {
+fun Application.configureSystembrukerRouting(maskinportenService: MaskinportenService) {
     routing {
         swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.json")
         registrerNyBedrift(maskinportenService)
