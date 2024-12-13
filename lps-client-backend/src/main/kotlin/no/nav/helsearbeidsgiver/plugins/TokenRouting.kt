@@ -14,6 +14,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
+import no.nav.helsearbeidsgiver.altinn.AltinnService
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
 import no.nav.helsearbeidsgiver.utils.logger
@@ -49,13 +50,7 @@ private fun Routing.tokenForAltinn(maskinportenService: MaskinportenService) {
                     "Mangler 'scope' parameter",
                 )
             val token = maskinportenService.getSimpleMaskinportenTokenForScope(scope).fetchNewAccessToken()
-            val altinnToken =
-                createHttpClient()
-                    .get("https://platform.tt02.altinn.no/authentication/api/v1/exchange/maskinporten") {
-                        bearerAuth(token.tokenResponse.accessToken)
-                        contentType(ContentType.Application.Json)
-                        accept(ContentType.Application.Json)
-                    }.body<String>()
+            val altinnToken = AltinnService().altinnExchangeToken(token.tokenResponse.accessToken)
 
             call.respond(HttpStatusCode.OK, altinnToken)
         } catch (e: Exception) {

@@ -3,6 +3,7 @@ package no.nav.helsearbeidsgiver.altinn
 import io.ktor.client.call.body
 import io.ktor.client.request.accept
 import io.ktor.client.request.bearerAuth
+import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
@@ -44,5 +45,13 @@ class AltinnService {
                 contentType(ContentType.Application.Json)
                 accept(ContentType.Application.Json)
             }.body<RequestSystemResponse>()
+    }
+    suspend fun altinnExchangeToken(token: String) {
+        createHttpClient()
+            .get("https://platform.tt02.altinn.no/authentication/api/v1/exchange/maskinporten") {
+                bearerAuth(token)
+                contentType(ContentType.Application.Json)
+                accept(ContentType.Application.Json)
+            }.body<String>()
     }
 }
