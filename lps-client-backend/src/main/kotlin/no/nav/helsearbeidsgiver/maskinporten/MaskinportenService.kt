@@ -7,8 +7,6 @@ import no.nav.helsearbeidsgiver.maskinportenPrivateKey
 import no.nav.helsearbeidsgiver.maskinportenTokenEndpoint
 
 class MaskinportenService {
-    private val httpClient = createHttpClient()
-
     fun getMaskinportenTokenForSystembruker(
         orgNr: String,
         scope: String,

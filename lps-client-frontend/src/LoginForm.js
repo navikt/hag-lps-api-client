@@ -7,7 +7,7 @@ function LoginForm() {
     const [formData, setFormData] = useState({orgnr: ''});
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const [confirm, setConfirm] = useState(null);
+
     const handleInputChange = (e) => {
         setFormData({
             ...formData,
@@ -46,18 +46,14 @@ function LoginForm() {
                 },
             });
             if (!!response.data.confirmUrl) {
-                setConfirm(true);
-                localStorage.setItem(formData.orgnr + '_confirmUrl', response.data.confirmUrl);
                 window.open(response.data.confirmUrl, '_blank');
 
             } else {
                 throw Error("Klarte ikke hente bekreftelses-url fra registreringsrespons.")
             }
         } catch (error) {
-            if (localStorage.getItem(formData.orgnr + '_confirmUrl')) {
-
-            }
-            setError('Noe gikk galt da vi skulle registrere din bedrift som ny kunde. Det kan skyldes at den allerede er registrert.');
+            console.log('Error:', error);
+            setError('Noe gikk galt da vi skulle registrere din bedrift som ny kunde. Det kan skyldes at den allerede er registrert.' + error.message);
         }
     };
 
@@ -82,13 +78,7 @@ function LoginForm() {
                     Registrer ny bedrift
                 </Button>
             </Box>
-            {confirm && (
-                <Box mt={2}>
-                    <Link href={localStorage.getItem(formData.orgnr + '_confirmUrl')} target="_blank" rel="noopener">
-                        sjekk om du er registrert
-                    </Link>
-                </Box>
-            )}
+
         </Box>
     );
 }

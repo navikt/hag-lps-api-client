@@ -16,9 +16,10 @@ import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
 import no.nav.helsearbeidsgiver.utils.logger
 
 fun Application.configureSystembrukerRouting(maskinportenService: MaskinportenService) {
+    val altinnService = AltinnService()
     routing {
         swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.json")
-        registrerNyBedrift(maskinportenService)
+        registrerNyBedrift(altinnService)
         hentSystembruker(maskinportenService)
         singlePageApplication {
             useResources = true
@@ -56,7 +57,7 @@ private fun Routing.hentSystembruker(maskinportenService: MaskinportenService) {
     }
 }
 
-private fun Routing.registrerNyBedrift(maskinportenService: MaskinportenService) {
+private fun Routing.registrerNyBedrift(altinnService: AltinnService) {
     post("/registrer-ny-bedrift") {
         val parametre = call.receiveParameters()
         val kundeOrgnr =
@@ -67,13 +68,7 @@ private fun Routing.registrerNyBedrift(maskinportenService: MaskinportenService)
 
         logger().info("Prøver å registrere bedriften med orgnr: $kundeOrgnr som ny kunde.")
         try {
-            val maskinportenToken =
-                maskinportenService
-                    .getSimpleMaskinportenTokenForScope("altinn:authentication/systemuser.request.write")
-                    .fetchNewAccessToken()
-                    .tokenResponse.accessToken
-
-            val systemBrukerForespoerselRespons = AltinnService().lagSystembrukerForespoersel(kundeOrgnr, maskinportenToken)
+            val systemBrukerForespoerselRespons = altinnService.lagSystembrukerForespoersel(kundeOrgnr)
             logger().info(
                 "Registrerte bedriften med orgnr: ${systemBrukerForespoerselRespons.redirectUrl} and ${systemBrukerForespoerselRespons.status} and ${systemBrukerForespoerselRespons.confirmUrl}",
             )

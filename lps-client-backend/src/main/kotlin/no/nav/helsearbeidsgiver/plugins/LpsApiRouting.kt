@@ -42,22 +42,6 @@ private fun Routing.inntektsmeldinger(lpsClient: LpsClient) {
     }
 }
 
-private fun Routing.forespoersler(maskinportenService: MaskinportenService) {
-    post("/forespoersler") {
-        val params = call.receiveParameters()
-
-        val consumerOrgNr =
-            params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
-
-        try {
-            val forespoerseler = maskinportenService.getMaskinportenTokenForOrgNr(consumerOrgNr)
-            call.respond(HttpStatusCode.OK, forespoerseler)
-        } catch (e: Exception) {
-            call.respond(HttpStatusCode.InternalServerError, "Feilet å hente Forespørseler: ${e.message}")
-        }
-    }
-}
-
 private fun Routing.filtererInntektsmeldinger(lpsClient: LpsClient) {
     post("/filterInntektsmeldinger") {
         val params = call.receiveParameters()
