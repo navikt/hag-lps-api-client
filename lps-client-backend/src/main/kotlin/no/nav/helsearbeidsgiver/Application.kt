@@ -19,10 +19,6 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    /*    install(CallLogging) {
-            level = Level.INFO
-            filter { call -> call.request.path().startsWith("/") }
-        }*/
 
     install(ContentNegotiation) {
         json(

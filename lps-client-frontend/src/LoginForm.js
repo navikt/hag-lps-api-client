@@ -78,7 +78,6 @@ function LoginForm() {
                     Registrer ny bedrift
                 </Button>
             </Box>
-
         </Box>
     );
 }
