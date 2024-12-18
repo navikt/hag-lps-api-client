@@ -15,7 +15,7 @@ function App() {
           TigerSys
         </Typography>
         <Typography variant="subtitle1" align="center" gutterBottom>
-          Ditt lønns og personalsystem
+          Ditt lønns- og personalsystem
         </Typography>
         <Routes>
           <Route path="/" element={<LoginForm />} />
