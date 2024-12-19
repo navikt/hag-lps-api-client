@@ -30,7 +30,6 @@ function LoginForm() {
 
             navigate('/search');
         } catch (error) {
-            console.log('Error:', error);
             setError(error.response.data);
         }
     };
@@ -52,7 +51,6 @@ function LoginForm() {
                 throw Error("Klarte ikke hente bekreftelses-url fra registreringsrespons.")
             }
         } catch (error) {
-            console.log('Error:', error);
             setError('Noe gikk galt da vi skulle registrere din bedrift som ny kunde. Det kan skyldes at den allerede er registrert.' + error.message);
         }
     };
