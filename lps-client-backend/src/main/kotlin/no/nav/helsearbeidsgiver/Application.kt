@@ -5,14 +5,13 @@ import io.ktor.http.HttpMethod
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
-import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
-import io.ktor.server.request.path
 import kotlinx.serialization.json.Json
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
-import no.nav.helsearbeidsgiver.plugins.configureRouting
-import org.slf4j.event.Level
+import no.nav.helsearbeidsgiver.plugins.configureLpsApiRouting
+import no.nav.helsearbeidsgiver.plugins.configureSystembrukerRouting
+import no.nav.helsearbeidsgiver.plugins.configureTokenRouting
 
 fun main(args: Array<String>) {
     io.ktor.server.netty.EngineMain
@@ -20,11 +19,6 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    install(CallLogging) {
-        level = Level.INFO
-        filter { call -> call.request.path().startsWith("/") }
-    }
-
     install(ContentNegotiation) {
         json(
             Json {
@@ -35,7 +29,10 @@ fun Application.module() {
         )
     }
 
-    configureRouting(MaskinportenService())
+    val maskinportenService = MaskinportenService()
+    configureSystembrukerRouting(maskinportenService)
+    configureTokenRouting(maskinportenService)
+    configureLpsApiRouting(maskinportenService)
     configureCORS()
 }
 

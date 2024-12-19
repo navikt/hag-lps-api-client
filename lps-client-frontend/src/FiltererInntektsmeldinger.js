@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { TextField, Button, Box, Alert, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import React, {useState} from 'react';
+import {TextField, Button, Box, Alert, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from '@mui/material';
+import {DateTimePicker, LocalizationProvider} from '@mui/x-date-pickers';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { checkAndRefreshToken } from './utils';
+import {useNavigate} from 'react-router-dom';
+import {checkAndRefreshToken} from './utils';
 
 function FiltererInntektsmeldinger() {
-    const [secondFormData, setSecondFormData] = useState({ forespoerselid: '', fnr: '', datoFra: null, datoTil: null });
+    const [secondFormData, setSecondFormData] = useState({forespoerselid: '', fnr: '', datoFra: null, datoTil: null});
     const [error, setError] = useState(null);
     const [results, setResults] = useState(null);
     const navigate = useNavigate();
@@ -40,7 +40,7 @@ function FiltererInntektsmeldinger() {
             });
             setResults(response.data);
         } catch (error) {
-            console.log(error.response.data);
+
             setError(error.response.data);
         }
     };
@@ -52,9 +52,9 @@ function FiltererInntektsmeldinger() {
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Box sx={{ width: '100%', mt: 4 }}>
+            <Box sx={{width: '100%', mt: 4}}>
                 {error && <Alert severity="error">{error}</Alert>}
-                <Box component="form" noValidate autoComplete="off" sx={{ mb: 4 }}>
+                <Box component="form" noValidate autoComplete="off" sx={{mb: 4}}>
                     <Box display="flex" flexWrap="wrap" gap={2}>
                         <Box flex={1} minWidth={200}>
                             <TextField
@@ -79,7 +79,7 @@ function FiltererInntektsmeldinger() {
                                 label="Dato Fra"
                                 value={secondFormData.datoFra ? dayjs(secondFormData.datoFra) : null}
                                 onChange={(date) => handleDateChange('datoFra', date)}
-                                renderInput={(params) => <TextField {...params} fullWidth />}
+                                renderInput={(params) => <TextField {...params} fullWidth/>}
                             />
                         </Box>
                         <Box flex={1} minWidth={200}>
@@ -87,7 +87,7 @@ function FiltererInntektsmeldinger() {
                                 label="Dato Til"
                                 value={secondFormData.datoTil ? dayjs(secondFormData.datoTil) : null}
                                 onChange={(date) => handleDateChange('datoTil', date)}
-                                renderInput={(params) => <TextField {...params} fullWidth />}
+                                renderInput={(params) => <TextField {...params} fullWidth/>}
                             />
                         </Box>
                         <Box flex={1} minWidth={200}>
@@ -97,13 +97,13 @@ function FiltererInntektsmeldinger() {
                         </Box>
                         <Box flex={1} minWidth={200}>
                             <Button variant="contained" color="secondary" onClick={handleLogout} fullWidth>
-                                Log ut
+                                Logg ut
                             </Button>
                         </Box>
                     </Box>
                 </Box>
                 {results && (
-                    <TableContainer component={Paper} sx={{ width: '100%', overflowX: 'auto' }}>
+                    <TableContainer component={Paper} sx={{width: '100%', overflowX: 'auto'}}>
                         <Table>
                             <TableHead>
                                 <TableRow>
