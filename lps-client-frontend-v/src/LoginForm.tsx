@@ -18,7 +18,8 @@ function LoginForm() {
     const handleSubmit = async () => {
         setError(null);
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/systembruker`, new URLSearchParams(formData), {
+
+            const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BASE_URL}/systembruker`, new URLSearchParams(formData), {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
@@ -30,7 +31,7 @@ function LoginForm() {
 
             navigate('/search');
         } catch (error) {
-            setError(error.response.data);
+            setError(error?.response?.data || "Noe gikk galt.");
         }
     };
 

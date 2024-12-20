@@ -13,7 +13,7 @@ jobs:
     name: Build, push and deploy
     runs-on: ubuntu-latest
     env:
-      REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
+      VITE_REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
     permissions:
       contents: read
       id-token: write
@@ -22,11 +22,11 @@ jobs:
 
       - name: Install frontend dependencies
         run: npm install
-        working-directory: ./lps-client-frontend
+        working-directory: ./lps-client-frontend-v
 
       - name: Build frontend
         run: npm run build
-        working-directory: ./lps-client-frontend
+        working-directory: ./lps-client-frontend-v
 
       - uses: actions/setup-java@v4
         with:
