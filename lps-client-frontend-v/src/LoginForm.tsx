@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Box, Button, TextField} from '@mui/material';
+import { Button, Box, BodyLong, VStack, TextField, Alert} from "@navikt/ds-react";
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 
@@ -57,23 +57,21 @@ function LoginForm() {
     };
 
     return (
-        <Box sx={{maxWidth: 400, mx: 'auto', mt: 4}}>
-            {error && <Alert severity="error">{error}</Alert>}
-            <Box component="form" noValidate autoComplete="true">
+        <Box >
+            {error && <Alert variant="error">{error}</Alert>}
+            <Box >
                 <TextField
                     label="Consumer orgnr"
                     name="orgnr"
                     value={formData.orgnr}
                     onChange={handleInputChange}
-                    fullWidth
-                    margin="normal"
                 />
-                <Button variant="contained" color="primary" onClick={handleSubmit} fullWidth>
-                    Login
+                <Button variant="primary" onClick={handleSubmit} >
+                    Logg inn
                 </Button>
             </Box>
-            <Box mt={2}>
-                <Button variant="contained" color="secondary" onClick={handleRegistrerNyBedrift} fullWidth>
+            <Box >
+                <Button variant="secondary" onClick={handleRegistrerNyBedrift} >
                     Registrer ny bedrift
                 </Button>
             </Box>
