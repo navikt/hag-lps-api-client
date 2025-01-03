@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import { Button, Box, BodyLong, VStack, TextField, Alert} from "@navikt/ds-react";
+import React, { useState } from 'react';
+import { Alert, Box, Button, TextField, VStack } from "@navikt/ds-react";
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {
     const [formData, setFormData] = useState({orgnr: ''});
@@ -57,24 +57,34 @@ function LoginForm() {
     };
 
     return (
-        <Box >
+        <Box
+            style={{width: 400, marginLeft: "auto", marginRight: "auto"}}
+        >
+
+
+            <VStack gap="4" justify="center">
             {error && <Alert variant="error">{error}</Alert>}
-            <Box >
+
                 <TextField
-                    label="Consumer orgnr"
+                    label="Orgnr"
                     name="orgnr"
                     value={formData.orgnr}
                     onChange={handleInputChange}
+                    maxLength={9}
+                    style={{maxWidth: 110}}
                 />
+
+
                 <Button variant="primary" onClick={handleSubmit} >
                     Logg inn
                 </Button>
-            </Box>
-            <Box >
-                <Button variant="secondary" onClick={handleRegistrerNyBedrift} >
+
+                <Button variant="secondary" onClick={handleRegistrerNyBedrift}>
                     Registrer ny bedrift
                 </Button>
-            </Box>
+
+
+            </VStack>
         </Box>
     );
 }
