@@ -10,7 +10,7 @@ function Velkommen() {
     };
 
     return (
-        <VStack gap="5" align="center" justify="center">
+        <VStack gap="5" justify="center">
             <Box>
                 <Heading size="small" spacing>
                     Velkommen!
@@ -25,7 +25,7 @@ function Velkommen() {
                 </BodyShort>
             </Box>
 
-            <Button onClick={handleGaaTilForsiden}>
+            <Button onClick={handleGaaTilForsiden} style={{maxWidth: 340}}>
                 Gå til forsiden
             </Button>
         </VStack>

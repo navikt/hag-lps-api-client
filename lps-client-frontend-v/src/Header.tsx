@@ -6,10 +6,12 @@ function Header() {
     return (
         <Box padding="4" background="gray-100">
             <HStack gap="12" align="center">
-                <img src={logo} alt="Logo"
-                     style={{maxWidth: '150px'}}/>
+                <Box style={{marginLeft: 72}}>
+                    <img src={logo} alt="Logo"
+                         style={{maxWidth: '150px'}}/>
+                </Box>
                 <Heading size="medium">
-                    TigerSys lønns- og personalsystem
+                TigerSys lønns- og personalsystem
                 </Heading>
 
             </HStack>

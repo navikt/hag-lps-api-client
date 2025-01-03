@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Box, Button, TextField, VStack } from "@navikt/ds-react";
+import { Alert, BodyShort, Box, Button, Heading, TextField, VStack } from "@navikt/ds-react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -57,13 +57,12 @@ function LoginForm() {
     };
 
     return (
-        <Box
-            style={{width: 400, marginLeft: "auto", marginRight: "auto"}}
-        >
-
 
             <VStack gap="4" justify="center">
-            {error && <Alert variant="error">{error}</Alert>}
+                <Heading size="medium">
+                    Logg inn for å ta i bruk systemet
+                </Heading>
+                {error && <Alert variant="error">{error}</Alert>}
 
                 <TextField
                     label="Orgnr"
@@ -75,17 +74,16 @@ function LoginForm() {
                 />
 
 
-                <Button variant="primary" onClick={handleSubmit} >
+                <Button variant="primary" onClick={handleSubmit} style={{maxWidth: 340}}>
                     Logg inn
                 </Button>
 
-                <Button variant="secondary" onClick={handleRegistrerNyBedrift}>
+                <Button variant="secondary" onClick={handleRegistrerNyBedrift} style={{maxWidth: 340}}>
                     Registrer ny bedrift
                 </Button>
 
-
             </VStack>
-        </Box>
+
     );
 }
 
