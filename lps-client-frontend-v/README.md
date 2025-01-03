@@ -27,7 +27,7 @@ npm start
 
 ## Building
 
-Denne applikasjonen er bygget med [Create React App](https://create-react-app.dev/). For å bygge applikasjonen kjører du:
+Denne applikasjonen er bygget med Vite. For å bygge applikasjonen kjører du:
 ```bash
 npm run build
 ```
