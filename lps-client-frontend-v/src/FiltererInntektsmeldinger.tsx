@@ -32,7 +32,7 @@ function FiltererInntektsmeldinger() {
             setError(null);
             await checkAndRefreshToken();
             const token = localStorage.getItem('token');
-            const response = await axios.post('https://hag-lps-api-client.ekstern.dev.nav.no/filterInntektsmeldingerToken', secondFormData, {
+            const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BASE_URL}/filterInntektsmeldingerToken`, secondFormData, {
                 headers: {
                     "authorization": `${token}`,
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -40,7 +40,6 @@ function FiltererInntektsmeldinger() {
             });
             setResults(response.data);
         } catch (error) {
-            console.log(error.response.data);
             setError(error.response.data);
         }
     };
@@ -97,7 +96,7 @@ function FiltererInntektsmeldinger() {
                         </Box>
                         <Box flex={1} minWidth={200}>
                             <Button variant="contained" color="secondary" onClick={handleLogout} fullWidth>
-                                Log ut
+                                Logg ut
                             </Button>
                         </Box>
                     </Box>
