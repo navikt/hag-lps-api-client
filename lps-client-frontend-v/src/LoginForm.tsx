@@ -73,7 +73,6 @@ function LoginForm() {
                     style={{maxWidth: 110}}
                 />
 
-
                 <Button variant="primary" onClick={handleSubmit} style={{maxWidth: 340}}>
                     Logg inn
                 </Button>
@@ -81,7 +80,6 @@ function LoginForm() {
                 <Button variant="secondary" onClick={handleRegistrerNyBedrift} style={{maxWidth: 340}}>
                     Registrer ny bedrift
                 </Button>
-
             </VStack>
 
     );

@@ -13,7 +13,6 @@ function Header() {
                 <Heading size="medium">
                 TigerSys – Et helt greit lønns- og personalsystem
                 </Heading>
-
             </HStack>
         </Box>
     );
