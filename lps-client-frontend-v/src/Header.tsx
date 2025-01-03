@@ -11,7 +11,7 @@ function Header() {
                          style={{maxWidth: '150px'}}/>
                 </Box>
                 <Heading size="medium">
-                TigerSys lønns- og personalsystem
+                TigerSys – Et helt greit lønns- og personalsystem
                 </Heading>
 
             </HStack>

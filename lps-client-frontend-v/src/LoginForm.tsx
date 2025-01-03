@@ -60,7 +60,7 @@ function LoginForm() {
 
             <VStack gap="4" justify="center">
                 <Heading size="medium">
-                    Logg inn for å ta i bruk systemet
+                    Logg inn og sett i gang!
                 </Heading>
                 {error && <Alert variant="error">{error}</Alert>}
 
