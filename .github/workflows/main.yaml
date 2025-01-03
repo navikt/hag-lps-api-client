@@ -14,10 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       VITE_REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
+      NPM_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
     permissions:
       contents: read
       id-token: write
     steps:
+      - uses: actions/setup-node@v4
+        with:
+          registry-url: 'https://npm.pkg.github.com'
       - uses: actions/checkout@v4
 
       - name: Install frontend dependencies
