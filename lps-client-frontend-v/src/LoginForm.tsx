@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {Alert, Box, Button, TextField} from '@mui/material';
+import React, { useState } from 'react';
+import { Alert, BodyShort, Box, Button, Heading, TextField, VStack } from "@navikt/ds-react";
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {
     const [formData, setFormData] = useState({orgnr: ''});
@@ -18,7 +18,8 @@ function LoginForm() {
     const handleSubmit = async () => {
         setError(null);
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/systembruker`, new URLSearchParams(formData), {
+
+            const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BASE_URL}/systembruker`, new URLSearchParams(formData), {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
@@ -30,7 +31,7 @@ function LoginForm() {
 
             navigate('/search');
         } catch (error) {
-            setError(error.response.data);
+            setError(error?.response?.data || "Noe gikk galt.");
         }
     };
 
@@ -56,27 +57,31 @@ function LoginForm() {
     };
 
     return (
-        <Box sx={{maxWidth: 400, mx: 'auto', mt: 4}}>
-            {error && <Alert severity="error">{error}</Alert>}
-            <Box component="form" noValidate autoComplete="true">
+
+            <VStack gap="4" justify="center">
+                <Heading size="medium">
+                    Logg inn og sett i gang!
+                </Heading>
+                {error && <Alert variant="error">{error}</Alert>}
+
                 <TextField
-                    label="Consumer orgnr"
+                    label="Orgnr"
                     name="orgnr"
                     value={formData.orgnr}
                     onChange={handleInputChange}
-                    fullWidth
-                    margin="normal"
+                    maxLength={9}
+                    style={{maxWidth: 110}}
                 />
-                <Button variant="contained" color="primary" onClick={handleSubmit} fullWidth>
-                    Login
+
+                <Button variant="primary" onClick={handleSubmit} style={{maxWidth: 340}}>
+                    Logg inn
                 </Button>
-            </Box>
-            <Box mt={2}>
-                <Button variant="contained" color="secondary" onClick={handleRegistrerNyBedrift} fullWidth>
+
+                <Button variant="secondary" onClick={handleRegistrerNyBedrift} style={{maxWidth: 340}}>
                     Registrer ny bedrift
                 </Button>
-            </Box>
-        </Box>
+            </VStack>
+
     );
 }
 
