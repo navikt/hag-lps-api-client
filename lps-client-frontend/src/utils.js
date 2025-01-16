@@ -9,7 +9,7 @@ export const checkAndRefreshToken = async () => {
             orgnr: localStorage.getItem('orgnr')
         };
         console.log("henter nytt token");
-        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/systembruker`, new URLSearchParams(formData), {
+        const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BASE_URL}/systembruker`, new URLSearchParams(formData), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
