@@ -46,13 +46,13 @@ function LoginForm() {
                 },
             });
             if (!!response.data.confirmUrl) {
-                window.open(response.data.confirmUrl, '_blank');
+                window.location.href = response.data.confirmUrl;
 
             } else {
                 throw Error("Klarte ikke hente bekreftelses-url fra registreringsrespons.")
             }
         } catch (error) {
-            setError('Noe gikk galt da vi skulle registrere din bedrift som ny kunde. Det kan skyldes at den allerede er registrert.' + error.message);
+            setError('Noe gikk galt da vi skulle registrere din bedrift som ny kunde. Det kan skyldes at den allerede er registrert. ' + error.message);
         }
     };
 
