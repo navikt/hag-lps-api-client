@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, BodyShort, Box, Button, Heading, TextField, VStack } from "@navikt/ds-react";
+import { Alert, Button, Heading, TextField, VStack } from "@navikt/ds-react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,7 +38,7 @@ function LoginForm() {
     const handleRegistrerNyBedrift = async () => {
         setError(null);
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/registrer-ny-bedrift`, {
+            const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BASE_URL}/registrer-ny-bedrift`, {
                 kundeOrgnr: formData.orgnr,
             }, {
                 headers: {
