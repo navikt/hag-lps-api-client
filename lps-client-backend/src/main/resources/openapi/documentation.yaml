@@ -1,19 +1,21 @@
 openapi: "3.1.0"
 info:
-  title: "hag_lps_api_client API"
-  description: "hag_lps_api_client API"
+  title: "Tigersys API"
+  description: "Api for å registrere ny bedrift og hente systembruker token"
   version: "1.0.0"
-
 paths:
   /registrer-ny-bedrift:
     post:
       description: ""
-      parameters:
-        - name: "kundeOrgnr"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                kundeOrgnr:
+                  type: string
       responses:
         "400":
           description: "Bad Request"
@@ -41,8 +43,9 @@ paths:
                   value: ""
   /systembruker:
     post:
-      description: ""
+      description: "Henter systembruker token for en gitt orgnr"
       requestBody:
+        required: true
         content:
           application/x-www-form-urlencoded:
             schema:
@@ -50,7 +53,6 @@ paths:
               properties:
                 orgnr:
                   type: string
-                  description: Orgnr til bedriften
       responses:
         "400":
           description: "Bad Request"
@@ -60,7 +62,7 @@ paths:
                 type: "string"
               examples:
                 Example#1:
-                  value: "Mangler 'orgnr' parameter"
+                  value: "Missing 'orgnr' parameter"
         "200":
           description: "OK"
           content:
@@ -76,305 +78,6 @@ paths:
               examples:
                 Example#1:
                   value: ""
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
-  /token:
-    get:
-      description: ""
-      parameters:
-        - name: "scope"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-      responses:
-        "400":
-          description: "Bad Request"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Mangler 'scope' parameter"
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/TokenResponseWrapper"
-  /token/altinn:
-    get:
-      description: ""
-      parameters:
-        - name: "scope"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-      responses:
-        "400":
-          description: "Bad Request"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Mangler 'scope' parameter"
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/Unit"
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-  /token/consumer:
-    get:
-      description: ""
-      parameters:
-        - name: "scope"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-        - name: "consumerOrgNr"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-      responses:
-        "400":
-          description: "Bad Request"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Mangler 'consumerOrgNr' parameter"
-                Example#2:
-                  value: "Mangler 'scope' parameter"
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
-  /filterForespoersler:
-    post:
-      description: ""
-      parameters:
-        - name: "consumerOrgNr"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-        - name: "fnr"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-        - name: "forespoerselId"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-        - name: "status"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-      responses:
-        "400":
-          description: "Bad Request"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Mangler 'consumerOrgNr' parameter"
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ForespoerselResponse"
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
-  /filterInntektsmeldinger:
-    post:
-      description: ""
-      parameters:
-        - name: "consumerOrgNr"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-        - name: "fnr"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-        - name: "forespoerselId"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-        - name: "datoFra"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-        - name: "datoTil"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-      responses:
-        "400":
-          description: "Bad Request"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Mangler 'consumerOrgNr' parameter"
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/InntektsmeldingResponse"
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
-  /filterInntektsmeldingerToken:
-    post:
-      description: ""
-      parameters:
-        - name: "fnr"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-        - name: "forespoerselId"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-        - name: "datoFra"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-        - name: "datoTil"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-        - name: "Authorization"
-          in: "header"
-          required: false
-          schema:
-            type: "string"
-      responses:
-        "400":
-          description: "Bad Request"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Mangler 'Authorization' header"
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/InntektsmeldingResponse"
-        "404":
-          description: "Not Found"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Ingen inntektsmeldinger funnet"
-        "500":
-          description: "Internal Server Error"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: ""
-  /inntektsmeldinger:
-    post:
-      description: ""
-      parameters:
-        - name: "consumerOrgNr"
-          in: "query"
-          required: false
-          schema:
-            type: "string"
-      responses:
-        "400":
-          description: "Bad Request"
-          content:
-            '*/*':
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Mangler 'consumerOrgNr' parameter"
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                type: "array"
-                items:
-                  $ref: "#/components/schemas/Inntektsmelding"
         "500":
           description: "Internal Server Error"
           content:
@@ -415,79 +118,3 @@ components:
           $ref: "#/components/schemas/TokenResponse"
       required:
         - "tokenResponse"
-    Unit:
-      type: "object"
-      properties: { }
-    JsonObject:
-      type: "object"
-      properties: { }
-    Forespoersel:
-      type: "object"
-      properties:
-        forespoerselId:
-          type: "string"
-        orgnr:
-          type: "string"
-        fnr:
-          type: "string"
-        status:
-          type: "string"
-          enum:
-            - "AKTIV"
-            - "MOTTATT"
-            - "FORKASTET"
-        dokument:
-          $ref: "#/components/schemas/JsonObject"
-      required:
-        - "forespoerselId"
-        - "orgnr"
-        - "fnr"
-        - "status"
-        - "dokument"
-    ForespoerselResponse:
-      type: "object"
-      properties:
-        antallForespoersler:
-          type: "integer"
-          format: "int32"
-        forespoerseler:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Forespoersel"
-      required:
-        - "antallForespoersler"
-        - "forespoerseler"
-    Inntektsmelding:
-      type: "object"
-      properties:
-        dokument:
-          $ref: "#/components/schemas/JsonObject"
-        orgnr:
-          type: "string"
-        fnr:
-          type: "string"
-        foresporselid:
-          type: "string"
-        innsendt:
-          type: "string"
-        mottattEvent:
-          type: "string"
-      required:
-        - "dokument"
-        - "orgnr"
-        - "fnr"
-        - "innsendt"
-        - "mottattEvent"
-    InntektsmeldingResponse:
-      type: "object"
-      properties:
-        antallInntektsmeldinger:
-          type: "integer"
-          format: "int32"
-        inntektsmeldinger:
-          type: "array"
-          items:
-            $ref: "#/components/schemas/Inntektsmelding"
-      required:
-        - "antallInntektsmeldinger"
-        - "inntektsmeldinger"

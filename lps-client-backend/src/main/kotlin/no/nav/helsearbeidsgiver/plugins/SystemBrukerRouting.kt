@@ -5,6 +5,7 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.server.http.content.singlePageApplication
 import io.ktor.server.plugins.swagger.swaggerUI
+import io.ktor.server.request.receive
 import io.ktor.server.request.receiveParameters
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
@@ -18,7 +19,7 @@ import no.nav.helsearbeidsgiver.utils.logger
 fun Application.configureSystembrukerRouting(maskinportenService: MaskinportenService) {
     val altinnService = AltinnService()
     routing {
-        swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.json")
+        swaggerUI(path = "swagger", swaggerFile = "openapi/documentation.yaml")
         registrerNyBedrift(altinnService)
         hentSystembruker(maskinportenService)
         singlePageApplication {
@@ -30,9 +31,13 @@ fun Application.configureSystembrukerRouting(maskinportenService: MaskinportenSe
 }
 
 private fun Routing.hentSystembruker(maskinportenService: MaskinportenService) {
+    // Henter systembruker token for en gitt orgnr
     post("/systembruker") {
-        val params = call.receiveParameters()
-        val orgnr = params["orgnr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'orgnr' parameter")
+        val parameters = call.receiveParameters()
+        val orgnr = parameters["orgnr"] ?: return@post call.respond(
+            HttpStatusCode.BadRequest,
+            "Missing 'orgnr' parameter"
+        )
 
         try {
             val systemBrukerClaim =
