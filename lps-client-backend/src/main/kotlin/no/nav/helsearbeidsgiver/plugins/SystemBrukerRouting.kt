@@ -5,7 +5,6 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.server.http.content.singlePageApplication
 import io.ktor.server.plugins.swagger.swaggerUI
-import io.ktor.server.request.receive
 import io.ktor.server.request.receiveParameters
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
@@ -34,10 +33,11 @@ private fun Routing.hentSystembruker(maskinportenService: MaskinportenService) {
     // Henter systembruker token for en gitt orgnr
     post("/systembruker") {
         val parameters = call.receiveParameters()
-        val orgnr = parameters["orgnr"] ?: return@post call.respond(
-            HttpStatusCode.BadRequest,
-            "Missing 'orgnr' parameter"
-        )
+        val orgnr =
+            parameters["orgnr"] ?: return@post call.respond(
+                HttpStatusCode.BadRequest,
+                "Missing 'orgnr' parameter",
+            )
 
         try {
             val systemBrukerClaim =
