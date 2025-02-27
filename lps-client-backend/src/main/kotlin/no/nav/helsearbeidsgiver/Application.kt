@@ -10,6 +10,7 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import kotlinx.serialization.json.Json
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
+import no.nav.helsearbeidsgiver.plugins.configureAltinnEventRouting
 import no.nav.helsearbeidsgiver.plugins.configureLpsApiRouting
 import no.nav.helsearbeidsgiver.plugins.configureSystembrukerRouting
 import no.nav.helsearbeidsgiver.plugins.configureTokenRouting
@@ -33,6 +34,7 @@ fun Application.module() {
     configureSystembrukerRouting(maskinportenService)
     configureTokenRouting(maskinportenService)
     configureLpsApiRouting(maskinportenService)
+    configureAltinnEventRouting()
     configureCORS()
 }
 
