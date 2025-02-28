@@ -22,11 +22,10 @@ private fun Routing.mottaDialogportenEvent() {
             if (call.request.origin.remoteAddress != "20.100.24.41/32") {
                 logger().info("Mottok Dialogporten event fra en annen IP enn forventet")
                 call.respond(HttpStatusCode.Forbidden, "Forbidden")
+            } else {
+                logger().info("Mottok Dialogporten event fra forventet IP")
+                call.respond(HttpStatusCode.OK)
             }
-
-            logger().info("Mottok Dialogporten event fra forventet IP")
-
-            call.respond(HttpStatusCode.OK)
         } catch (e: Exception) {
             logger().error("Feil ved mottak av Dialogporten event", e)
             call.respond(HttpStatusCode.InternalServerError, "Klarte ikke motta dialogporten event")
