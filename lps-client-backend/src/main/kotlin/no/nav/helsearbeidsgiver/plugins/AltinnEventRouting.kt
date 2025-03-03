@@ -19,7 +19,7 @@ private fun Routing.mottaDialogportenEvent() {
     post("/dialogporten-event") {
         try {
             logger().info("Mottok Dialogporten event fra forventet IP")
-                call.respond(HttpStatusCode.OK)
+            call.respond(HttpStatusCode.OK)
         } catch (e: Exception) {
             logger().error("Feil ved mottak av Dialogporten event", e)
             call.respond(HttpStatusCode.InternalServerError, "Klarte ikke motta dialogporten event")
