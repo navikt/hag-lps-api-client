@@ -54,25 +54,25 @@ data class Periode(
 )
 
 @Serializable
-data class Inntektsmelding(
+data class InnsendtInntektsmelding(
     val dokument: JsonObject,
     val orgnr: String,
     val fnr: String,
-    val foresporselid: String?,
-    val innsendt: String,
-    val mottattEvent: String,
+    val foresporsel_id: String?,
+    val innsendt_tid: String,
+    val mottatt_tid: String,
 )
 
 @Serializable
 data class InntektsmeldingRequest(
     val fnr: String? = null,
-    val foresporselid: String? = null,
-    val datoFra: LocalDateTime? = null,
-    val datoTil: LocalDateTime? = null,
+    val foresporsel_id: String? = null,
+    val fra_dato: LocalDateTime? = null,
+    val til_dato: LocalDateTime? = null,
 )
 
 @Serializable
 data class InntektsmeldingResponse(
-    val antallInntektsmeldinger: Int = 0,
-    val inntektsmeldinger: List<Inntektsmelding>,
+    val antall: Int = 0,
+    val inntektsmeldinger: List<InnsendtInntektsmelding>,
 )
