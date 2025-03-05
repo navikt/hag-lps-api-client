@@ -27,7 +27,6 @@ spec:
       consumes:
         - name: "altinn:authentication/systemregister.write"
         - name: "altinn:authentication/systemuser.request.write"
-        - name: "altinn:events.subscribe"
         - name: "nav:helse/im.read"
 
   accessPolicy:
