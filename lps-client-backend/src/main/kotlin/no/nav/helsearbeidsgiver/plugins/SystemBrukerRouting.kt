@@ -38,13 +38,15 @@ private fun Routing.hentSystembruker(maskinportenService: MaskinportenService) {
                 HttpStatusCode.BadRequest,
                 "Missing 'orgnr' parameter",
             )
+        val scopes =
+            parameters["scopes"] ?: "nav:helse/im.read"
 
         try {
             val systemBrukerClaim =
                 maskinportenService
                     .getMaskinportenTokenForSystembruker(
                         orgnr,
-                        "nav:helse/im.read",
+                        scopes,
                     ).fetchNewAccessToken()
 
             logger().info("token: $systemBrukerClaim")
