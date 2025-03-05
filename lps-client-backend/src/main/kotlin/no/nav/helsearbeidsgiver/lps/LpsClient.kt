@@ -17,7 +17,7 @@ private const val LPS_API_ENDPOINT = "https://sykepenger-im-lps-api.ekstern.dev.
 class LpsClient(
     var maskinportenService: MaskinportenService,
 ) {
-    suspend fun hentInntektsmeldinger(consumerOrgNr: String): List<Inntektsmelding> {
+    suspend fun hentInntektsmeldinger(consumerOrgNr: String): List<InnsendtInntektsmelding> {
         val fetchNewAccessToken =
             maskinportenService.getMaskinportenTokenForOrgNr(consumerOrgNr).fetchNewAccessToken()
         val response =
@@ -26,7 +26,7 @@ class LpsClient(
                 bearerAuth(fetchNewAccessToken.tokenResponse.accessToken)
                 contentType(ContentType.Application.Json)
             }
-        return response.body<List<Inntektsmelding>>()
+        return response.body<List<InnsendtInntektsmelding>>()
     }
 
     suspend fun filtrerInntektsmeldinger(
