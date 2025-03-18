@@ -53,14 +53,14 @@ data class Periode(
     val tom: LocalDate,
 )
 
-@Serializable
-data class InnsendtInntektsmelding(
-    val dokument: JsonObject,
-    val orgnr: String,
-    val fnr: String,
-    val foresporselId: String?,
-    val innsendtTid: String,
-)
+// @Serializable
+// data class InnsendtInntektsmelding(
+//    val skjema: JsonObject,
+//    val orgnr: String,
+//    val fnr: String,
+//    val foresporselId: String?,
+//    val innsendtTid: String,
+// )
 
 @Serializable
 data class InntektsmeldingRequest(
@@ -73,5 +73,5 @@ data class InntektsmeldingRequest(
 @Serializable
 data class InntektsmeldingResponse(
     val antall: Int = 0,
-    val inntektsmeldinger: List<InnsendtInntektsmelding>,
+    val inntektsmeldinger: List<JsonObject>,
 )
