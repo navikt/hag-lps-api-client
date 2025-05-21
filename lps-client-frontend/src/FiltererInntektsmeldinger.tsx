@@ -69,7 +69,7 @@ function FiltererInntektsmeldinger() {
                             <TextField
                                 label="Fnr"
                                 name="fnr"
-                                value={secondFormData.sykmeldtFnr}
+                                value={secondFormData.fnr}
                                 onChange={handleSecondFormChange}
                                 fullWidth
                             />
