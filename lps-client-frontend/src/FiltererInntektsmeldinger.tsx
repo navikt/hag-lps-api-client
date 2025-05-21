@@ -30,6 +30,7 @@ function FiltererInntektsmeldinger() {
     const handleSecondFormSubmit = async () => {
         try {
             setError(null);
+            setResults(null);
             await checkAndRefreshToken();
             const token = localStorage.getItem('token');
             const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BASE_URL}/filterInntektsmeldingerToken`, secondFormData, {
@@ -57,7 +58,7 @@ function FiltererInntektsmeldinger() {
                     <Box display="flex" flexWrap="wrap" gap={2}>
                         <Box flex={1} minWidth={200}>
                             <TextField
-                                label="Nav_Referanse Id"
+                                label="NavReferanseId"
                                 name="navReferanseId"
                                 value={secondFormData.navReferanseId}
                                 onChange={handleSecondFormChange}
