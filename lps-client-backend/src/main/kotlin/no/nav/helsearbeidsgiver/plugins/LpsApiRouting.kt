@@ -95,8 +95,8 @@ private fun Routing.filtererInntektsmeldingerWithToken(lpsClient: LpsClient) {
     post("/filterInntektsmeldingerToken") {
         val params = call.receiveParameters()
         logger().info("filterInntektsmeldingerToken: $params")
-        val fnr = params["fnr"]?.takeIf { it.isNotBlank() }
-        val navReferanseId = params["navReferanseId"]?.takeIf { it.isNotBlank() }
+        val fnr = params["fnr"]?.takeIf { it.isNotBlank() }?.trim()
+        val navReferanseId = params["navReferanseId"]?.takeIf { it.isNotBlank() }?.trim()
         val innsendingId = params["innsendingId"]?.takeIf { it.isNotBlank() }
         val datoFra = params["datoFra"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
         val datoTil = params["datoTil"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
