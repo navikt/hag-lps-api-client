@@ -96,7 +96,7 @@ private fun Routing.filtererInntektsmeldingerWithToken(lpsClient: LpsClient) {
         val params = call.receiveParameters()
         logger().info("filterInntektsmeldingerToken: $params")
         val fnr = params["fnr"]?.takeIf { it.isNotBlank() }
-        val forespoerselId = params["forespoerselId"]?.takeIf { it.isNotBlank() }
+        val navReferanseId = params["navReferanseId"]?.takeIf { it.isNotBlank() }
         val innsendingId = params["innsendingId"]?.takeIf { it.isNotBlank() }
         val datoFra = params["datoFra"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
         val datoTil = params["datoTil"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
@@ -106,7 +106,7 @@ private fun Routing.filtererInntektsmeldingerWithToken(lpsClient: LpsClient) {
         try {
             val hentInntektsmeldinger =
                 lpsClient.filtrerInntektsmeldingerWithToken(
-                    request = InntektsmeldingRequest(fnr, innsendingId, forespoerselId, datoFra, datoTil),
+                    request = InntektsmeldingRequest(fnr, innsendingId, navReferanseId, datoFra, datoTil),
                     accessToken = authorizationHeader,
                 )
             call.respond(HttpStatusCode.OK, hentInntektsmeldinger)
