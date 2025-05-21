@@ -8,6 +8,7 @@ import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import kotlinx.serialization.json.JsonObject
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
 import no.nav.helsearbeidsgiver.utils.logger
@@ -17,7 +18,7 @@ private const val LPS_API_ENDPOINT = "https://sykepenger-im-lps-api.ekstern.dev.
 class LpsClient(
     var maskinportenService: MaskinportenService,
 ) {
-    suspend fun hentInntektsmeldinger(consumerOrgNr: String): List<InnsendtInntektsmelding> {
+    suspend fun hentInntektsmeldinger(consumerOrgNr: String): List<JsonObject> {
         val fetchNewAccessToken =
             maskinportenService.getMaskinportenTokenForOrgNr(consumerOrgNr).fetchNewAccessToken()
         val response =
@@ -26,7 +27,7 @@ class LpsClient(
                 bearerAuth(fetchNewAccessToken.tokenResponse.accessToken)
                 contentType(ContentType.Application.Json)
             }
-        return response.body<List<InnsendtInntektsmelding>>()
+        return response.body<List<JsonObject>>()
     }
 
     suspend fun filtrerInntektsmeldinger(
