@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { checkAndRefreshToken } from './utils';
 
 function FiltererInntektsmeldinger() {
-    const [secondFormData, setSecondFormData] = useState({ forespoerselid: '', fnr: '', datoFra: null, datoTil: null });
+    const [secondFormData, setSecondFormData] = useState({ navReferanseId: '', fnr: '', datoFra: null, datoTil: null });
     const [error, setError] = useState(null);
     const [results, setResults] = useState(null);
     const navigate = useNavigate();
@@ -30,6 +30,7 @@ function FiltererInntektsmeldinger() {
     const handleSecondFormSubmit = async () => {
         try {
             setError(null);
+            setResults(null);
             await checkAndRefreshToken();
             const token = localStorage.getItem('token');
             const response = await axios.post(`${import.meta.env.VITE_REACT_APP_BASE_URL}/filterInntektsmeldingerToken`, secondFormData, {
@@ -57,9 +58,9 @@ function FiltererInntektsmeldinger() {
                     <Box display="flex" flexWrap="wrap" gap={2}>
                         <Box flex={1} minWidth={200}>
                             <TextField
-                                label="Forespørsel Id"
-                                name="foresporselid"
-                                value={secondFormData.foresporselid}
+                                label="NavReferanseId"
+                                name="navReferanseId"
+                                value={secondFormData.navReferanseId}
                                 onChange={handleSecondFormChange}
                                 fullWidth
                             />
@@ -106,25 +107,23 @@ function FiltererInntektsmeldinger() {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Forespørsel Id</TableCell>
+                                    <TableCell>NavReferanseId</TableCell>
                                     <TableCell>Type</TableCell>
                                     <TableCell>Sykemeldt</TableCell>
                                     <TableCell>Organisasjonsnr</TableCell>
                                     <TableCell>Beløp</TableCell>
-                                    <TableCell>Sykmeldingsperioder</TableCell>
                                     <TableCell>Innsendt</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {results.inntektsmeldinger.map((inntektsmelding) => (
-                                    <TableRow key={inntektsmelding.dokument.id}>
-                                        <TableCell>{inntektsmelding.dokument.id}</TableCell>
-                                        <TableCell>{inntektsmelding.dokument.type.type}</TableCell>
-                                        <TableCell>{inntektsmelding.dokument.sykmeldt.fnr + ' - ' + inntektsmelding.dokument.sykmeldt.navn}</TableCell>
-                                        <TableCell>{inntektsmelding.dokument.avsender.orgnr}</TableCell>
-                                        <TableCell>{inntektsmelding.dokument.inntekt.beloep}</TableCell>
-                                        <TableCell>{inntektsmelding.dokument.sykmeldingsperioder.map((sykmeldingsperiode) => (sykmeldingsperiode.fom + ' - ' + sykmeldingsperiode.tom)).join(', ')}</TableCell>
-                                        <TableCell>{new Date(inntektsmelding.dokument.mottatt).toLocaleDateString('nb-NO')}</TableCell>
+                                    <TableRow key={inntektsmelding.navReferanseId}>
+                                        <TableCell>{inntektsmelding.navReferanseId}</TableCell>
+                                        <TableCell>{inntektsmelding.typeInnsending}</TableCell>
+                                        <TableCell>{inntektsmelding.sykmeldtFnr}</TableCell>
+                                        <TableCell>{inntektsmelding.arbeidsgiver.orgnr}</TableCell>
+                                        <TableCell>{inntektsmelding.inntekt.beloep}</TableCell>
+                                        <TableCell>{new Date(inntektsmelding.innsendtTid).toLocaleDateString('nb-NO')}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

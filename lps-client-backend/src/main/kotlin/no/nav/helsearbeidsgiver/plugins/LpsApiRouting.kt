@@ -49,7 +49,8 @@ private fun Routing.filtererInntektsmeldinger(lpsClient: LpsClient) {
         val consumerOrgNr =
             params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
         val fnr = params["fnr"]?.takeIf { it.isNotBlank() }
-        val forespoerselId = params["forespoerselId"]?.takeIf { it.isNotBlank() }
+        val innsendingId = params["innsendingId"]?.takeIf { it.isNotBlank() }
+        val navReferanseId = params["navReferanseId"]?.takeIf { it.isNotBlank() }
         val datoFra = params["datoFra"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
         val datoTil = params["datoTil"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
         logger().info("filterInntektsmeldinger: $params")
@@ -57,7 +58,7 @@ private fun Routing.filtererInntektsmeldinger(lpsClient: LpsClient) {
             val hentInntektsmeldinger =
                 lpsClient.filtrerInntektsmeldinger(
                     consumerOrgNr = consumerOrgNr,
-                    request = InntektsmeldingRequest(fnr, forespoerselId, datoFra, datoTil),
+                    request = InntektsmeldingRequest(fnr, innsendingId, navReferanseId, datoFra, datoTil),
                 )
             call.respond(HttpStatusCode.OK, hentInntektsmeldinger)
         } catch (e: Exception) {
@@ -73,14 +74,14 @@ private fun Routing.filtererForespoersler(lpsClient: LpsClient) {
         val consumerOrgNr =
             params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
         val fnr = params["fnr"]?.takeIf { it.isNotBlank() }
-        val forespoerselId = params["forespoerselId"]?.takeIf { it.isNotBlank() }
+        val navReferanseId = params["navReferanseId"]?.takeIf { it.isNotBlank() }
         val status = params["status"]?.takeIf { it.isNotBlank() }
         logger().info("filterForespoersler: $params")
         try {
             val hentForespoersler =
                 lpsClient.filtrerForespoersler(
                     consumerOrgNr,
-                    request = ForespoerselRequest(fnr, forespoerselId, status?.let { Status.valueOf(it) }),
+                    request = ForespoerselRequest(fnr, navReferanseId, status?.let { Status.valueOf(it) }),
                 )
             call.respond(HttpStatusCode.OK, hentForespoersler)
         } catch (e: Exception) {
@@ -94,8 +95,9 @@ private fun Routing.filtererInntektsmeldingerWithToken(lpsClient: LpsClient) {
     post("/filterInntektsmeldingerToken") {
         val params = call.receiveParameters()
         logger().info("filterInntektsmeldingerToken: $params")
-        val fnr = params["fnr"]?.takeIf { it.isNotBlank() }
-        val forespoerselId = params["forespoerselId"]?.takeIf { it.isNotBlank() }
+        val fnr = params["fnr"]?.takeIf { it.isNotBlank() }?.trim()
+        val navReferanseId = params["navReferanseId"]?.takeIf { it.isNotBlank() }?.trim()
+        val innsendingId = params["innsendingId"]?.takeIf { it.isNotBlank() }
         val datoFra = params["datoFra"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
         val datoTil = params["datoTil"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
         val authorizationHeader: String =
@@ -104,7 +106,7 @@ private fun Routing.filtererInntektsmeldingerWithToken(lpsClient: LpsClient) {
         try {
             val hentInntektsmeldinger =
                 lpsClient.filtrerInntektsmeldingerWithToken(
-                    request = InntektsmeldingRequest(fnr, forespoerselId, datoFra, datoTil),
+                    request = InntektsmeldingRequest(fnr, innsendingId, navReferanseId, datoFra, datoTil),
                     accessToken = authorizationHeader,
                 )
             call.respond(HttpStatusCode.OK, hentInntektsmeldinger)
