@@ -39,7 +39,7 @@ private fun Routing.hentSystembruker(maskinportenService: MaskinportenService) {
                 "Missing 'orgnr' parameter",
             )
         val scopes =
-            parameters["scopes"] ?: "nav:helse/im.read"
+            parameters["scopes"] ?: "nav:helseytelser/sykepenger"
 
         try {
             val systemBrukerClaim =
