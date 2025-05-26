@@ -38,8 +38,9 @@ class AltinnService {
                                         id = "urn:altinn:resource",
                                         value = "nav_system_sykepenger_inntektsmelding",
                                     ),
-                                )
-                        ), Right(
+                                ),
+                        ),
+                        Right(
                             action = "read",
                             resource =
                                 listOf(
@@ -47,7 +48,7 @@ class AltinnService {
                                         id = "urn:altinn:resource",
                                         value = "nav_system_sykepenger_sykmelding",
                                     ),
-                                )
+                                ),
                         ),
                         Right(
                             action = "read",
@@ -57,8 +58,8 @@ class AltinnService {
                                         id = "urn:altinn:resource",
                                         value = "nav_system_sykepenger_soknad",
                                     ),
-                                )
-                        )
+                                ),
+                        ),
                     ),
                 redirectUrl = "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen",
             )
