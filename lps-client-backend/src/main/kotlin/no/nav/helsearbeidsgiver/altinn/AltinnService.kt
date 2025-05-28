@@ -30,16 +30,16 @@ class AltinnService {
                 partyOrgNo = kundeOrgnr,
                 rights =
                     listOf(
-                        Right(
-                            action = "access",
-                            resource =
-                                listOf(
-                                    AttributePair(
-                                        id = "urn:altinn:resource",
-                                        value = "nav_system_sykepenger_inntektsmelding",
-                                    ),
-                                ),
-                        ),
+//                        Right(
+//                            action = "access",
+//                            resource =
+//                                listOf(
+//                                    AttributePair(
+//                                        id = "urn:altinn:resource",
+//                                        value = "nav_system_sykepenger_inntektsmelding",
+//                                    ),
+//                                ),
+//                        ),
                         Right(
                             action = "access",
                             resource =
