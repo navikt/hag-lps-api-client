@@ -60,6 +60,16 @@ class AltinnService {
                                     ),
                                 ),
                         ),
+                        Right(
+                            action = "access",
+                            resource =
+                                listOf(
+                                    AttributePair(
+                                        id = "urn:altinn:resource",
+                                        value = "nav_sykepenger_dialogporten",
+                                    ),
+                                ),
+                        ),
                     ),
                 redirectUrl = "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen",
             )
