@@ -36,6 +36,16 @@ class AltinnService {
                                 listOf(
                                     AttributePair(
                                         id = "urn:altinn:resource",
+                                        value = "nav_sykepenger_dialogporten",
+                                    ),
+                                ),
+                        ),
+                        Right(
+                            action = "access",
+                            resource =
+                                listOf(
+                                    AttributePair(
+                                        id = "urn:altinn:resource",
                                         value = "nav_system_sykepenger_inntektsmelding",
                                     ),
                                 ),
@@ -57,16 +67,6 @@ class AltinnService {
                                     AttributePair(
                                         id = "urn:altinn:resource",
                                         value = "nav_system_sykepenger_soknad",
-                                    ),
-                                ),
-                        ),
-                        Right(
-                            action = "access",
-                            resource =
-                                listOf(
-                                    AttributePair(
-                                        id = "urn:altinn:resource",
-                                        value = "nav_sykepenger_dialogporten",
                                     ),
                                 ),
                         ),
