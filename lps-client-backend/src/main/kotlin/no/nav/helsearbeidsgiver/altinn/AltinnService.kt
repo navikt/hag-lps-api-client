@@ -31,6 +31,16 @@ class AltinnService {
                 rights =
                     listOf(
                         Right(
+                            action = "read",
+                            resource =
+                                listOf(
+                                    AttributePair(
+                                        id = "urn:altinn:resource",
+                                        value = "nav_sykepenger_inntektsmelding-nedlasting",
+                                    ),
+                                ),
+                        ),
+                        Right(
                             action = "access",
                             resource =
                                 listOf(
