@@ -31,7 +31,7 @@ class AltinnService {
                 rights =
                     listOf(
                         Right(
-                            action = "access",
+                            action = "read",
                             resource =
                                 listOf(
                                     AttributePair(
