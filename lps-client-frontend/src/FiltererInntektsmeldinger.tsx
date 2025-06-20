@@ -116,7 +116,7 @@ function FiltererInntektsmeldinger() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {results.inntektsmeldinger.map((inntektsmelding) => (
+                                {results.map((inntektsmelding) => (
                                     <TableRow key={inntektsmelding.navReferanseId}>
                                         <TableCell>{inntektsmelding.navReferanseId}</TableCell>
                                         <TableCell>{inntektsmelding.typeInnsending}</TableCell>
