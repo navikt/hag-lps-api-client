@@ -20,12 +20,6 @@ function FiltererInntektsmeldinger() {
         });
     };
 
-    const handleDateChange = (name, date) => {
-        setSecondFormData({
-            ...secondFormData,
-            [name]: date ? dayjs(date) : null,
-        });
-    };
 
     const handleSecondFormSubmit = async () => {
         try {
@@ -77,16 +71,16 @@ function FiltererInntektsmeldinger() {
                         <Box flex={1} minWidth={200}>
                             <DatePicker
                                 label="Dato Fra"
+                                format="YYYY-MM-DD"
                                 value={secondFormData.fom ? dayjs(secondFormData.fom) : null}
-                                onChange={(date) => handleDateChange('fom', date)}
                                 renderInput={(params) => <TextField {...params} fullWidth />}
                             />
                         </Box>
                         <Box flex={1} minWidth={200}>
                             <DatePicker
                                 label="Dato Til"
+                                format="YYYY-MM-DD"
                                 value={secondFormData.tom ? dayjs(secondFormData.tom) : null}
-                                onChange={(date) => handleDateChange('tom', date)}
                                 renderInput={(params) => <TextField {...params} fullWidth />}
                             />
                         </Box>
