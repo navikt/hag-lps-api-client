@@ -23,7 +23,7 @@ function FiltererInntektsmeldinger() {
     const handleDateChange = (name, date) => {
         setSecondFormData({
             ...secondFormData,
-            [name]: date ? dayjs(date).toDateString() : null,
+            [name]: date ? dayjs(date) : null,
         });
     };
 
