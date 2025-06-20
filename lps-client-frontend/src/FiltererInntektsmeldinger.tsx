@@ -71,6 +71,7 @@ function FiltererInntektsmeldinger() {
                         <Box flex={1} minWidth={200}>
                             <DatePicker
                                 label="Dato Fra"
+                                name="fom"
                                 format="YYYY-MM-DD"
                                 value={secondFormData.fom}
                                 onChange={handleSecondFormChange}
@@ -80,6 +81,7 @@ function FiltererInntektsmeldinger() {
                         <Box flex={1} minWidth={200}>
                             <DatePicker
                                 label="Dato Til"
+                                name="tom"
                                 format="YYYY-MM-DD"
                                 value={secondFormData.tom}
                                 onChange={handleSecondFormChange}
