@@ -20,6 +20,12 @@ function FiltererInntektsmeldinger() {
         });
     };
 
+    const handleDateChange = (name, date) => {
+        setSecondFormData({
+            ...secondFormData,
+            [name]: date,
+        });
+    };
 
     const handleSecondFormSubmit = async () => {
         try {
@@ -74,7 +80,7 @@ function FiltererInntektsmeldinger() {
                                 name="fom"
                                 format="YYYY-MM-DD"
                                 value={secondFormData.fom}
-                                onChange={handleSecondFormChange}
+                                onChange={(date) => handleDateChange('fom', date)}
                                 renderInput={(params) => <TextField {...params} fullWidth />}
                             />
                         </Box>
@@ -84,7 +90,7 @@ function FiltererInntektsmeldinger() {
                                 name="tom"
                                 format="YYYY-MM-DD"
                                 value={secondFormData.tom}
-                                onChange={handleSecondFormChange}
+                                onChange={(date) => handleDateChange('tom', date)}
                                 renderInput={(params) => <TextField {...params} fullWidth />}
                             />
                         </Box>
