@@ -76,7 +76,7 @@ function FiltererInntektsmeldinger() {
                         </Box>
                         <Box flex={1} minWidth={200}>
                             <DatePicker
-                                label="Dato Fra"
+                                label="Dato Fra Og Med"
                                 name="fom"
                                 value={secondFormData.fom ? dayjs(secondFormData.fom) : null}
                                 onChange={(date) => handleDateChange('fom', date)}
@@ -85,7 +85,7 @@ function FiltererInntektsmeldinger() {
                         </Box>
                         <Box flex={1} minWidth={200}>
                             <DatePicker
-                                label="Dato Til"
+                                label="Dato Til Og Med"
                                 name="tom"
                                 value={secondFormData.tom ? dayjs(secondFormData.tom) : null}
                                 onChange={(date) => handleDateChange('tom', date)}
