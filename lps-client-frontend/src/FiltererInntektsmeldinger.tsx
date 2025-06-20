@@ -23,7 +23,7 @@ function FiltererInntektsmeldinger() {
     const handleDateChange = (name, date) => {
         setSecondFormData({
             ...secondFormData,
-            [name]: date,
+            [name]: date ? dayjs(date).toISOString().slice(0, 10) : null,
         });
     };
 
@@ -80,7 +80,7 @@ function FiltererInntektsmeldinger() {
                                 name="fom"
                                 format="YYYY-MM-DD"
                                 value={secondFormData.fom}
-                                onChange={(date) => handleDateChange('fom', date)}
+                                onChange={(date) => handleDateChange('fom', date.format("YYYY-MM-DD"))}
                                 renderInput={(params) => <TextField {...params} fullWidth />}
                             />
                         </Box>
