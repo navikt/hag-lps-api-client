@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Alert, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import axios from 'axios';
@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { checkAndRefreshToken } from './utils';
 
 function FiltererInntektsmeldinger() {
-    const [secondFormData, setSecondFormData] = useState({ navReferanseId: '', fnr: '', datoFra: null, datoTil: null });
+    const [secondFormData, setSecondFormData] = useState({ navReferanseId: '', fnr: '', fom: null, tom: null });
     const [error, setError] = useState(null);
     const [results, setResults] = useState(null);
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ function FiltererInntektsmeldinger() {
     const handleDateChange = (name, date) => {
         setSecondFormData({
             ...secondFormData,
-            [name]: date ? dayjs(date).toISOString().slice(0, 19) : null,
+            [name]: date ? dayjs(date).toISOString().slice(0, 10) : null,
         });
     };
 
@@ -75,18 +75,20 @@ function FiltererInntektsmeldinger() {
                             />
                         </Box>
                         <Box flex={1} minWidth={200}>
-                            <DateTimePicker
-                                label="Dato Fra"
-                                value={secondFormData.datoFra ? dayjs(secondFormData.datoFra) : null}
-                                onChange={(date) => handleDateChange('datoFra', date)}
+                            <DatePicker
+                                label="Dato Fra Og Med"
+                                name="fom"
+                                value={secondFormData.fom ? dayjs(secondFormData.fom) : null}
+                                onChange={(date) => handleDateChange('fom', date)}
                                 renderInput={(params) => <TextField {...params} fullWidth />}
                             />
                         </Box>
                         <Box flex={1} minWidth={200}>
-                            <DateTimePicker
-                                label="Dato Til"
-                                value={secondFormData.datoTil ? dayjs(secondFormData.datoTil) : null}
-                                onChange={(date) => handleDateChange('datoTil', date)}
+                            <DatePicker
+                                label="Dato Til Og Med"
+                                name="tom"
+                                value={secondFormData.tom ? dayjs(secondFormData.tom) : null}
+                                onChange={(date) => handleDateChange('tom', date)}
                                 renderInput={(params) => <TextField {...params} fullWidth />}
                             />
                         </Box>
@@ -116,7 +118,7 @@ function FiltererInntektsmeldinger() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {results.inntektsmeldinger.map((inntektsmelding) => (
+                                {results.map((inntektsmelding) => (
                                     <TableRow key={inntektsmelding.navReferanseId}>
                                         <TableCell>{inntektsmelding.navReferanseId}</TableCell>
                                         <TableCell>{inntektsmelding.typeInnsending}</TableCell>

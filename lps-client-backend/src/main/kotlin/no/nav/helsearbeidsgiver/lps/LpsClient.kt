@@ -33,7 +33,7 @@ class LpsClient(
     suspend fun filtrerInntektsmeldinger(
         consumerOrgNr: String,
         request: InntektsmeldingRequest,
-    ): InntektsmeldingResponse {
+    ): List<JsonObject> {
         try {
             val accessToken =
                 maskinportenService
@@ -48,7 +48,7 @@ class LpsClient(
                     bearerAuth(accessToken)
                     contentType(ContentType.Application.Json)
                 }
-            return response.body<InntektsmeldingResponse>()
+            return response.body<List<JsonObject>>()
         } catch (e: Exception) {
             throw e
         }
@@ -57,7 +57,7 @@ class LpsClient(
     suspend fun filtrerForespoersler(
         consumerOrgNr: String,
         request: ForespoerselRequest,
-    ): ForespoerselResponse {
+    ): List<Forespoersel> {
         try {
             val accessToken =
                 maskinportenService
@@ -72,7 +72,7 @@ class LpsClient(
                     bearerAuth(accessToken)
                     contentType(ContentType.Application.Json)
                 }
-            return response.body<ForespoerselResponse>()
+            return response.body<List<Forespoersel>>()
         } catch (e: Exception) {
             throw e
         }
@@ -81,7 +81,7 @@ class LpsClient(
     suspend fun filtrerInntektsmeldingerWithToken(
         request: InntektsmeldingRequest,
         accessToken: String,
-    ): InntektsmeldingResponse {
+    ): List<JsonObject> {
         try {
             val response =
                 createHttpClient().post {
@@ -90,7 +90,7 @@ class LpsClient(
                     bearerAuth(accessToken)
                     contentType(ContentType.Application.Json)
                 }
-            return response.body<InntektsmeldingResponse>()
+            return response.body<List<JsonObject>>()
         } catch (e: Exception) {
             logger().error("Error in filtrerInntektsmeldingerWithToken {}", e.message)
             throw e
