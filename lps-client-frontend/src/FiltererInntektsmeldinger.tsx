@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button, Box, Alert, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import axios from 'axios';
@@ -75,7 +75,7 @@ function FiltererInntektsmeldinger() {
                             />
                         </Box>
                         <Box flex={1} minWidth={200}>
-                            <DateTimePicker
+                            <DatePicker
                                 label="Dato Fra"
                                 value={secondFormData.fom ? dayjs(secondFormData.fom) : null}
                                 onChange={(date) => handleDateChange('fom', date)}
@@ -83,7 +83,7 @@ function FiltererInntektsmeldinger() {
                             />
                         </Box>
                         <Box flex={1} minWidth={200}>
-                            <DateTimePicker
+                            <DatePicker
                                 label="Dato Til"
                                 value={secondFormData.tom ? dayjs(secondFormData.tom) : null}
                                 onChange={(date) => handleDateChange('tom', date)}
