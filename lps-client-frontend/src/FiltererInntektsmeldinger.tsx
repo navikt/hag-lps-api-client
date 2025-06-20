@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { checkAndRefreshToken } from './utils';
 
 function FiltererInntektsmeldinger() {
-    const [secondFormData, setSecondFormData] = useState({ navReferanseId: '', fnr: '', datoFra: null, datoTil: null });
+    const [secondFormData, setSecondFormData] = useState({ navReferanseId: '', fnr: '', fom: null, tom: null });
     const [error, setError] = useState(null);
     const [results, setResults] = useState(null);
     const navigate = useNavigate();
@@ -23,7 +23,7 @@ function FiltererInntektsmeldinger() {
     const handleDateChange = (name, date) => {
         setSecondFormData({
             ...secondFormData,
-            [name]: date ? dayjs(date).toISOString().slice(0, 19) : null,
+            [name]: date ? dayjs(date).toDateString() : null,
         });
     };
 
@@ -77,16 +77,16 @@ function FiltererInntektsmeldinger() {
                         <Box flex={1} minWidth={200}>
                             <DateTimePicker
                                 label="Dato Fra"
-                                value={secondFormData.datoFra ? dayjs(secondFormData.datoFra) : null}
-                                onChange={(date) => handleDateChange('datoFra', date)}
+                                value={secondFormData.fom ? dayjs(secondFormData.fom) : null}
+                                onChange={(date) => handleDateChange('fom', date)}
                                 renderInput={(params) => <TextField {...params} fullWidth />}
                             />
                         </Box>
                         <Box flex={1} minWidth={200}>
                             <DateTimePicker
                                 label="Dato Til"
-                                value={secondFormData.datoTil ? dayjs(secondFormData.datoTil) : null}
-                                onChange={(date) => handleDateChange('datoTil', date)}
+                                value={secondFormData.tom ? dayjs(secondFormData.tom) : null}
+                                onChange={(date) => handleDateChange('tom', date)}
                                 renderInput={(params) => <TextField {...params} fullWidth />}
                             />
                         </Box>

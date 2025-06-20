@@ -14,7 +14,7 @@ import no.nav.helsearbeidsgiver.lps.LpsClient
 import no.nav.helsearbeidsgiver.lps.Status
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
 import no.nav.helsearbeidsgiver.utils.logger
-import java.time.LocalDateTime
+import java.time.LocalDate
 
 fun Application.configureLpsApiRouting(maskinportenService: MaskinportenService) {
     val lpsClient = LpsClient(maskinportenService)
@@ -51,14 +51,14 @@ private fun Routing.filtererInntektsmeldinger(lpsClient: LpsClient) {
         val fnr = params["fnr"]?.takeIf { it.isNotBlank() }
         val innsendingId = params["innsendingId"]?.takeIf { it.isNotBlank() }
         val navReferanseId = params["navReferanseId"]?.takeIf { it.isNotBlank() }
-        val datoFra = params["datoFra"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
-        val datoTil = params["datoTil"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
+        val fom = params["fom"]?.takeIf { it.isNotBlank() }?.let { LocalDate.parse(it) }
+        val tom = params["tom"]?.takeIf { it.isNotBlank() }?.let { LocalDate.parse(it) }
         logger().info("filterInntektsmeldinger: $params")
         try {
             val hentInntektsmeldinger =
                 lpsClient.filtrerInntektsmeldinger(
                     consumerOrgNr = consumerOrgNr,
-                    request = InntektsmeldingRequest(fnr, innsendingId, navReferanseId, datoFra, datoTil),
+                    request = InntektsmeldingRequest(fnr, innsendingId, navReferanseId, fom, tom),
                 )
             call.respond(HttpStatusCode.OK, hentInntektsmeldinger)
         } catch (e: Exception) {
@@ -98,15 +98,15 @@ private fun Routing.filtererInntektsmeldingerWithToken(lpsClient: LpsClient) {
         val fnr = params["fnr"]?.takeIf { it.isNotBlank() }?.trim()
         val navReferanseId = params["navReferanseId"]?.takeIf { it.isNotBlank() }?.trim()
         val innsendingId = params["innsendingId"]?.takeIf { it.isNotBlank() }
-        val datoFra = params["datoFra"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
-        val datoTil = params["datoTil"]?.takeIf { it.isNotBlank() }?.let { LocalDateTime.parse(it) }
+        val fom = params["fom"]?.takeIf { it.isNotBlank() }?.let { LocalDate.parse(it) }
+        val tom = params["tom"]?.takeIf { it.isNotBlank() }?.let { LocalDate.parse(it) }
         val authorizationHeader: String =
             call.request.headers["Authorization"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'Authorization' header")
 
         try {
             val hentInntektsmeldinger =
                 lpsClient.filtrerInntektsmeldingerWithToken(
-                    request = InntektsmeldingRequest(fnr, innsendingId, navReferanseId, datoFra, datoTil),
+                    request = InntektsmeldingRequest(fnr, innsendingId, navReferanseId, fom, tom),
                     accessToken = authorizationHeader,
                 )
             call.respond(HttpStatusCode.OK, hentInntektsmeldinger)

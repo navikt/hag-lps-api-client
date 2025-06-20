@@ -4,11 +4,9 @@ package no.nav.helsearbeidsgiver.lps
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
-import kotlinx.serialization.json.JsonObject
 import no.nav.helsearbeidsgiver.utils.LocalDateSerializer
 import no.nav.helsearbeidsgiver.utils.LocalDateTimeSerializer
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 @Serializable
 data class Forespoersel(
@@ -42,12 +40,6 @@ data class ForespoerselRequest(
 )
 
 @Serializable
-data class ForespoerselResponse(
-    val antall: Int,
-    val forespoersler: List<Forespoersel>,
-)
-
-@Serializable
 data class Periode(
     val fom: LocalDate,
     val tom: LocalDate,
@@ -58,12 +50,6 @@ data class InntektsmeldingRequest(
     val fnr: String? = null,
     val innsendingId: String? = null,
     val navReferanseId: String? = null,
-    val fraTid: LocalDateTime? = null,
-    val tilTid: LocalDateTime? = null,
-)
-
-@Serializable
-data class InntektsmeldingResponse(
-    val antall: Int = 0,
-    val inntektsmeldinger: List<JsonObject>,
+    val fom: LocalDate? = null,
+    val tom: LocalDate? = null,
 )
