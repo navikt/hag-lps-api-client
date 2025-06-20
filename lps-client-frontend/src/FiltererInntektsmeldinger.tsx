@@ -72,7 +72,8 @@ function FiltererInntektsmeldinger() {
                             <DatePicker
                                 label="Dato Fra"
                                 format="YYYY-MM-DD"
-                                value={secondFormData.fom ? dayjs(secondFormData.fom) : null}
+                                value={secondFormData.fom}
+                                onChange={handleSecondFormChange}
                                 renderInput={(params) => <TextField {...params} fullWidth />}
                             />
                         </Box>
@@ -80,7 +81,8 @@ function FiltererInntektsmeldinger() {
                             <DatePicker
                                 label="Dato Til"
                                 format="YYYY-MM-DD"
-                                value={secondFormData.tom ? dayjs(secondFormData.tom) : null}
+                                value={secondFormData.tom}
+                                onChange={handleSecondFormChange}
                                 renderInput={(params) => <TextField {...params} fullWidth />}
                             />
                         </Box>
