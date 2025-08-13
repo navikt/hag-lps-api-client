@@ -177,16 +177,16 @@
                     "description": "Forespørsel ID",
                     "default": ""
                   },
-                  "datoFra": {
+                  "fom": {
                     "type": "string",
                     "description": "Start date in ISO-8601 format",
                     "default": "",
-                    "example": "2024-01-01T00:00:00"
+                    "example": "2024-01-01"
                   },
-                  "datoTil": {
+                  "tom": {
                     "type": "string",
                     "description": "End date in ISO-8601 format",
-                    "example": "2024-12-31T00:00:00"
+                    "example": "2024-12-31"
                   }
                 }
               }

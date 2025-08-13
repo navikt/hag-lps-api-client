@@ -39,7 +39,7 @@ private fun Routing.hentSystembruker(maskinportenService: MaskinportenService) {
                 "Missing 'orgnr' parameter",
             )
         val scopes =
-            parameters["scopes"] ?: "nav:helse/im.read"
+            parameters["scopes"] ?: "nav:helseytelser/sykepenger"
 
         try {
             val systemBrukerClaim =
@@ -55,7 +55,7 @@ private fun Routing.hentSystembruker(maskinportenService: MaskinportenService) {
             if (e.message?.contains("System user not found") == true) {
                 call.respond(
                     HttpStatusCode.NotFound,
-                    "Fant ikke systembruker for orgnr: $orgnr eller orgamisasjonen ikke har tilgang til tjenesten",
+                    "Fant ikke systembruker for orgnr: $orgnr har ikke tilgang til tjenesten",
                 )
             } else {
                 call.respond(HttpStatusCode.InternalServerError, "Feilet å hente systembruker: ${e.message}")

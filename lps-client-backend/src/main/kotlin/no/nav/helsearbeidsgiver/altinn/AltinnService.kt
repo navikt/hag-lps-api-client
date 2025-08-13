@@ -36,7 +36,37 @@ class AltinnService {
                                 listOf(
                                     AttributePair(
                                         id = "urn:altinn:resource",
-                                        value = "nav_sykepenger_inntektsmelding-nedlasting",
+                                        value = "nav_sykepenger_dialogporten",
+                                    ),
+                                ),
+                        ),
+                        Right(
+                            action = "access",
+                            resource =
+                                listOf(
+                                    AttributePair(
+                                        id = "urn:altinn:resource",
+                                        value = "nav_system_sykepenger_inntektsmelding",
+                                    ),
+                                ),
+                        ),
+                        Right(
+                            action = "access",
+                            resource =
+                                listOf(
+                                    AttributePair(
+                                        id = "urn:altinn:resource",
+                                        value = "nav_system_sykepenger_sykmelding",
+                                    ),
+                                ),
+                        ),
+                        Right(
+                            action = "access",
+                            resource =
+                                listOf(
+                                    AttributePair(
+                                        id = "urn:altinn:resource",
+                                        value = "nav_system_sykepenger_soknad",
                                     ),
                                 ),
                         ),

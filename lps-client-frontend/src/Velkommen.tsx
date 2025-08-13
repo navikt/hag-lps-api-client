@@ -21,7 +21,7 @@ function Velkommen() {
                 </BodyShort>
 
                 <BodyShort spacing>
-                    Gå til forsiden og logg inn for å starte ditt inntektsmeldingseventyr.
+                    Gå til forsiden og logg inn for å starte din sykepengereise.
                 </BodyShort>
             </Box>
 

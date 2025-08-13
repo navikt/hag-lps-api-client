@@ -8,16 +8,17 @@ import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import kotlinx.serialization.json.JsonObject
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
 import no.nav.helsearbeidsgiver.maskinporten.createHttpClient
 import no.nav.helsearbeidsgiver.utils.logger
 
-private const val LPS_API_ENDPOINT = "https://sykepenger-im-lps-api.ekstern.dev.nav.no/"
+private const val LPS_API_ENDPOINT = "https://sykepenger-im-lps-api.ekstern.dev.nav.no/v1/"
 
 class LpsClient(
     var maskinportenService: MaskinportenService,
 ) {
-    suspend fun hentInntektsmeldinger(consumerOrgNr: String): List<Inntektsmelding> {
+    suspend fun hentInntektsmeldinger(consumerOrgNr: String): List<JsonObject> {
         val fetchNewAccessToken =
             maskinportenService.getMaskinportenTokenForOrgNr(consumerOrgNr).fetchNewAccessToken()
         val response =
@@ -26,13 +27,13 @@ class LpsClient(
                 bearerAuth(fetchNewAccessToken.tokenResponse.accessToken)
                 contentType(ContentType.Application.Json)
             }
-        return response.body<List<Inntektsmelding>>()
+        return response.body<List<JsonObject>>()
     }
 
     suspend fun filtrerInntektsmeldinger(
         consumerOrgNr: String,
         request: InntektsmeldingRequest,
-    ): InntektsmeldingResponse {
+    ): List<JsonObject> {
         try {
             val accessToken =
                 maskinportenService
@@ -47,7 +48,7 @@ class LpsClient(
                     bearerAuth(accessToken)
                     contentType(ContentType.Application.Json)
                 }
-            return response.body<InntektsmeldingResponse>()
+            return response.body<List<JsonObject>>()
         } catch (e: Exception) {
             throw e
         }
@@ -56,7 +57,7 @@ class LpsClient(
     suspend fun filtrerForespoersler(
         consumerOrgNr: String,
         request: ForespoerselRequest,
-    ): ForespoerselResponse {
+    ): List<Forespoersel> {
         try {
             val accessToken =
                 maskinportenService
@@ -71,7 +72,7 @@ class LpsClient(
                     bearerAuth(accessToken)
                     contentType(ContentType.Application.Json)
                 }
-            return response.body<ForespoerselResponse>()
+            return response.body<List<Forespoersel>>()
         } catch (e: Exception) {
             throw e
         }
@@ -80,7 +81,7 @@ class LpsClient(
     suspend fun filtrerInntektsmeldingerWithToken(
         request: InntektsmeldingRequest,
         accessToken: String,
-    ): InntektsmeldingResponse {
+    ): List<JsonObject> {
         try {
             val response =
                 createHttpClient().post {
@@ -89,7 +90,7 @@ class LpsClient(
                     bearerAuth(accessToken)
                     contentType(ContentType.Application.Json)
                 }
-            return response.body<InntektsmeldingResponse>()
+            return response.body<List<JsonObject>>()
         } catch (e: Exception) {
             logger().error("Error in filtrerInntektsmeldingerWithToken {}", e.message)
             throw e
