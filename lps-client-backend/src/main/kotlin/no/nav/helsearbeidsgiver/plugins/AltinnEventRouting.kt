@@ -36,10 +36,10 @@ private fun Routing.mottaDialogportenEvent() {
 @Serializable
 data class DialogportenEvent(
     @Serializable(with = UuidSerializer::class)
-    val resourceinstance: UUID,
+    val resourceinstance: UUID?,
     val type: String,
-    val resource: String,
-    val subject: String,
+    val resource: String?,
+    val subject: String?,
     val source: String,
 ) {
     fun tilLogString(): String =
