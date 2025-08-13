@@ -3,7 +3,7 @@ package no.nav.helsearbeidsgiver.plugins
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.call
-import io.ktor.server.request.receiveText
+import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.post
@@ -22,7 +22,8 @@ fun Application.configureAltinnEventRouting() {
 private fun Routing.mottaDialogportenEvent() {
     post("/dialogporten-event") {
         try {
-            val event = call.receiveText()
+            logger().info("Mottok Dialogporten event!")
+            val event = call.receive<String>()
             logger().info("Mottok Dialogporten event: $event")
             call.respond(HttpStatusCode.OK)
         } catch (e: Exception) {
