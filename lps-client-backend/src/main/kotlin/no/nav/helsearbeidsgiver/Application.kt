@@ -8,11 +8,11 @@ import io.ktor.server.application.install
 import io.ktor.server.netty.EngineMain
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
-import kotlinx.serialization.json.Json
 import no.nav.helsearbeidsgiver.maskinporten.MaskinportenService
 import no.nav.helsearbeidsgiver.plugins.configureLpsApiRouting
 import no.nav.helsearbeidsgiver.plugins.configureSystembrukerRouting
 import no.nav.helsearbeidsgiver.plugins.configureTokenRouting
+import no.nav.helsearbeidsgiver.utils.jsonConfig
 
 fun main(args: Array<String>) {
     EngineMain.main(args)
@@ -21,11 +21,7 @@ fun main(args: Array<String>) {
 fun Application.module() {
     install(ContentNegotiation) {
         json(
-            Json {
-                prettyPrint = true
-                isLenient = true
-                ignoreUnknownKeys = true
-            },
+            jsonConfig,
         )
     }
 
