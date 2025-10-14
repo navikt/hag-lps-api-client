@@ -47,6 +47,7 @@ data class Periode(
 
 @Serializable
 data class InntektsmeldingRequest(
+    val orgnr: String,
     val fnr: String? = null,
     val innsendingId: String? = null,
     val navReferanseId: String? = null,
