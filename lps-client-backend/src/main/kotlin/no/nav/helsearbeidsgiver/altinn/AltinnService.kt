@@ -28,7 +28,6 @@ class AltinnService {
             CreateRequestSystemUser(
                 systemId = systemId,
                 partyOrgNo = kundeOrgnr,
-                rights = emptyList(),
                 accessPackages = listOf(AccessPackage(urn = "urn:altinn:accesspackage:lonn-personopplysninger-saerlig-kategori")),
                 redirectUrl = "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen",
             )
