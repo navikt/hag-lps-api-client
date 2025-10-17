@@ -9,7 +9,7 @@ data class CreateRequestSystemUser(
     val externalRef: String? = null,
     val systemId: String,
     val partyOrgNo: String,
-    // val rights: List<Right>? = null,
+    val rights: List<Right>? = null,
     val accessPackages: List<AccessPackage>,
     val redirectUrl: String?,
 )

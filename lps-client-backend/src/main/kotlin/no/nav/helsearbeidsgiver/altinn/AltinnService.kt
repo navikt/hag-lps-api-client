@@ -28,6 +28,49 @@ class AltinnService {
             CreateRequestSystemUser(
                 systemId = systemId,
                 partyOrgNo = kundeOrgnr,
+                rights =
+                    listOf(
+                        Right(
+                            action = "read",
+                            resource =
+                                listOf(
+                                    AttributePair(
+                                        id = "urn:altinn:resource",
+                                        value = "nav_sykepenger_dialog",
+                                    ),
+                                ),
+                        ),
+                        Right(
+                            action = "access",
+                            resource =
+                                listOf(
+                                    AttributePair(
+                                        id = "urn:altinn:resource",
+                                        value = "nav_sykepenger_inntektsmelding",
+                                    ),
+                                ),
+                        ),
+                        Right(
+                            action = "access",
+                            resource =
+                                listOf(
+                                    AttributePair(
+                                        id = "urn:altinn:resource",
+                                        value = "nav_sykepenger_sykmelding",
+                                    ),
+                                ),
+                        ),
+                        Right(
+                            action = "access",
+                            resource =
+                                listOf(
+                                    AttributePair(
+                                        id = "urn:altinn:resource",
+                                        value = "nav_sykepenger_soeknad",
+                                    ),
+                                ),
+                        ),
+                    ),
                 accessPackages = listOf(AccessPackage(urn = "urn:altinn:accesspackage:lonn-personopplysninger-saerlig-kategori")),
                 redirectUrl = "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen",
             )
