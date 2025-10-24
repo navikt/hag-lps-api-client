@@ -48,6 +48,8 @@ private fun Routing.filtererInntektsmeldinger(lpsClient: LpsClient) {
 
         val consumerOrgNr =
             params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
+        val underenhetOrgnr =
+            params["underenhetOrgnr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'underenhetOrgnr' parameter")
         val fnr = params["fnr"]?.takeIf { it.isNotBlank() }
         val innsendingId = params["innsendingId"]?.takeIf { it.isNotBlank() }
         val navReferanseId = params["navReferanseId"]?.takeIf { it.isNotBlank() }
@@ -58,7 +60,7 @@ private fun Routing.filtererInntektsmeldinger(lpsClient: LpsClient) {
             val hentInntektsmeldinger =
                 lpsClient.filtrerInntektsmeldinger(
                     consumerOrgNr = consumerOrgNr,
-                    request = InntektsmeldingRequest(fnr, innsendingId, navReferanseId, fom, tom),
+                    request = InntektsmeldingRequest(underenhetOrgnr, fnr, innsendingId, navReferanseId, fom, tom),
                 )
             call.respond(HttpStatusCode.OK, hentInntektsmeldinger)
         } catch (e: Exception) {
@@ -95,6 +97,8 @@ private fun Routing.filtererInntektsmeldingerWithToken(lpsClient: LpsClient) {
     post("/filterInntektsmeldingerToken") {
         val params = call.receiveParameters()
         logger().info("filterInntektsmeldingerToken: $params")
+        val underenhetOrgnr =
+            params["underenhetOrgnr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'underenhetOrgnr' parameter")
         val fnr = params["fnr"]?.takeIf { it.isNotBlank() }?.trim()
         val navReferanseId = params["navReferanseId"]?.takeIf { it.isNotBlank() }?.trim()
         val innsendingId = params["innsendingId"]?.takeIf { it.isNotBlank() }
@@ -106,7 +110,7 @@ private fun Routing.filtererInntektsmeldingerWithToken(lpsClient: LpsClient) {
         try {
             val hentInntektsmeldinger =
                 lpsClient.filtrerInntektsmeldingerWithToken(
-                    request = InntektsmeldingRequest(fnr, innsendingId, navReferanseId, fom, tom),
+                    request = InntektsmeldingRequest(underenhetOrgnr, fnr, innsendingId, navReferanseId, fom, tom),
                     accessToken = authorizationHeader,
                 )
             call.respond(HttpStatusCode.OK, hentInntektsmeldinger)
