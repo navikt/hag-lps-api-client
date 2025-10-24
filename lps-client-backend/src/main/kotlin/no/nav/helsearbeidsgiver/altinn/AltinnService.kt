@@ -71,6 +71,7 @@ class AltinnService {
                                 ),
                         ),
                     ),
+                accessPackages = listOf(AccessPackage(urn = "urn:altinn:accesspackage:lonn-personopplysninger-saerlig-kategori")),
                 redirectUrl = "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen",
             )
         logger().info("Lager systembrukerforespørsel for systemId ${request.systemId}")

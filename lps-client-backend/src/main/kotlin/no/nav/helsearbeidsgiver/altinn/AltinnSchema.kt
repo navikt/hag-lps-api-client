@@ -10,6 +10,7 @@ data class CreateRequestSystemUser(
     val systemId: String,
     val partyOrgNo: String,
     val rights: List<Right>? = null,
+    val accessPackages: List<AccessPackage>,
     val redirectUrl: String?,
 )
 
