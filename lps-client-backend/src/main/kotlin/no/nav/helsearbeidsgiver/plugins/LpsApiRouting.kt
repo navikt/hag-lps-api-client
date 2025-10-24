@@ -48,8 +48,8 @@ private fun Routing.filtererInntektsmeldinger(lpsClient: LpsClient) {
 
         val consumerOrgNr =
             params["consumerOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'consumerOrgNr' parameter")
-        val underenhetOrgNr =
-            params["underenhetOrgNr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'underenhetOrgNr' parameter")
+        val underenhetOrgnr =
+            params["underenhetOrgnr"] ?: return@post call.respond(HttpStatusCode.BadRequest, "Mangler 'underenhetOrgnr' parameter")
         val fnr = params["fnr"]?.takeIf { it.isNotBlank() }
         val innsendingId = params["innsendingId"]?.takeIf { it.isNotBlank() }
         val navReferanseId = params["navReferanseId"]?.takeIf { it.isNotBlank() }
@@ -60,7 +60,7 @@ private fun Routing.filtererInntektsmeldinger(lpsClient: LpsClient) {
             val hentInntektsmeldinger =
                 lpsClient.filtrerInntektsmeldinger(
                     consumerOrgNr = consumerOrgNr,
-                    request = InntektsmeldingRequest(underenhetOrgNr, fnr, innsendingId, navReferanseId, fom, tom),
+                    request = InntektsmeldingRequest(underenhetOrgnr, fnr, innsendingId, navReferanseId, fom, tom),
                 )
             call.respond(HttpStatusCode.OK, hentInntektsmeldinger)
         } catch (e: Exception) {
