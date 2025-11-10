@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { checkAndRefreshToken } from './utils';
 
 function FiltererInntektsmeldinger() {
-    const [secondFormData, setSecondFormData] = useState({ navReferanseId: '', fnr: '', fom: null, tom: null });
+    const [secondFormData, setSecondFormData] = useState({ underenhetOrgnr: '', navReferanseId: '', fnr: '', fom: null, tom: null });
     const [error, setError] = useState(null);
     const [results, setResults] = useState(null);
     const navigate = useNavigate();
@@ -56,6 +56,15 @@ function FiltererInntektsmeldinger() {
                 {error && <Alert severity="error">{error}</Alert>}
                 <Box component="form" noValidate autoComplete="off" sx={{ mb: 4 }}>
                     <Box display="flex" flexWrap="wrap" gap={2}>
+                        <Box flex={1} minWidth={200}>
+                            <TextField
+                                label="Underenhetorgnr"
+                                name="underenhetOrgnr"
+                                value={secondFormData.underenhetOrgnr}
+                                onChange={handleSecondFormChange}
+                                fullWidth
+                            />
+                        </Box>
                         <Box flex={1} minWidth={200}>
                             <TextField
                                 label="NavReferanseId"

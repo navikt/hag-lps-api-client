@@ -36,7 +36,7 @@ class AltinnService {
                                 listOf(
                                     AttributePair(
                                         id = "urn:altinn:resource",
-                                        value = "nav_sykepenger_dialogporten",
+                                        value = "nav_sykepenger_dialog",
                                     ),
                                 ),
                         ),
@@ -46,7 +46,7 @@ class AltinnService {
                                 listOf(
                                     AttributePair(
                                         id = "urn:altinn:resource",
-                                        value = "nav_system_sykepenger_inntektsmelding",
+                                        value = "nav_sykepenger_inntektsmelding",
                                     ),
                                 ),
                         ),
@@ -56,7 +56,7 @@ class AltinnService {
                                 listOf(
                                     AttributePair(
                                         id = "urn:altinn:resource",
-                                        value = "nav_system_sykepenger_sykmelding",
+                                        value = "nav_sykepenger_sykmelding",
                                     ),
                                 ),
                         ),
@@ -66,11 +66,12 @@ class AltinnService {
                                 listOf(
                                     AttributePair(
                                         id = "urn:altinn:resource",
-                                        value = "nav_system_sykepenger_soknad",
+                                        value = "nav_sykepenger_soeknad",
                                     ),
                                 ),
                         ),
                     ),
+                accessPackages = listOf(AccessPackage(urn = "urn:altinn:accesspackage:lonn-personopplysninger-saerlig-kategori")),
                 redirectUrl = "https://hag-lps-api-client.ekstern.dev.nav.no/velkommen",
             )
         logger().info("Lager systembrukerforespørsel for systemId ${request.systemId}")

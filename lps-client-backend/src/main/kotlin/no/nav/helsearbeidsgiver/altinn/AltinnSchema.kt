@@ -9,7 +9,8 @@ data class CreateRequestSystemUser(
     val externalRef: String? = null,
     val systemId: String,
     val partyOrgNo: String,
-    val rights: List<Right>,
+    val rights: List<Right>? = null,
+    val accessPackages: List<AccessPackage>,
     val redirectUrl: String?,
 )
 
@@ -17,6 +18,11 @@ data class CreateRequestSystemUser(
 data class Right(
     val action: String?,
     val resource: List<AttributePair>,
+)
+
+@Serializable
+data class AccessPackage(
+    val urn: String,
 )
 
 @Serializable
