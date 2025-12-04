@@ -5,6 +5,8 @@ Api-et kan brukes til å hente data om inntektsmeldinger og forespørsler.
 - Url til dev er https://hag-lps-api-client.ekstern.dev.nav.no/
 - Url til swagger er https://hag-lps-api-client.ekstern.dev.nav.no/swagger
 
+Dette repoet er ikke lenger i bruk, og har blitt arkivert.
+
 ## Forutsetninger
 
 - JDK 21 eller høyere
