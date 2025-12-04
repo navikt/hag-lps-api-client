@@ -11,6 +11,8 @@
 
 Dette er en frontend-applikasjon for å hente data fra LPS API. Den genererer et token fra Maskinporten og kaller på LPS API-endepunkter for å hente data.
 
+Dette repoet er ikke lenger i bruk, og har blitt arkivert.
+
 ## Installation
 
 2. Install dependencies:
